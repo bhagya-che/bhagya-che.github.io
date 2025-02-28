@@ -1,0 +1,59 @@
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .container {
+    text-align: center;
+  }
+  
+  .typewriter {
+    font-size: 24px;
+    font-weight: bold;
+    border-right: 3px solid black;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  /* Blink animation for the cursor */
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+  
+  /* Typewriter animations for each line */
+  @keyframes typing1 {
+    from { width: 0; }
+    to { width: 10ch; }
+  }
+  
+  @keyframes typing2 {
+    from { width: 10; }
+    to { width: 21ch; }
+  }
+  
+  @keyframes typing3 {
+    from { width: 21; }
+    to { width: 36ch; }
+  }
+  
+  .line1 {
+    width: 0;
+    /* Adjust delay and steps based on the text length */
+    animation: typing1 2s steps(10) 1s forwards, blink 0.75s step-end infinite;
+  }
+  
+  .line2 {
+    width: 0;
+    animation: typing2 2s steps(21) 3s forwards, blink 0.75s step-end infinite;
+  }
+  
+  .line3 {
+    width: 0;
+    animation: typing3 2s steps(36) 5s forwards, blink 0.75s step-end infinite;
+  }
+  
