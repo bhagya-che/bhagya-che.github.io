@@ -7,10 +7,67 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <div class="typewriter line1">Bhagya Che</div>
-    <div class="typewriter line2">PhD Student at McGill</div>
-    <div class="typewriter line3">This is my personal blog coming soon</div>
-  </div>
+  <!-- Header with navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#bio">Bio</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#activities">Activities</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Intro Section with Typewriter Animation -->
+  <section id="intro">
+    <div class="container">
+      <div class="typewriter line1">Bhagya Che</div>
+      <div class="typewriter line2">PhD Student at McGill</div>
+      <div class="typewriter line3">This is my personal blog coming soon</div>
+    </div>
+  </section>
+
+  <!-- Bio Section: Image and Bio -->
+  <section id="bio">
+    <div class="bio-container">
+      <img src="path_to_image.jpg" alt="Bhagya Che" class="bio-image">
+      <p class="bio-text">
+        Hi, I'm Bhagya Che, passionate about defending digital frontiers,
+        I innovate secure practices that empower developers,
+        Merging cutting-edge research with real-world coding,
+        I build safer software, one line of code at a time.
+        Welcome to my personal blog where I share my projects, publications, and activities.
+      </p>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <p>Details about my projects will be updated soon.</p>
+  </section>
+
+  <!-- Publications Section -->
+  <section id="publications">
+    <h2>Publications</h2>
+    <p>Stay tuned for a list of my publications.</p>
+  </section>
+
+  <!-- Other Activities Section -->
+  <section id="activities">
+    <h2>Other Activities</h2>
+    <p>Additional activities and engagements will be shared here.</p>
+  </section>
+
+  <!-- Auto-scroll script: scrolls to the bio section after the typewriter animations complete -->
+  <script>
+    window.addEventListener('load', function() {
+      // Adjust delay as needed so that typewriter animations complete before scrolling.
+      setTimeout(function() {
+        document.getElementById('bio').scrollIntoView({behavior: "smooth"});
+      }, 7000);
+    });
+  </script>
 </body>
 </html>
