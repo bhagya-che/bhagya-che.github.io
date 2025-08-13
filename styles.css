@@ -1,13 +1,30 @@
 /* General Styles */
+:root {
+  --pastel-blue: #AEC6CF;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --bg: #f4f4f4;
+  --card: #ffffff;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Courier New', monospace;
-  background-color: #f4f4f4;
-  margin: 0;
+  background-color: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
 }
 
 /* Header with Navigation */
 header {
-  background-color: #AEC6CF; /* Pastel blue shade */
+  background-color: var(--pastel-blue);
   padding: 10px 20px;
   position: fixed;
   top: 0;
@@ -17,15 +34,13 @@ header {
 }
 
 header nav ul {
-  list-style-type: none;
+  list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
+  gap: 22px;
   justify-content: center;
-}
-
-header nav ul li {
-  margin: 0 15px;
+  align-items: center;
 }
 
 header nav ul li a {
@@ -35,9 +50,7 @@ header nav ul li a {
   font-size: 18px;
 }
 
-header nav ul li a:hover {
-  text-decoration: underline;
-}
+header nav ul li a:hover { text-decoration: underline; }
 
 /* Intro Section: Adjusted for fixed header */
 #intro {
@@ -49,66 +62,50 @@ header nav ul li a:hover {
 }
 
 /* Container for typewriter animation */
-.container {
-  text-align: center;
-}
+.container { text-align: center; }
 
 /* Typewriter effect styles */
 .typewriter {
-  font-size: 24px;
+  font-size: 40px;
   font-weight: bold;
   border-right: 3px solid black;
   white-space: nowrap;
   overflow: hidden;
 }
 
-@keyframes blink {
-  50% { border-color: transparent; }
-}
+@keyframes blink { 30% { border-color: transparent; } }
 
-@keyframes typing1 {
-  from { width: 0; }
-  to { width: 10ch; }
-}
-
-@keyframes typing2 {
-  from { width: 0; }
-  to { width: 21ch; }
-}
-
-@keyframes typing3 {
-  from { width: 0; }
-  to { width: 36ch; }
-}
+@keyframes typing1 { from { width: 0; } to { width: 18ch; } } /* "Bhagya Chembakottu" ~18ch */
+@keyframes typing2 { from { width: 0; } to { width: 38ch; } } /* adjust as needed */
+@keyframes typing3 { from { width: 0; } to { width: 43ch; } } /* adjust as needed */
 
 .line1 {
   width: 0;
-  animation: typing1 2s steps(10) 1s forwards, blink 0.75s step-end infinite;
+  animation: typing1 2s steps(18) 1s forwards, blink 0.75s step-end ;
 }
-
 .line2 {
   width: 0;
-  animation: typing2 2s steps(21) 3s forwards, blink 0.75s step-end infinite;
+  animation: typing2 2s steps(38) 3s forwards, blink 0.75s step-end infinite;
 }
-
 .line3 {
   width: 0;
-  animation: typing3 2s steps(36) 5s forwards, blink 0.75s step-end infinite;
+  animation: typing3 2s steps(43) 5s forwards, blink 0.75s step-end infinite;
 }
 
-/* Styles for additional sections */
+/* Shared section styles */
 section {
   padding: 50px 20px;
   margin: 20px auto;
-  max-width: 800px;
-  background-color: #fff;
-  border-radius: 8px;
+  max-width: 1000px;
+  background-color: var(--card);
+  border-radius: var(--radius);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  scroll-margin-top: 90px; /* prevents fixed-header overlap on anchor jump */
 }
 
-/* Section Titles in Pastel Blue */
 section h2 {
-  color: #AEC6CF;
+  color: var(--pastel-blue);
+  margin-top: 0;
 }
 
 /* Bio Section Styling */
@@ -116,16 +113,103 @@ section h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 14px;
 }
 
 .bio-image {
-  width: 150px;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .bio-text {
   font-size: 18px;
-  line-height: 1.6;
+  line-height: 1.7;
   text-align: center;
+  max-width: 70ch;
+}
+
+.cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  background: var(--pastel-blue);
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--pastel-blue);
+  border: 2px solid var(--pastel-blue);
+}
+
+/* Cards (Projects) */
+.cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+}
+
+.card h3 { margin-top: 0; }
+
+.muted { color: var(--muted); font-size: 0.95em; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef2f7;
+  border: 1px solid #e5e7eb;
+  font-size: 0.85em;
+}
+
+/* Timeline (Experience) */
+.timeline article + article {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.timeline h3 { margin-bottom: 4px; }
+
+/* Education */
+.edu { list-style: none; padding: 0; margin: 0; }
+.edu li + li { margin-top: 12px; }
+
+/* Skills */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+/* Contact */
+.contact { list-style: none; padding: 0; margin: 0; }
+.contact li + li { margin-top: 6px; }
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .typewriter { font-size: 22px; }
+  .bio-image { width: 130px; height: 130px; }
 }

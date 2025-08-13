@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bhagya Che - Personal Blog</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bhagya Chembakottu — Personal Blog</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <meta name="description" content="Bhagya Chembakottu — PhD student at McGill University researching security awareness in web application development."/>
 </head>
 <body>
   <!-- Header with navigation -->
   <header>
-    <nav>
+    <nav aria-label="Primary">
       <ul>
         <li><a href="#bio">Bio</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#publications">Publications</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
         <li><a href="#activities">Activities</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -22,16 +27,16 @@
   <!-- Intro Section with Typewriter Animation -->
   <section id="intro">
     <div class="container">
-      <div class="typewriter line1">Bhagya Che</div>
-      <div class="typewriter line2">PhD Student at McGill</div>
-      <div class="typewriter line3">This is my personal blog coming soon</div>
+      <div class="typewriter line1" aria-label="Name">Bhagya Chembakottu</div>
+      <div class="typewriter line2" aria-label="Role and research">PhD Student, Computer Science @ McGill</div>
+      <!-- <div class="typewriter line3" aria-label="Focus">Research: Security awareness in Web Application Development</div> -->
     </div>
   </section>
 
   <!-- Bio Section: Image and Bio -->
   <section id="bio">
     <div class="bio-container">
-      <img src="path_to_image.jpg" alt="Bhagya Che" class="bio-image">
+      <img src="assets/profile.jpg" alt="Portrait of Bhagya Chembakottu" class="bio-image" loading="lazy">
       <p class="bio-text">
         Hi, I'm Bhagya Che, passionate about defending digital frontiers,
         I innovate secure practices that empower developers,
@@ -39,33 +44,231 @@
         I build safer software, one line of code at a time.
         Welcome to my personal blog where I share my projects, publications, and activities.
       </p>
+      <p class="cta-row">
+        <a class="btn" href="./assets/" download>Download Résumé (PDF)</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/bhagya-c/" target="_blank" rel="noopener">LinkedIn</a>
+      </p>
     </div>
   </section>
 
   <!-- Projects Section -->
   <section id="projects">
     <h2>Projects</h2>
-    <p>Details about my projects will be updated soon.</p>
+
+    <ul class="cards">
+      <li class="card">
+        <h3>Usability of Static Application Security Testing Workflows</h3>
+        <p class="muted">Project aligned with SANER Conference 2025</p>
+        <p>Studying developer experience and usability of SAST workflows to improve adoption and effectiveness.</p>
+        <p class="tags">
+          <span class="badge">SAST</span>
+          <span class="badge">DevSecOps</span>
+          <span class="badge">Usability</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Secbyz</h3>
+        <p>Privacy-enhanced technology example for POS systems that follows Quebec’s Bill 64 and PIPEDA requirements.</p>
+        <p class="tags">
+          <span class="badge">Privacy</span>
+          <span class="badge">Compliance</span>
+          <span class="badge">PIPEDA</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Secure Actions</h3>
+        <p>Rule-based security testing for GitHub Actions in Python projects, informed by SLSA and supply-chain security principles.</p>
+        <p class="tags">
+          <span class="badge">CI/CD</span>
+          <span class="badge">SLSA</span>
+          <span class="badge">Supply Chain</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>AutoML systems with HPO and CASH</h3>
+        <p>End-to-end AutoML benchmark system to streamline model baselining for data scientists.</p>
+        <p class="tags">
+          <span class="badge">AutoML</span>
+          <span class="badge">HPO</span>
+          <span class="badge">MLOps</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Decoding Gender Bias</h3>
+        <p>Scalar inference method to analyze pragmatics in word embeddings and detect bias.</p>
+        <p class="tags">
+          <span class="badge">NLP</span>
+          <span class="badge">Fairness</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>JavaParser & AST generation</h3>
+        <p>Program analysis experiments using JavaParser and ASTs for quality and security checks.</p>
+        <p class="tags">
+          <span class="badge">Java</span>
+          <span class="badge">AST</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Retrieval & Graph improvements</h3>
+        <p>Improved graph search and SharePoint taxonomy; built document similarity & knowledge graph retrieval for enterprise search.</p>
+        <p class="tags">
+          <span class="badge">IR</span>
+          <span class="badge">Knowledge Graphs</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>More</h3>
+        <p>Curriculum learning scaling analysis; Conversational model using BERT; Resume parsing with NLP/NER.</p>
+        <p class="tags">
+          <span class="badge">BERT</span>
+          <span class="badge">NLP</span>
+        </p>
+      </li>
+    </ul>
   </section>
 
   <!-- Publications Section -->
   <section id="publications">
     <h2>Publications</h2>
-    <p>Stay tuned for a list of my publications.</p>
+    <p>Coming soon. (Related: Project aligned with SANER 2025 on SAST workflow usability.)</p>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience">
+    <h2>Experience</h2>
+
+    <div class="timeline">
+      <article>
+        <h3>Teaching Assistant — McGill University</h3>
+        <p class="muted">Aug 2024 – Dec 2024 · Montréal</p>
+        <ul>
+          <li>Assisted in Information & Application Security, Software Design Patterns (Java), Database Systems, and Network Science.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Data Science Intern — Ericsson</h3>
+        <p class="muted">Jan 2023 – Apr 2024 · Montréal</p>
+        <ul>
+          <li>Improved workflows with MLOps/RLOps using MLflow; integrated Kubeflow on Kubernetes via Helm.</li>
+          <li>Built an end-to-end AutoML system for baseline benchmarks.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>AI Engineer Intern — National Bank of Canada</h3>
+        <p class="muted">Nov 2021 – May 2022 · Montréal</p>
+        <ul>
+          <li>Developed document similarity and knowledge-graph retrieval to improve employee search experience.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Practical Work Supervisor — Polytechnique Montréal</h3>
+        <p class="muted">May 2019 – Present · Montréal</p>
+        <ul>
+          <li>Tutored Software Quality Assurance (maintainability, performance, security testing with JUnit, JMeter, JProfiler/VisualVM, ZAP/SonarCloud).</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Artificial Intelligence Engineer — impress.ai</h3>
+        <p class="muted">May 2019 – Apr 2021 · Kochi</p>
+        <ul>
+          <li>Led a small AI team; met with clients to define problems; proposed algorithms and architectures.</li>
+          <li>Work mentioned in Singapore Parliament for reducing man-hours using technology.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Research Intern — IIT Guwahati</h3>
+        <p class="muted">May 2018 – July 2018 · Assam</p>
+        <ul>
+          <li>User-centric computing & networking lab; computer-network projects.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Research Intern — National Ilan University</h3>
+        <p class="muted">Feb 2018 – Mar 2018 · Ilan, Taiwan</p>
+        <ul>
+          <li>Worked on ML, computer graphics, and computer networks with NIU faculty.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education">
+    <h2>Education</h2>
+    <ul class="edu">
+      <li>
+        <strong>Ph.D., Computer Science</strong> — McGill University, Montréal (Sep 2023 – Sep 2027) · CGPA: 3.92/4  
+        <div class="muted">Research: Security awareness in Web Application Development</div>
+      </li>
+      <li>
+        <strong>M.A.Sc., Computer & Software Engineering</strong> — Polytechnique Montréal (May 2021 – May 2023) · CGPA: 4/4
+      </li>
+      <li>
+        <strong>B.Eng., Computer Science & Engineering</strong> — Cochin University of Science & Technology (Jul 2015 – May 2019) · CGPA: 9.5/10
+      </li>
+    </ul>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div>
+        <h3>Programming</h3>
+        <p class="tags">
+          <span class="badge">Java</span><span class="badge">Python</span><span class="badge">C</span><span class="badge">R</span>
+        </p>
+      </div>
+      <div>
+        <h3>AI/ML</h3>
+        <p class="tags">
+          <span class="badge">AI/ML/NLP</span><span class="badge">Django</span><span class="badge">Docker</span><span class="badge">Kafka</span><span class="badge">Spring</span>
+        </p>
+      </div>
+      <div>
+        <h3>Tooling</h3>
+        <p class="tags">
+          <span class="badge">Git</span><span class="badge">Jira</span><span class="badge">CodeQL</span><span class="badge">SonarCloud</span><span class="badge">OWASP ZAP</span>
+        </p>
+      </div>
+      <div>
+        <h3>Languages</h3>
+        <p class="tags">
+          <span class="badge">English (Advanced)</span>
+          <span class="badge">French (Intermediate)</span>
+          <span class="badge">Malayalam (Native)</span>
+        </p>
+      </div>
+    </div>
   </section>
 
   <!-- Other Activities Section -->
   <section id="activities">
     <h2>Other Activities</h2>
-    <p>Additional activities and engagements will be shared here.</p>
+    <p>Teaching, mentoring, and open-source experiments in secure software engineering.</p>
   </section>
+
 
   <!-- Auto-scroll script: scrolls to the bio section after the typewriter animations complete -->
   <script>
-    window.addEventListener('load', function() {
-      // Adjust delay as needed so that typewriter animations complete before scrolling.
-      setTimeout(function() {
-        document.getElementById('bio').scrollIntoView({behavior: "smooth"});
+    window.addEventListener('load', function () {
+      // Delay matches the cumulative typewriter timing below (2s each + 1s/3s/5s offsets).
+      setTimeout(function () {
+        document.getElementById('bio').scrollIntoView({ behavior: "smooth" });
       }, 7000);
     });
   </script>
