@@ -227,3 +227,11 @@ section h2 {
   .typewriter { font-size: 22px; }
   .bio-image { width: 130px; height: 130px; }
 }
+
+.pub-list { margin: 0; padding-left: 1.2rem; }
+.pub-item { margin: 0 0 18px 0; }
+.pub-title { font-weight: 700; }
+.pub-authors { margin-top: 2px; }
+.pub-venue { color: var(--muted); margin: 2px 0 6px; }
+.pub-links a { margin-right: 12px; }
+.me { background: #fff3cd; padding: 0 4px; border-radius: 4px; }
