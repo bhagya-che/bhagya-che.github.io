@@ -81,8 +81,22 @@ header nav ul li a:hover { text-decoration: underline; }
 
 .line1 {
   width: 0;
-  animation: typing1 2s steps(18) 1s forwards, blink 0.75s step-end ;
+  animation: typing1 2s steps(18) 1s forwards,
+             blink 0.75s step-end 3s 3, /* blink a few times */
+             remove-caret 0.1s forwards 4.5s; /* hide after */
 }
+
+
+.line2 {
+  width: 0;
+  animation: typing2 2s steps(38) 3s forwards, blink 0.75s step-end infinite;
+}
+@keyframes remove-caret {
+  to { border-color: transparent; }
+}
+
+
+
 .line2 {
   width: 0;
   animation: typing2 2s steps(38) 3s forwards, blink 0.75s step-end infinite;
