@@ -2,144 +2,354 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web Challenges Story — HTML Slides</title>
-  <style>
-    :root {
-      --bg: #0f172a;          /* slate-900 */
-      --panel: #0b1229;       /* deep navy */
-      --text: #e5e7eb;        /* gray-200 */
-      --muted: #9ca3af;       /* gray-400 */
-      --primary: #60a5fa;     /* blue-400 */
-      --accent: #34d399;      /* emerald-400 */
-      --warn: #f59e0b;        /* amber-500 */
-      --danger: #f87171;      /* red-400 */
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0; background: linear-gradient(180deg, #0b1022, var(--bg));
-      color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      display: flex; align-items: center; justify-content: center; padding: 2.5vh 2vw;
-    }
-    .deck { width: min(1100px, 96vw); }
-    .card { background: radial-gradient(1200px 600px at 100% 0%, #0e1b45 0%, var(--panel) 50%);
-      border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 48px 56px; box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-      min-height: 68vh; display: flex; flex-direction: column; justify-content: space-between; }
-    h1 { font-size: clamp(28px, 4vw, 44px); margin: 0 0 18px; line-height: 1.15; letter-spacing: 0.2px; }
-    .content { font-size: clamp(18px, 2.2vw, 24px); line-height: 1.6; }
-    .content p { margin: 0 0 12px; }
-    .content ul, .content ol { margin: 10px 0 0 0; padding-left: 26px; }
-    .content li { margin: 10px 0; }
-    code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
-    pre { background: rgba(255,255,255,0.06); padding: 14px 16px; border-radius: 12px; overflow-x: auto; }
-
-    .nav { display: flex; align-items: center; gap: 16px; margin-top: 26px; }
-    .nav .spacer { flex: 1; }
-    button { background: var(--primary); color: #081327; border: none; padding: 14px 22px; border-radius: 12px; font-weight: 700; font-size: 18px; cursor: pointer; }
-    button[disabled] { opacity: 0.5; cursor: not-allowed; }
-    .ghost { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,0.18); }
-
-    .meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; color: var(--muted); font-size: 16px; }
-    .bar { height: 8px; width: 100%; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
-    .bar > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--primary)); }
-
-    .kbhint { font-size: 14px; color: var(--muted); }
-    a { color: #93c5fd; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    @media print {
-      body { background: #fff; color: #111; }
-      .card { box-shadow: none; border: 1px solid #ddd; }
-      .meta, .kbhint, .nav { display: none !important; }
-      .deck { width: 100%; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BhaChe — Blog</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="styles.css"/>
+  <meta name="description" content="Bhagya Chembakottu — PhD student at McGill University researching security awareness in web application development."/>
 </head>
 <body>
-  <div class="deck">
-    <div class="card">
-      <div>
-        <h1 id="slide-title">Web Challenges Story</h1>
-        <h2>by Bhagya Chembakottu</h2>
-        <div id="slide-content" class="content"></div>
-      </div>
+  <!-- Header with navigation -->
+  <header>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#bio">Bio</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#activities">Activities</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <!-- Intro Section with Typewriter Animation -->
+  <section id="intro">
+    <div class="container">
+      <div class="typewriter line1" aria-label="Name">Bhagya Chembakottu</div>
+      <div class="typewriter line2" aria-label="Role and research">PhD Student, Computer Science @ McGill</div>
+      <!-- <div class="typewriter line3" aria-label="Focus">Research: Security awareness in Web Application Development</div> -->
+    </div>
+  </section>
+
+  <!-- Bio Section: Image and Bio -->
+  <section id="bio">
+    <div class="bio-container">
+      <img src="assets/profile.jpg" alt="Portrait of Bhagya Chembakottu" class="bio-image" loading="lazy">
+      <p class="bio-text">
+        Hi, I'm Bhagya Che, passionate about defending digital frontiers,
+        I innovate secure practices that empower developers,
+        Merging cutting-edge research with real-world coding,
+        I build safer software, one line of code at a time.
+        Welcome to my personal blog where I share my projects, publications, and activities.
+      </p>
+      <p class="cta-row">
+        <a class="btn" href="./assets/Bhagya_Resume.pdf" download>Download Résumé (PDF)</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/bhagya-c/" target="_blank" rel="noopener">LinkedIn</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <ul class="cards">
+      <li class="card">
+        <h3>Usability of Static Application Security Testing Workflows</h3>
+        <p class="muted">Project aligned with SANER Conference 2025</p>
+        <p>Studying developer experience and usability of SAST workflows to improve adoption and effectiveness.</p>
+        <p class="tags">
+          <span class="badge">SAST</span>
+          <span class="badge">DevSecOps</span>
+          <span class="badge">Usability</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Secbyz</h3>
+        <p>Privacy-enhanced technology example for POS systems that follows Quebec’s Bill 64 and PIPEDA requirements.</p>
+        <p class="tags">
+          <span class="badge">Privacy</span>
+          <span class="badge">Compliance</span>
+          <span class="badge">PIPEDA</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Secure Actions</h3>
+        <p>Rule-based security testing for GitHub Actions in Python projects, informed by SLSA and supply-chain security principles.</p>
+        <p class="tags">
+          <span class="badge">CI/CD</span>
+          <span class="badge">SLSA</span>
+          <span class="badge">Supply Chain</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>AutoML systems with HPO and CASH</h3>
+        <p>End-to-end AutoML benchmark system to streamline model baselining for data scientists.</p>
+        <p class="tags">
+          <span class="badge">AutoML</span>
+          <span class="badge">HPO</span>
+          <span class="badge">MLOps</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Decoding Gender Bias</h3>
+        <p>Scalar inference method to analyze pragmatics in word embeddings and detect bias.</p>
+        <p class="tags">
+          <span class="badge">NLP</span>
+          <span class="badge">Fairness</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>JavaParser & AST generation</h3>
+        <p>Program analysis experiments using JavaParser and ASTs for quality and security checks.</p>
+        <p class="tags">
+          <span class="badge">Java</span>
+          <span class="badge">AST</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>Retrieval & Graph improvements</h3>
+        <p>Improved graph search and SharePoint taxonomy; built document similarity & knowledge graph retrieval for enterprise search.</p>
+        <p class="tags">
+          <span class="badge">IR</span>
+          <span class="badge">Knowledge Graphs</span>
+        </p>
+      </li>
+
+      <li class="card">
+        <h3>More</h3>
+        <p>Curriculum learning scaling analysis; Conversational model using BERT; Resume parsing with NLP/NER.</p>
+        <p class="tags">
+          <span class="badge">BERT</span>
+          <span class="badge">NLP</span>
+        </p>
+      </li>
+    </ul>
+  </section>
+
+ <!-- Publications Section -->
+<section id="publications">
+  <h2>Publications</h2>
+  <ol class="pub-list">
+    <li class="pub-item">
+      <div class="pub-title">
+        Usability of Static Application Security Testing Workflows
+      </div>
+      <div class="pub-authors">
+        <strong class="me">Chembakottu, B.</strong>; Robillard, M. P.
+      </div>
+      <div class="pub-venue">
+        SANER 2025 Workshops (program listing).
+      </div>
+      <div class="pub-links">
+        <a href="https://conf.researchr.org/details/saner-2025/saner-2025-workshops-track/41/Usability-of-Static-Application-Security-Testing-Workflows"
+           target="_blank" rel="noopener">Workshop page</a>
+      </div>
+    </li>
+    <li class="pub-item">
+      <div class="pub-title">
+        A Large-Scale Exploratory Study of Android Sports Apps in the Google Play Store
+      </div>
+      <div class="pub-authors">
+        <strong class="me">Chembakottu, B.</strong>;Li, H.; Khomh, F.
+      </div>
+      <div class="pub-venue">
+        <em>Information and Software Technology</em>, 164, 107321, 2023.
+      </div>
+      <div class="pub-links">
+        <a href="https://www.sciencedirect.com/science/article/pii/S0950584923002230" target="_blank" rel="noopener">Publisher page</a>
+        <!-- If you later host a preprint/PDF, add it here -->
+      </div>
+    </li>
+
+    <li class="pub-item">
+      <div class="pub-title">
+        Studying the Practices of Deploying Machine Learning Projects on Docker
+      </div>
+      <div class="pub-authors">
+        Openja, M.; Majidi, F.; Khomh, F.; <strong class="me">Chembakottu, B.</strong>; Li, H.
+      </div>
+      <div class="pub-venue">
+        In: <em>Proceedings of the 26th Int’l Conf. on Evaluation and Assessment in Software Engineering (EASE ’22)</em>, pp. 190–200, 2022.
+      </div>
+      <div class="pub-links">
+        <a href="https://dl.acm.org/doi/10.1145/3530019.3530039" target="_blank" rel="noopener">ACM page</a>
+      </div>
+    </li>
+
+    <li class="pub-item">
+      <div class="pub-title">
+        Understanding User Perception of Mobile App Quality: A Large-Scale Multi-Dimension Study of the Reviews and Ratings of Android Sports Apps
+      </div>
+      <div class="pub-authors">
+        <strong class="me">Chembakottu, B.</strong>
+      </div>
+      <div class="pub-venue">
+        Master’s thesis, Polytechnique Montréal, 2023.
+      </div>
+      <div class="pub-links">
+        <a href="https://publications.polymtl.ca/53358/1/2023_BhagyaChembakottu.pdf" target="_blank" rel="noopener">PDF</a>
+      </div>
+    </li>
+
+    <!-- Optional: workshop paper that’s already public on the conference site -->
+    
+  </ol>
+</section>
+
+
+  <!-- Experience Section -->
+  <section id="experience">
+    <h2>Experience</h2>
+
+    <div class="timeline">
+      <article>
+        <h3>Teaching Assistant — McGill University</h3>
+        <p class="muted">Aug 2024 – Dec 2024 · Montréal</p>
+        <ul>
+          <li>Assisted in Information & Application Security, Software Design Patterns (Java), Database Systems, and Network Science.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Data Science Intern — Ericsson</h3>
+        <p class="muted">Jan 2023 – Apr 2024 · Montréal</p>
+        <ul>
+          <li>Improved workflows with MLOps/RLOps using MLflow; integrated Kubeflow on Kubernetes via Helm.</li>
+          <li>Built an end-to-end AutoML system for baseline benchmarks.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>AI Engineer Intern — National Bank of Canada</h3>
+        <p class="muted">Nov 2021 – May 2022 · Montréal</p>
+        <ul>
+          <li>Developed document similarity and knowledge-graph retrieval to improve employee search experience.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Practical Work Supervisor — Polytechnique Montréal</h3>
+        <p class="muted">May 2019 – Present · Montréal</p>
+        <ul>
+          <li>Tutored Software Quality Assurance (maintainability, performance, security testing with JUnit, JMeter, JProfiler/VisualVM, ZAP/SonarCloud).</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Artificial Intelligence Engineer — impress.ai</h3>
+        <p class="muted">May 2019 – Apr 2021 · Kochi</p>
+        <ul>
+          <li>Led a small AI team; met with clients to define problems; proposed algorithms and architectures.</li>
+          <li>Work mentioned in Singapore Parliament for reducing man-hours using technology.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Research Intern — IIT Guwahati</h3>
+        <p class="muted">May 2018 – July 2018 · Assam</p>
+        <ul>
+          <li>User-centric computing & networking lab; computer-network projects.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h3>Research Intern — National Ilan University</h3>
+        <p class="muted">Feb 2018 – Mar 2018 · Ilan, Taiwan</p>
+        <ul>
+          <li>Worked on ML, computer graphics, and computer networks with NIU faculty.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education">
+    <h2>Education</h2>
+    <ul class="edu">
+      <li>
+        <strong>Ph.D., Computer Science</strong> — McGill University, Montréal (Sep 2023 – Sep 2027) · CGPA: 3.92/4  
+        <div class="muted">Research: Security awareness in Web Application Development</div>
+      </li>
+      <li>
+        <strong>M.A.Sc., Computer & Software Engineering</strong> — Polytechnique Montréal (May 2021 – May 2023) · CGPA: 4/4
+      </li>
+      <li>
+        <strong>B.Eng., Computer Science & Engineering</strong> — Cochin University of Science & Technology (Jul 2015 – May 2019) · CGPA: 9.5/10
+      </li>
+    </ul>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-grid">
       <div>
-        <div class="meta">
-          <div id="counter">1 / 23</div>
-          <div class="bar"><span id="progress"></span></div>
-          <div class="kbhint">Tip: ← / → to navigate • P to print</div>
-        </div>
-        <div class="nav">
-          <button id="prev" class="ghost">◀ Previous</button>
-          <div class="spacer"></div>
-          <button id="next">Next ▶</button>
-        </div>
+        <h3>Programming</h3>
+        <p class="tags">
+          <span class="badge">Java</span><span class="badge">Python</span><span class="badge">C</span><span class="badge">R</span>
+        </p>
+      </div>
+      <div>
+        <h3>AI/ML</h3>
+        <p class="tags">
+          <span class="badge">AI/ML/NLP</span><span class="badge">Django</span><span class="badge">Docker</span><span class="badge">Kafka</span><span class="badge">Spring</span>
+        </p>
+      </div>
+      <div>
+        <h3>Tooling</h3>
+        <p class="tags">
+          <span class="badge">Git</span><span class="badge">Jira</span><span class="badge">CodeQL</span><span class="badge">SonarCloud</span><span class="badge">OWASP ZAP</span>
+        </p>
+      </div>
+      <div>
+        <h3>Languages</h3>
+        <p class="tags">
+          <span class="badge">English (Advanced)</span>
+          <span class="badge">French (Intermediate)</span>
+          <span class="badge">Malayalam (Native)</span>
+          <span class="badge">Tamil (Advanced)</span>
+          <span class="badge">Hindi (Advanced)</span>
+          <span class="badge">Punjabli (Intermediate)</span>
+
+
+
+        </p>
       </div>
     </div>
-  </div>
+  </section>
 
+  <!-- Other Activities Section -->
+  <section id="activities">
+  <h2>Other Activities</h2>
+  <ul>
+    <li>Teaching, mentoring, and open-source experiments in secure software engineering.</li>
+  
+    <li>
+  <a href="stl.html" class="btn">Presentation for STL CTF 2025</a>
+</li>
+  </ul>
+</section>
+
+
+
+  <!-- Auto-scroll script: scrolls to the bio section after the typewriter animations complete -->
   <script>
-    // Slides: concepts first; challenge overview ONLY at the very end + wishing slide
-    const slides = [
-      { title: "Cast & Mission", content: `Let us master web identity & sessions before the STL CTF challenges.` },
-      { title: "Learning Outcomes", content: `<ul><li>Explain HTTP + redirects.</li><li>AuthN vs AuthZ vs Session.</li><li>DevTools/Proxy skills.</li><li>Map to OWASP A01/A07 & CWEs.</li><li>Server-side enforcement & cookie hardening.</li></ul>` },
-      { title: "How the Web Talks (HTTP Basics)", content: `<ul><li><b>Request line:</b> <code>POST /login HTTP/1.1</code></li><li><b>Headers</b> (e.g., <code>Content-Type</code>, <code>Cookie</code>).</li><li><b>Body</b> for POST/PUT/PATCH.</li><li><b>Response</b>: status, headers, body.</li></ul>` },
-      { title: "Methods, Forms, Redirects", content: `<ul><li>GET fetches; POST submits credentials.</li><li>Login often returns 302/303 → browser follows <code>Location</code>.</li><li>Session typically begins via <code>Set-Cookie</code>.</li></ul>` },
-      { title: "Cookie Primer", content: `<ul><li>Server sets via <code>Set-Cookie</code>.</li><li>Browser auto-sends cookie on matching domain/path.</li><li>Best: store only a <b>random session id</b>.</li></ul>` },
-      { title: "Web Storage vs Cookies", content: `<ul><li><b>Local/SessionStorage</b> is JS-only; not auto-sent.</li><li>Great for UI state; <b>not</b> for secrets or trust.</li><li>Client data is editable by users.</li></ul>` },
-      { title: "Session Management Deep Dive", content: `<ul><li>sid ↔ server store (user id, roles, expiry, CSRF).</li><li>Rotate sid on login/elevation (fixation).</li><li>Expire/invalidate on logout; short lifetime.</li></ul>` },
-      { title: "AuthN vs AuthZ vs Session", content: `<ul><li><b>AuthN</b>: who you are (password/MFA/OAuth).</li><li><b>AuthZ</b>: what you can do (RBAC/ABAC/policies).</li><li><b>Session</b>: binds browser to server identity.</li><li>Bug: trusting client to do any of these.</li></ul>` },
-      { title: "Threat Model: Hostile Client", content: `<ul><li>Edit cookies, storage, hidden inputs, URLs.</li><li>Replay/forge with curl/Burp/ZAP.</li><li>Decode Base64/URL; guess predictable values.</li></ul>` },
-      { title: "Must‑Know Headers", content: `<ul><li><code>Set-Cookie</code>, <code>Cookie</code></li><li><code>Location</code> (redirects)</li><li><code>Cache-Control</code> (avoid caching secrets)</li><li><code>CSP</code>, <code>HSTS</code> (later)</li></ul>` },
-      { title: "Tooling: DevTools", content: `<ul><li><b>Network</b>: follow login flow, inspect cookies/redirects.</li><li><b>Application/Storage</b>: view/edit Cookies & Web Storage.</li><li><b>Console</b>: try <code>atob()</code> quickly.</li></ul>` },
-      { title: "Tooling: Proxies & CLI", content: `<ul><li><b>Burp/ZAP</b>: intercept & modify.</li><li><b>curl/httpie</b>: reproducible PoC.<br><code>curl -i -H "Cookie: sid=ABC" https://site/profile</code></li></ul>` },
-      { title: "Encoding & Decoding 101", content: `<ul><li>URL‑encoding: <code>%3D</code> → <code>=</code></li><li>Base64: <code>YWRtaW4=</code> → <code>admin</code> (not encryption)</li><li>Tools: CyberChef / <code>base64 -d</code> / <code>atob()</code>.</li></ul>` },
-      { title: "OWASP Top 10 Map", content: `<ul><li><b>A07</b>: Identification & Authentication Failures.</li><li><b>A01</b>: Broken Access Control.</li><li>Cookie flags/session relate to both.</li></ul><p>See <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top Ten</a></p>` },
-      { title: "CWE Map (shared language)", content: `<ul><li><b>CWE‑287</b>: Improper Authentication.</li><li><b>CWE‑565/472/784</b>: Trusting client cookies/params.</li><li><b>CWE‑384</b>: Session Fixation.</li><li><b>CWE‑1275</b>: Improper SameSite.</li></ul><p>See <a href="https://cwe.mitre.org" target="_blank">MITRE CWE</a></p>` },
-      { title: "Vuln: Improper Authentication", content: `<ul><li>Server accepts identity without solid verification.</li><li>Example: trusting hidden field or <code>username</code> cookie.</li><li>Impact: bypass/impersonation (A07/CWE‑287).</li></ul>` },
-      { title: "Vuln: Cookie Tampering", content: `<ul><li>AuthZ by client-held value (<code>role=admin</code>).</li><li>Edit → escalate privileges.</li><li>Map: A01/A07; CWE‑565/472/784.</li></ul>` },
-      { title: "Vuln: Session Fixation", content: `<ul><li>Attacker sets/forces known sid; victim logs in.</li><li>Attacker reuses sid to hijack.</li><li>Defense: regenerate on login; flags (CWE‑384).</li></ul>` },
-      { title: "Cookie Hardening", content: `<ul><li><b>HttpOnly</b>: JS can’t read (mitigate theft).</li><li><b>Secure</b>: HTTPS only.</li><li><b>SameSite</b>: mitigate CSRF (<code>Lax</code>/<code>Strict</code>).</li></ul><pre><code>Set-Cookie: sid=abc123; Path=/; HttpOnly; Secure; SameSite=Lax</code></pre>` },
-      { title: "Exploitation Playbook", content: `<ol><li>Trace login → check <code>Set-Cookie</code> & redirects.</li><li>Inspect storage → tweak values → reload.</li><li>Decode if opaque.</li><li>PoC with Burp/<code>curl</code>.</li></ol>` },
-      { title: "Mitigation Playbook", content: `<ul><li>Server-side checks on every sensitive route.</li><li>Cookie holds only random sid; roles server-side.</li><li>Rotate sid on login/elevation; expire on logout.</li><li>Log anomalies.</li></ul>` },
-      { title: "References (CVE/Articles)", content: `<ul><li><a target="_blank" href="https://nvd.nist.gov/vuln/detail/CVE-2023-25556">NVD entry (CWE‑287)</a></li><li><a target="_blank" href="https://cwe.mitre.org/data/definitions/565.html">CWE‑565 Reliance on Cookies</a></li><li><a target="_blank" href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP A01</a></li><li><a target="_blank" href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">OWASP A07</a></li></ul>` },
-      { title: "Instructor Flow (optional)", content: `<ol><li>Intro → live DevTools demo.</li><li>Practice decoding.</li><li>Show hardening; verify fix blocks PoC.</li></ol>` },
-      { title: "Challenge Overview (final)", content: `<p>Now that you have the model, here’s what’s coming:</p><ul><li><b>Login Mystery</b>: an app that accidentally trusts client hints about identity.</li><li><b>Cookie Monster</b>: privileges controlled by a cookie value.</li></ul><p>These are intentionally simple so you can focus on <i>thinking like the server</i>.</p>` },
-      { title: "What You Might Use", content: `<ul><li>DevTools → Network & Application/Storage.</li><li>Burp/ZAP to intercept/modify requests.</li><li>Decoders: URL & Base64 (CyberChef, <code>atob()</code>).</li><li><b>Mental model</b>: client is editable; server is the source of truth.</li></ul>` },
-      { title: "Good Luck!", content: `<p>🎯 Spot one client‑side value that should be server‑side truth, and fix it.<br>🌟 You’ve got the tools, the map (OWASP/CWE), and the mindset. Go ship something safer.</p>` },
-    ];
-
-    let step = 0;
-    const titleEl = document.getElementById('slide-title');
-    const contentEl = document.getElementById('slide-content');
-    const counterEl = document.getElementById('counter');
-    const barEl = document.getElementById('progress');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
-
-    function render() {
-      const s = slides[step];
-      titleEl.innerHTML = s.title;
-      contentEl.innerHTML = s.content;
-      counterEl.textContent = `${step + 1} / ${slides.length}`;
-      const pct = ((step + 1) / slides.length) * 100;
-      barEl.style.width = pct + '%';
-      prevBtn.disabled = step === 0;
-      nextBtn.textContent = step === slides.length - 1 ? 'Finish' : 'Next ▶';
-    }
-
-    prevBtn.addEventListener('click', () => { if (step > 0) { step--; render(); } });
-    nextBtn.addEventListener('click', () => { if (step < slides.length - 1) { step++; render(); } });
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { if (step > 0) { step--; render(); } }
-      if (e.key === 'ArrowRight') { if (step < slides.length - 1) { step++; render(); } }
-      if (e.key.toLowerCase() === 'p') { window.print(); }
+    window.addEventListener('load', function () {
+      // Delay matches the cumulative typewriter timing below (2s each + 1s/3s/5s offsets).
+      setTimeout(function () {
+        document.getElementById('bio').scrollIntoView({ behavior: "smooth" });
+      }, 7000);
     });
-
-    render();
   </script>
 </body>
 </html>

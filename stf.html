@@ -29,7 +29,7 @@
     h1 { font-size: clamp(28px, 4vw, 44px); margin: 0 0 18px; line-height: 1.15; letter-spacing: 0.2px; }
     .content { font-size: clamp(18px, 2.2vw, 24px); line-height: 1.6; }
     .content p { margin: 0 0 12px; }
-    .content ul { margin: 10px 0 0 0; padding-left: 26px; }
+    .content ul, .content ol { margin: 10px 0 0 0; padding-left: 26px; }
     .content li { margin: 10px 0; }
     code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
     pre { background: rgba(255,255,255,0.06); padding: 14px 16px; border-radius: 12px; overflow-x: auto; }
@@ -60,13 +60,14 @@
   <div class="deck">
     <div class="card">
       <div>
-        <h1 id="slide-title">Web Challenges Story — HTML Slides</h1>
+        <h1 id="slide-title">Web Challenges Story</h1>
+        <h2>by Bhagya Chembakottu</h2>
         <div id="slide-content" class="content"></div>
       </div>
 
       <div>
         <div class="meta">
-          <div id="counter">1 / 20</div>
+          <div id="counter">1 / 23</div>
           <div class="bar"><span id="progress"></span></div>
           <div class="kbhint">Tip: ← / → to navigate • P to print</div>
         </div>
@@ -80,237 +81,34 @@
   </div>
 
   <script>
-    // 24+ detailed story cards, deeper than the React version
+    // Slides: concepts first; challenge overview ONLY at the very end + wishing slide
     const slides = [
-      {
-        title: "Cast & Mission",
-        content: `👩‍💻 <b>Alice</b> (learner) & 🧑‍🏫 <b>Professor Byte</b> (mentor).<br>
-        Goal: truly understand the web's identity & session model before tackling two capstone challenges.`
-      },
-      {
-        title: "Learning Outcomes",
-        content: `<ul>
-          <li>Explain HTTP request/response, methods, redirects.</li>
-          <li>Differentiate <b>AuthN</b> vs <b>AuthZ</b> vs <b>Session</b>.</li>
-          <li>Use DevTools/Proxy to observe & modify client-side state.</li>
-          <li>Map flaws to OWASP A01/A07 and CWEs (287, 565, 472, 784, 384, 1275).</li>
-          <li>Apply cookie hardening & server-side enforcement to fix issues.</li>
-        </ul>`
-      },
-      {
-        title: "How the Web Talks (HTTP Basics)",
-        content: `<ul>
-          <li><b>Request line:</b> <code>POST /login HTTP/1.1</code></li>
-          <li><b>Headers:</b> metadata (e.g., <code>Content-Type</code>, <code>Cookie</code>).</li>
-          <li><b>Body:</b> form/json payload for POST/PUT/PATCH.</li>
-          <li><b>Response:</b> status (200/302/401/403/500), headers, body.</li>
-        </ul>`
-      },
-      {
-        title: "Methods & Forms & Redirects",
-        content: `<ul>
-          <li><b>GET</b>: fetch; <b>POST</b>: submit secrets; <b>PUT/PATCH</b>: update; <b>DELETE</b>: remove.</li>
-          <li>Forms usually POST credentials to <code>/login</code>.</li>
-          <li>After login, a <b>302/303</b> redirect returns; browser follows <code>Location</code>.</li>
-          <li>Session often begins when response sets <code>Set-Cookie</code>.</li>
-        </ul>`
-      },
-      {
-        title: "Cookie Primer",
-        content: `<ul>
-          <li>Key/value pairs the server can set via <code>Set-Cookie</code>.</li>
-          <li>Auto-attached by browser on subsequent requests (domain/path rules).</li>
-          <li>Best practice: keep only a <b>random session id</b> in cookies.</li>
-        </ul>`
-      },
-      {
-        title: "Web Storage vs Cookies",
-        content: `<ul>
-          <li><b>LocalStorage/SessionStorage</b> are JS-accessible only; not auto-sent.</li>
-          <li>Good for UI state; <b>bad for secrets or trust signals</b>.</li>
-          <li><b>Anything client-side can be edited</b> by the user.</li>
-        </ul>`
-      },
-      {
-        title: "Session Management Deep Dive",
-        content: `<ul>
-          <li>Session id (sid) ↔ server store (user id, roles, expiry, CSRF token).</li>
-          <li>Rotate sid on login & privilege elevation to defeat fixation.</li>
-          <li>Expire/Invalidate on logout; short lifetimes; sliding expiry if needed.</li>
-        </ul>`
-      },
-      {
-        title: "AuthN vs AuthZ vs Session",
-        content: `<ul>
-          <li><b>AuthN</b> proves <i>who you are</i> (password, MFA, OAuth).</li>
-          <li><b>AuthZ</b> decides <i>what you can do</i> (RBAC/ABAC, policies).</li>
-          <li><b>Session</b> binds a browser to a server-side identity across requests.</li>
-          <li>Common bug: mixing these concerns or trusting the client for them.</li>
-        </ul>`
-      },
-      {
-        title: "Threat Model: The Hostile Client",
-        content: `<ul>
-          <li>Attacker can edit cookies, storage, hidden inputs, URLs.</li>
-          <li>They can replay/forge requests with tools (curl/Burp/ZAP).</li>
-          <li>They can decode/guess weakly protected values (Base64 ≠ crypto).</li>
-        </ul>`
-      },
-      {
-        title: "Must‑Know Headers",
-        content: `<ul>
-          <li><code>Set-Cookie</code> (with flags), <code>Cookie</code> (sent back by browser).</li>
-          <li><code>Location</code> (redirect targets), <code>Cache-Control</code> (avoid caching secrets).</li>
-          <li><code>Content-Security-Policy</code> & <code>Strict-Transport-Security</code> are also critical later on.</li>
-        </ul>`
-      },
-      {
-        title: "Tooling: DevTools Essentials",
-        content: `<ul>
-          <li><b>Network</b>: follow login flow, inspect <code>Set-Cookie</code>/redirects.</li>
-          <li><b>Application/Storage</b>: view/edit Cookies, LocalStorage, SessionStorage.</li>
-          <li><b>Console</b>: try <code>atob()</code>, quick JS checks.</li>
-        </ul>`
-      },
-      {
-        title: "Tooling: Proxies & CLI",
-        content: `<ul>
-          <li><b>Burp/ZAP</b>: intercept/modify requests; repeat attacks.</li>
-          <li><b>curl/httpie</b>: reproducible PoC from terminal.<br>
-          <code>curl -i -H "Cookie: sid=ABC" https://site/profile</code></li>
-        </ul>`
-      },
-      {
-        title: "Encoding & Decoding",
-        content: `<ul>
-          <li>URL‑encoding: <code>%3D</code> → <code>=</code></li>
-          <li>Base64: <code>YWRtaW4=</code> → <code>admin</code> (<i>not</i> encryption)</li>
-          <li>Use CyberChef / <code>base64 -d</code> / <code>atob()</code>.</li>
-        </ul>`
-      },
-      {
-        title: "OWASP Top 10 Mapping",
-        content: `<ul>
-          <li><b>A07</b>: Identification & Authentication Failures.</li>
-          <li><b>A01</b>: Broken Access Control.</li>
-          <li>Cookie flags & session lifecycle relate to both categories.</li>
-        </ul>
-        <p>See: <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top Ten</a></p>`
-      },
-      {
-        title: "CWE Mapping (Authoritative Vocabulary)",
-        content: `<ul>
-          <li><b>CWE‑287</b>: Improper Authentication.</li>
-          <li><b>CWE‑565/472/784</b>: Reliance on client-side cookies/parameters.</li>
-          <li><b>CWE‑384</b>: Session Fixation.</li>
-          <li><b>CWE‑1275</b>: Improper SameSite.</li>
-        </ul>
-        <p>See: <a href="https://cwe.mitre.org" target="_blank">MITRE CWE</a></p>`
-      },
-      {
-        title: "Vulnerability A: Improper Authentication",
-        content: `<ul>
-          <li>Server accepts identity without verifying credentials properly.</li>
-          <li>Example mistakes: trusting hidden fields or a <code>username</code> cookie.</li>
-          <li>Impact: login bypass, impersonation (CWE‑287, OWASP A07).</li>
-        </ul>`
-      },
-      {
-        title: "Vulnerability B: Cookie Tampering",
-        content: `<ul>
-          <li>Authorization decided by a client‑held value (<code>role=admin</code>).</li>
-          <li>Attacker edits value → escalates privileges.</li>
-          <li>Map: OWASP A01/A07; CWE‑565/472/784.</li>
-        </ul>`
-      },
-      {
-        title: "Vulnerability C: Session Fixation",
-        content: `<ul>
-          <li>Attacker sets/forces a known session id for the victim.</li>
-          <li>After victim logs in, attacker reuses same id → hijack.</li>
-          <li>Defense: regenerate sid on login, set proper flags (CWE‑384).</li>
-        </ul>`
-      },
-      {
-        title: "Cookie Hardening (Flags)",
-        content: `<ul>
-          <li><b>HttpOnly</b>: JS cannot read cookie (mitigates theft via XSS).</li>
-          <li><b>Secure</b>: send only over HTTPS (prevents network sniffing).</li>
-          <li><b>SameSite</b>: reduces CSRF (<code>Lax</code>/<code>Strict</code> as needed).</li>
-        </ul>
-<pre><code>Set-Cookie: sid=abc123; Path=/; HttpOnly; Secure; SameSite=Lax</code></pre>`
-      },
-      {
-        title: "Exploitation Playbook (Step‑by‑Step)",
-        content: `<ol>
-          <li>Follow login request/redirects in Network tab.</li>
-          <li>Locate <code>Set-Cookie</code> and any client-side <code>role</code>/<code>isAdmin</code> value.</li>
-          <li>Edit cookie/storage; reload protected page.</li>
-          <li>If opaque, URL‑decode then Base64‑decode; re‑test.</li>
-          <li>PoC via Burp or <code>curl</code> for reproducibility.</li>
-        </ol>`
-      },
-      {
-        title: "Mitigations (Server‑Side Enforcement)",
-        content: `<ul>
-          <li>Server checks permissions on every sensitive route.</li>
-          <li>Client stores only random sid; roles live server‑side.</li>
-          <li>Rotate sid on login/elevation; expire on logout.</li>
-          <li>Log anomalies (rapid role flips, unusual cookie changes).</li>
-        </ul>`
-      },
-      {
-        title: "Story Challenge #1 — Login Mystery",
-        content: `<p>The app trusts a client flag for identity. Alice inspects Network → sees no password verification on the server side.</p>
-        <ul>
-          <li><b>Task:</b> Find the client source of truth and flip it.</li>
-          <li><b>Win condition:</b> Access a protected route as another user.</li>
-          <li><b>Reflect:</b> Which checks must the server add?</li>
-        </ul>`
-      },
-      {
-        title: "Story Challenge #2 — Cookie Monster",
-        content: `<p>A cookie <code>role=user</code> gates admin. Alice edits it to <code>admin</code> → admin panel appears.</p>
-        <ul>
-          <li><b>Task:</b> Prove privilege escalation via cookie tampering.</li>
-          <li><b>Fix:</b> Enforce role server‑side; cookie holds only sid with flags.</li>
-        </ul>`
-      },
-      {
-        title: "Real‑World References (CVE/Articles)",
-        content: `<ul>
-          <li><a target="_blank" href="https://nvd.nist.gov/vuln/detail/CVE-2023-25556">Example NVD entry with CWE‑287</a></li>
-          <li><a target="_blank" href="https://cwe.mitre.org/data/definitions/565.html">CWE‑565 Reliance on Cookies</a></li>
-          <li><a target="_blank" href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP A01 Broken Access Control</a></li>
-          <li><a target="_blank" href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">OWASP A07 Auth Failures</a></li>
-        </ul>`
-      },
-      {
-        title: "Instructor Lab Flow",
-        content: `<ol>
-          <li>Intro slides → live DevTools demo (HTTP, headers, cookies).</li>
-          <li>Guided exercise: Login Mystery.</li>
-          <li>Guided exercise: Cookie Monster (incl. decoding).</li>
-          <li>Hardening walkthrough; verify fixes block previous PoC.</li>
-        </ol>`
-      },
-      {
-        title: "One‑Page Cheat‑Sheet (Recap)",
-        content: `<ul>
-          <li>Client ≠ truth. Server enforces identity & permissions.</li>
-          <li>Cookies: store sid only; set HttpOnly, Secure, SameSite.</li>
-          <li>Rotate sessions on login/elevation; expire properly.</li>
-          <li>Map to OWASP/CWE when writing reports.</li>
-        </ul>`
-      },
-      {
-        title: "Next Steps",
-        content: `<ul>
-          <li>Try Base64/URL decoding challenges quickly (build intuition).</li>
-          <li>Compare server‑side sessions vs signed tokens (JWT) with verification.</li>
-          <li>Explore CSRF/XSS next: how they intersect with cookies & storage.</li>
-        </ul>`
-      },
+      { title: "Cast & Mission", content: `Let us master web identity & sessions before the STL CTF challenges.` },
+      { title: "Learning Outcomes", content: `<ul><li>Explain HTTP + redirects.</li><li>AuthN vs AuthZ vs Session.</li><li>DevTools/Proxy skills.</li><li>Map to OWASP A01/A07 & CWEs.</li><li>Server-side enforcement & cookie hardening.</li></ul>` },
+      { title: "How the Web Talks (HTTP Basics)", content: `<ul><li><b>Request line:</b> <code>POST /login HTTP/1.1</code></li><li><b>Headers</b> (e.g., <code>Content-Type</code>, <code>Cookie</code>).</li><li><b>Body</b> for POST/PUT/PATCH.</li><li><b>Response</b>: status, headers, body.</li></ul>` },
+      { title: "Methods, Forms, Redirects", content: `<ul><li>GET fetches; POST submits credentials.</li><li>Login often returns 302/303 → browser follows <code>Location</code>.</li><li>Session typically begins via <code>Set-Cookie</code>.</li></ul>` },
+      { title: "Cookie Primer", content: `<ul><li>Server sets via <code>Set-Cookie</code>.</li><li>Browser auto-sends cookie on matching domain/path.</li><li>Best: store only a <b>random session id</b>.</li></ul>` },
+      { title: "Web Storage vs Cookies", content: `<ul><li><b>Local/SessionStorage</b> is JS-only; not auto-sent.</li><li>Great for UI state; <b>not</b> for secrets or trust.</li><li>Client data is editable by users.</li></ul>` },
+      { title: "Session Management Deep Dive", content: `<ul><li>sid ↔ server store (user id, roles, expiry, CSRF).</li><li>Rotate sid on login/elevation (fixation).</li><li>Expire/invalidate on logout; short lifetime.</li></ul>` },
+      { title: "AuthN vs AuthZ vs Session", content: `<ul><li><b>AuthN</b>: who you are (password/MFA/OAuth).</li><li><b>AuthZ</b>: what you can do (RBAC/ABAC/policies).</li><li><b>Session</b>: binds browser to server identity.</li><li>Bug: trusting client to do any of these.</li></ul>` },
+      { title: "Threat Model: Hostile Client", content: `<ul><li>Edit cookies, storage, hidden inputs, URLs.</li><li>Replay/forge with curl/Burp/ZAP.</li><li>Decode Base64/URL; guess predictable values.</li></ul>` },
+      { title: "Must‑Know Headers", content: `<ul><li><code>Set-Cookie</code>, <code>Cookie</code></li><li><code>Location</code> (redirects)</li><li><code>Cache-Control</code> (avoid caching secrets)</li><li><code>CSP</code>, <code>HSTS</code> (later)</li></ul>` },
+      { title: "Tooling: DevTools", content: `<ul><li><b>Network</b>: follow login flow, inspect cookies/redirects.</li><li><b>Application/Storage</b>: view/edit Cookies & Web Storage.</li><li><b>Console</b>: try <code>atob()</code> quickly.</li></ul>` },
+      { title: "Tooling: Proxies & CLI", content: `<ul><li><b>Burp/ZAP</b>: intercept & modify.</li><li><b>curl/httpie</b>: reproducible PoC.<br><code>curl -i -H "Cookie: sid=ABC" https://site/profile</code></li></ul>` },
+      { title: "Encoding & Decoding 101", content: `<ul><li>URL‑encoding: <code>%3D</code> → <code>=</code></li><li>Base64: <code>YWRtaW4=</code> → <code>admin</code> (not encryption)</li><li>Tools: CyberChef / <code>base64 -d</code> / <code>atob()</code>.</li></ul>` },
+      { title: "OWASP Top 10 Map", content: `<ul><li><b>A07</b>: Identification & Authentication Failures.</li><li><b>A01</b>: Broken Access Control.</li><li>Cookie flags/session relate to both.</li></ul><p>See <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top Ten</a></p>` },
+      { title: "CWE Map (shared language)", content: `<ul><li><b>CWE‑287</b>: Improper Authentication.</li><li><b>CWE‑565/472/784</b>: Trusting client cookies/params.</li><li><b>CWE‑384</b>: Session Fixation.</li><li><b>CWE‑1275</b>: Improper SameSite.</li></ul><p>See <a href="https://cwe.mitre.org" target="_blank">MITRE CWE</a></p>` },
+      { title: "Vuln: Improper Authentication", content: `<ul><li>Server accepts identity without solid verification.</li><li>Example: trusting hidden field or <code>username</code> cookie.</li><li>Impact: bypass/impersonation (A07/CWE‑287).</li></ul>` },
+      { title: "Vuln: Cookie Tampering", content: `<ul><li>AuthZ by client-held value (<code>role=admin</code>).</li><li>Edit → escalate privileges.</li><li>Map: A01/A07; CWE‑565/472/784.</li></ul>` },
+      { title: "Vuln: Session Fixation", content: `<ul><li>Attacker sets/forces known sid; victim logs in.</li><li>Attacker reuses sid to hijack.</li><li>Defense: regenerate on login; flags (CWE‑384).</li></ul>` },
+      { title: "Cookie Hardening", content: `<ul><li><b>HttpOnly</b>: JS can’t read (mitigate theft).</li><li><b>Secure</b>: HTTPS only.</li><li><b>SameSite</b>: mitigate CSRF (<code>Lax</code>/<code>Strict</code>).</li></ul><pre><code>Set-Cookie: sid=abc123; Path=/; HttpOnly; Secure; SameSite=Lax</code></pre>` },
+      { title: "Exploitation Playbook", content: `<ol><li>Trace login → check <code>Set-Cookie</code> & redirects.</li><li>Inspect storage → tweak values → reload.</li><li>Decode if opaque.</li><li>PoC with Burp/<code>curl</code>.</li></ol>` },
+      { title: "Mitigation Playbook", content: `<ul><li>Server-side checks on every sensitive route.</li><li>Cookie holds only random sid; roles server-side.</li><li>Rotate sid on login/elevation; expire on logout.</li><li>Log anomalies.</li></ul>` },
+      { title: "References (CVE/Articles)", content: `<ul><li><a target="_blank" href="https://nvd.nist.gov/vuln/detail/CVE-2023-25556">NVD entry (CWE‑287)</a></li><li><a target="_blank" href="https://cwe.mitre.org/data/definitions/565.html">CWE‑565 Reliance on Cookies</a></li><li><a target="_blank" href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP A01</a></li><li><a target="_blank" href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">OWASP A07</a></li></ul>` },
+      { title: "Instructor Flow (optional)", content: `<ol><li>Intro → live DevTools demo.</li><li>Practice decoding.</li><li>Show hardening; verify fix blocks PoC.</li></ol>` },
+      { title: "Challenge Overview (final)", content: `<p>Now that you have the model, here’s what’s coming:</p><ul><li><b>Login Mystery</b>: an app that accidentally trusts client hints about identity.</li><li><b>Cookie Monster</b>: privileges controlled by a cookie value.</li></ul><p>These are intentionally simple so you can focus on <i>thinking like the server</i>.</p>` },
+      { title: "What You Might Use", content: `<ul><li>DevTools → Network & Application/Storage.</li><li>Burp/ZAP to intercept/modify requests.</li><li>Decoders: URL & Base64 (CyberChef, <code>atob()</code>).</li><li><b>Mental model</b>: client is editable; server is the source of truth.</li></ul>` },
+      { title: "Good Luck!", content: `<p>🎯 Spot one client‑side value that should be server‑side truth, and fix it.<br>🌟 You’ve got the tools, the map (OWASP/CWE), and the mindset. Go ship something safer.</p>` },
     ];
 
     let step = 0;
@@ -341,7 +139,6 @@
       if (e.key.toLowerCase() === 'p') { window.print(); }
     });
 
-    // Initial render
     render();
   </script>
 </body>
