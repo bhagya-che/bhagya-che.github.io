@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Challenges Story — HTML Slides</title>
+  <style>
+    :root {
+      --bg: #0f172a;          /* slate-900 */
+      --panel: #0b1229;       /* deep navy */
+      --text: #e5e7eb;        /* gray-200 */
+      --muted: #9ca3af;       /* gray-400 */
+      --primary: #60a5fa;     /* blue-400 */
+      --accent: #34d399;      /* emerald-400 */
+      --warn: #f59e0b;        /* amber-500 */
+      --danger: #f87171;      /* red-400 */
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: linear-gradient(180deg, #0b1022, var(--bg));
+      color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      display: flex; align-items: center; justify-content: center; padding: 2.5vh 2vw;
+    }
+    .deck { width: min(1100px, 96vw); }
+    .card { background: radial-gradient(1200px 600px at 100% 0%, #0e1b45 0%, var(--panel) 50%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 48px 56px; box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      min-height: 68vh; display: flex; flex-direction: column; justify-content: space-between; }
+    h1 { font-size: clamp(28px, 4vw, 44px); margin: 0 0 18px; line-height: 1.15; letter-spacing: 0.2px; }
+    .content { font-size: clamp(18px, 2.2vw, 24px); line-height: 1.6; }
+    .content p { margin: 0 0 12px; }
+    .content ul { margin: 10px 0 0 0; padding-left: 26px; }
+    .content li { margin: 10px 0; }
+    code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
+    pre { background: rgba(255,255,255,0.06); padding: 14px 16px; border-radius: 12px; overflow-x: auto; }
+
+    .nav { display: flex; align-items: center; gap: 16px; margin-top: 26px; }
+    .nav .spacer { flex: 1; }
+    button { background: var(--primary); color: #081327; border: none; padding: 14px 22px; border-radius: 12px; font-weight: 700; font-size: 18px; cursor: pointer; }
+    button[disabled] { opacity: 0.5; cursor: not-allowed; }
+    .ghost { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,0.18); }
+
+    .meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; color: var(--muted); font-size: 16px; }
+    .bar { height: 8px; width: 100%; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--primary)); }
+
+    .kbhint { font-size: 14px; color: var(--muted); }
+    a { color: #93c5fd; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+      .meta, .kbhint, .nav { display: none !important; }
+      .deck { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <div class="card">
+      <div>
+        <h1 id="slide-title">Web Challenges Story — HTML Slides</h1>
+        <div id="slide-content" class="content"></div>
+      </div>
+
+      <div>
+        <div class="meta">
+          <div id="counter">1 / 20</div>
+          <div class="bar"><span id="progress"></span></div>
+          <div class="kbhint">Tip: ← / → to navigate • P to print</div>
+        </div>
+        <div class="nav">
+          <button id="prev" class="ghost">◀ Previous</button>
+          <div class="spacer"></div>
+          <button id="next">Next ▶</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 24+ detailed story cards, deeper than the React version
+    const slides = [
+      {
+        title: "Cast & Mission",
+        content: `👩‍💻 <b>Alice</b> (learner) & 🧑‍🏫 <b>Professor Byte</b> (mentor).<br>
+        Goal: truly understand the web's identity & session model before tackling two capstone challenges.`
+      },
+      {
+        title: "Learning Outcomes",
+        content: `<ul>
+          <li>Explain HTTP request/response, methods, redirects.</li>
+          <li>Differentiate <b>AuthN</b> vs <b>AuthZ</b> vs <b>Session</b>.</li>
+          <li>Use DevTools/Proxy to observe & modify client-side state.</li>
+          <li>Map flaws to OWASP A01/A07 and CWEs (287, 565, 472, 784, 384, 1275).</li>
+          <li>Apply cookie hardening & server-side enforcement to fix issues.</li>
+        </ul>`
+      },
+      {
+        title: "How the Web Talks (HTTP Basics)",
+        content: `<ul>
+          <li><b>Request line:</b> <code>POST /login HTTP/1.1</code></li>
+          <li><b>Headers:</b> metadata (e.g., <code>Content-Type</code>, <code>Cookie</code>).</li>
+          <li><b>Body:</b> form/json payload for POST/PUT/PATCH.</li>
+          <li><b>Response:</b> status (200/302/401/403/500), headers, body.</li>
+        </ul>`
+      },
+      {
+        title: "Methods & Forms & Redirects",
+        content: `<ul>
+          <li><b>GET</b>: fetch; <b>POST</b>: submit secrets; <b>PUT/PATCH</b>: update; <b>DELETE</b>: remove.</li>
+          <li>Forms usually POST credentials to <code>/login</code>.</li>
+          <li>After login, a <b>302/303</b> redirect returns; browser follows <code>Location</code>.</li>
+          <li>Session often begins when response sets <code>Set-Cookie</code>.</li>
+        </ul>`
+      },
+      {
+        title: "Cookie Primer",
+        content: `<ul>
+          <li>Key/value pairs the server can set via <code>Set-Cookie</code>.</li>
+          <li>Auto-attached by browser on subsequent requests (domain/path rules).</li>
+          <li>Best practice: keep only a <b>random session id</b> in cookies.</li>
+        </ul>`
+      },
+      {
+        title: "Web Storage vs Cookies",
+        content: `<ul>
+          <li><b>LocalStorage/SessionStorage</b> are JS-accessible only; not auto-sent.</li>
+          <li>Good for UI state; <b>bad for secrets or trust signals</b>.</li>
+          <li><b>Anything client-side can be edited</b> by the user.</li>
+        </ul>`
+      },
+      {
+        title: "Session Management Deep Dive",
+        content: `<ul>
+          <li>Session id (sid) ↔ server store (user id, roles, expiry, CSRF token).</li>
+          <li>Rotate sid on login & privilege elevation to defeat fixation.</li>
+          <li>Expire/Invalidate on logout; short lifetimes; sliding expiry if needed.</li>
+        </ul>`
+      },
+      {
+        title: "AuthN vs AuthZ vs Session",
+        content: `<ul>
+          <li><b>AuthN</b> proves <i>who you are</i> (password, MFA, OAuth).</li>
+          <li><b>AuthZ</b> decides <i>what you can do</i> (RBAC/ABAC, policies).</li>
+          <li><b>Session</b> binds a browser to a server-side identity across requests.</li>
+          <li>Common bug: mixing these concerns or trusting the client for them.</li>
+        </ul>`
+      },
+      {
+        title: "Threat Model: The Hostile Client",
+        content: `<ul>
+          <li>Attacker can edit cookies, storage, hidden inputs, URLs.</li>
+          <li>They can replay/forge requests with tools (curl/Burp/ZAP).</li>
+          <li>They can decode/guess weakly protected values (Base64 ≠ crypto).</li>
+        </ul>`
+      },
+      {
+        title: "Must‑Know Headers",
+        content: `<ul>
+          <li><code>Set-Cookie</code> (with flags), <code>Cookie</code> (sent back by browser).</li>
+          <li><code>Location</code> (redirect targets), <code>Cache-Control</code> (avoid caching secrets).</li>
+          <li><code>Content-Security-Policy</code> & <code>Strict-Transport-Security</code> are also critical later on.</li>
+        </ul>`
+      },
+      {
+        title: "Tooling: DevTools Essentials",
+        content: `<ul>
+          <li><b>Network</b>: follow login flow, inspect <code>Set-Cookie</code>/redirects.</li>
+          <li><b>Application/Storage</b>: view/edit Cookies, LocalStorage, SessionStorage.</li>
+          <li><b>Console</b>: try <code>atob()</code>, quick JS checks.</li>
+        </ul>`
+      },
+      {
+        title: "Tooling: Proxies & CLI",
+        content: `<ul>
+          <li><b>Burp/ZAP</b>: intercept/modify requests; repeat attacks.</li>
+          <li><b>curl/httpie</b>: reproducible PoC from terminal.<br>
+          <code>curl -i -H "Cookie: sid=ABC" https://site/profile</code></li>
+        </ul>`
+      },
+      {
+        title: "Encoding & Decoding",
+        content: `<ul>
+          <li>URL‑encoding: <code>%3D</code> → <code>=</code></li>
+          <li>Base64: <code>YWRtaW4=</code> → <code>admin</code> (<i>not</i> encryption)</li>
+          <li>Use CyberChef / <code>base64 -d</code> / <code>atob()</code>.</li>
+        </ul>`
+      },
+      {
+        title: "OWASP Top 10 Mapping",
+        content: `<ul>
+          <li><b>A07</b>: Identification & Authentication Failures.</li>
+          <li><b>A01</b>: Broken Access Control.</li>
+          <li>Cookie flags & session lifecycle relate to both categories.</li>
+        </ul>
+        <p>See: <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top Ten</a></p>`
+      },
+      {
+        title: "CWE Mapping (Authoritative Vocabulary)",
+        content: `<ul>
+          <li><b>CWE‑287</b>: Improper Authentication.</li>
+          <li><b>CWE‑565/472/784</b>: Reliance on client-side cookies/parameters.</li>
+          <li><b>CWE‑384</b>: Session Fixation.</li>
+          <li><b>CWE‑1275</b>: Improper SameSite.</li>
+        </ul>
+        <p>See: <a href="https://cwe.mitre.org" target="_blank">MITRE CWE</a></p>`
+      },
+      {
+        title: "Vulnerability A: Improper Authentication",
+        content: `<ul>
+          <li>Server accepts identity without verifying credentials properly.</li>
+          <li>Example mistakes: trusting hidden fields or a <code>username</code> cookie.</li>
+          <li>Impact: login bypass, impersonation (CWE‑287, OWASP A07).</li>
+        </ul>`
+      },
+      {
+        title: "Vulnerability B: Cookie Tampering",
+        content: `<ul>
+          <li>Authorization decided by a client‑held value (<code>role=admin</code>).</li>
+          <li>Attacker edits value → escalates privileges.</li>
+          <li>Map: OWASP A01/A07; CWE‑565/472/784.</li>
+        </ul>`
+      },
+      {
+        title: "Vulnerability C: Session Fixation",
+        content: `<ul>
+          <li>Attacker sets/forces a known session id for the victim.</li>
+          <li>After victim logs in, attacker reuses same id → hijack.</li>
+          <li>Defense: regenerate sid on login, set proper flags (CWE‑384).</li>
+        </ul>`
+      },
+      {
+        title: "Cookie Hardening (Flags)",
+        content: `<ul>
+          <li><b>HttpOnly</b>: JS cannot read cookie (mitigates theft via XSS).</li>
+          <li><b>Secure</b>: send only over HTTPS (prevents network sniffing).</li>
+          <li><b>SameSite</b>: reduces CSRF (<code>Lax</code>/<code>Strict</code> as needed).</li>
+        </ul>
+<pre><code>Set-Cookie: sid=abc123; Path=/; HttpOnly; Secure; SameSite=Lax</code></pre>`
+      },
+      {
+        title: "Exploitation Playbook (Step‑by‑Step)",
+        content: `<ol>
+          <li>Follow login request/redirects in Network tab.</li>
+          <li>Locate <code>Set-Cookie</code> and any client-side <code>role</code>/<code>isAdmin</code> value.</li>
+          <li>Edit cookie/storage; reload protected page.</li>
+          <li>If opaque, URL‑decode then Base64‑decode; re‑test.</li>
+          <li>PoC via Burp or <code>curl</code> for reproducibility.</li>
+        </ol>`
+      },
+      {
+        title: "Mitigations (Server‑Side Enforcement)",
+        content: `<ul>
+          <li>Server checks permissions on every sensitive route.</li>
+          <li>Client stores only random sid; roles live server‑side.</li>
+          <li>Rotate sid on login/elevation; expire on logout.</li>
+          <li>Log anomalies (rapid role flips, unusual cookie changes).</li>
+        </ul>`
+      },
+      {
+        title: "Story Challenge #1 — Login Mystery",
+        content: `<p>The app trusts a client flag for identity. Alice inspects Network → sees no password verification on the server side.</p>
+        <ul>
+          <li><b>Task:</b> Find the client source of truth and flip it.</li>
+          <li><b>Win condition:</b> Access a protected route as another user.</li>
+          <li><b>Reflect:</b> Which checks must the server add?</li>
+        </ul>`
+      },
+      {
+        title: "Story Challenge #2 — Cookie Monster",
+        content: `<p>A cookie <code>role=user</code> gates admin. Alice edits it to <code>admin</code> → admin panel appears.</p>
+        <ul>
+          <li><b>Task:</b> Prove privilege escalation via cookie tampering.</li>
+          <li><b>Fix:</b> Enforce role server‑side; cookie holds only sid with flags.</li>
+        </ul>`
+      },
+      {
+        title: "Real‑World References (CVE/Articles)",
+        content: `<ul>
+          <li><a target="_blank" href="https://nvd.nist.gov/vuln/detail/CVE-2023-25556">Example NVD entry with CWE‑287</a></li>
+          <li><a target="_blank" href="https://cwe.mitre.org/data/definitions/565.html">CWE‑565 Reliance on Cookies</a></li>
+          <li><a target="_blank" href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP A01 Broken Access Control</a></li>
+          <li><a target="_blank" href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">OWASP A07 Auth Failures</a></li>
+        </ul>`
+      },
+      {
+        title: "Instructor Lab Flow",
+        content: `<ol>
+          <li>Intro slides → live DevTools demo (HTTP, headers, cookies).</li>
+          <li>Guided exercise: Login Mystery.</li>
+          <li>Guided exercise: Cookie Monster (incl. decoding).</li>
+          <li>Hardening walkthrough; verify fixes block previous PoC.</li>
+        </ol>`
+      },
+      {
+        title: "One‑Page Cheat‑Sheet (Recap)",
+        content: `<ul>
+          <li>Client ≠ truth. Server enforces identity & permissions.</li>
+          <li>Cookies: store sid only; set HttpOnly, Secure, SameSite.</li>
+          <li>Rotate sessions on login/elevation; expire properly.</li>
+          <li>Map to OWASP/CWE when writing reports.</li>
+        </ul>`
+      },
+      {
+        title: "Next Steps",
+        content: `<ul>
+          <li>Try Base64/URL decoding challenges quickly (build intuition).</li>
+          <li>Compare server‑side sessions vs signed tokens (JWT) with verification.</li>
+          <li>Explore CSRF/XSS next: how they intersect with cookies & storage.</li>
+        </ul>`
+      },
+    ];
+
+    let step = 0;
+    const titleEl = document.getElementById('slide-title');
+    const contentEl = document.getElementById('slide-content');
+    const counterEl = document.getElementById('counter');
+    const barEl = document.getElementById('progress');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    function render() {
+      const s = slides[step];
+      titleEl.innerHTML = s.title;
+      contentEl.innerHTML = s.content;
+      counterEl.textContent = `${step + 1} / ${slides.length}`;
+      const pct = ((step + 1) / slides.length) * 100;
+      barEl.style.width = pct + '%';
+      prevBtn.disabled = step === 0;
+      nextBtn.textContent = step === slides.length - 1 ? 'Finish' : 'Next ▶';
+    }
+
+    prevBtn.addEventListener('click', () => { if (step > 0) { step--; render(); } });
+    nextBtn.addEventListener('click', () => { if (step < slides.length - 1) { step++; render(); } });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { if (step > 0) { step--; render(); } }
+      if (e.key === 'ArrowRight') { if (step < slides.length - 1) { step++; render(); } }
+      if (e.key.toLowerCase() === 'p') { window.print(); }
+    });
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>
