@@ -81,207 +81,198 @@
   <script>
     // Slides: invitation + technical primer on SSTI and supporting knowledge (no exploit payloads)
     const slides = [
-      {
-        title: "Welcome to STL CTF 2025",
-        content: `<p>Welcome to STL CTF Challenge. We'll cover the concepts you'll need to explore a web app safely and effectively.</p>
-                  <p> Gather your browser DevTools, a proxy (Burp/ZAP optional), and curiosity. Let’s dive.</p>`
-      },
+  {
+    title: "What is a vulnerability?",
+    content: `<p>A vulnerability is a <b>weakness or flaw</b> in a computer system or program that could let someone cause problems. </p>
+              <ul>
+                <li>Example: a door with a broken lock — anyone could walk in.</li>
+                <li>In computers: a program with a missing check could let attackers steal or change data.</li>
+                <li>A vulnerability is just the weak spot. An <i>attack</i> happens when someone takes advantage of it.</li>
+              </ul>`
+  },
 
-      {
-        title: "What you'll learn",
-        content: `<ul>
-                    <li>How template engines work and where they run (server vs client).</li>
-                    <li>Safe ways to probe template behaviour without leaking sensitive data.</li>
-                    <li>Testing techniques and defensive controls.</li>
-                    <li>How the topic maps to OWASP/CWE/CVE guidance you should know.</li>
-                  </ul>`
-      },
+  {
+    title: "What is injection?",
+    content: `<p>Injection happens when <b>untrusted input</b> is mixed into code or commands in a way the program did not expect.</p>
+              <ul>
+                <li>Example: If you ask a calculator for "2+2" that’s fine, but if you sneak in "delete everything" and it runs that, it’s a problem.</li>
+                <li>In web apps, injection means user input changes how the server behaves — instead of just being stored or shown.</li>
+                <li>Different types: SQL Injection, Command Injection, Template Injection, etc.</li>
+              </ul>`
+  },
 
-      {
-        title: "Quick HTTP refresher",
-        content: `<ul>
-                    <li>Requests: method, path, headers, body.</li>
-                    <li>Responses: status, headers, body — headers like <code>Set-Cookie</code> and <code>Location</code> matter when tracing flows.</li>
-                    <li>Use Network panel to watch redirects, cookies, and payloads sent to the server.</li>
-                  </ul>`
-      },
+  {
+    title: "Welcome to STL CTF 2025",
+    content: `<p>Welcome! This session will give you the basic ideas you need to explore a simple web app safely. No prior web or security experience required — we'll build step by step.</p>`
+  },
 
-      {
-        title: "What is a template engine?",
-        content: `<p>A template engine (Jinja2, Twig, ERB, etc.) combines static templates with dynamic data on the server to produce HTML. Templates evaluate expressions and can call functions</p>
-                  <p>Note: when user input is rendered inside a template without strict controls, it can change what the template evaluates to.</p>`
-      },
+  {
+    title: "What you'll learn",
+    content: `<ul>
+                <li>What template engines are and where they run (server vs client).</li>
+                <li>How to test whether a web page is evaluating (running) your input or just showing it back.</li>
+                <li>How to run safe, harmless tests that don't break anything.</li>
+                <li>How these ideas connect to common security lists like OWASP/CWE at a high level.</li>
+              </ul>`
+  },
 
-      {
-        title: "Server-Side Template Injection (SSTI)",
-        content: `<ul>
-                    <li>SSTI arises when user-controlled input is treated as template code by the server.</li>
-                    <li>Result: the attacker may cause the template to compute unexpected values, call functions, or access server resources.</li>
-                    <li>Severity depends on the engine, server configuration, and what code/functions are available to templates.</li>
-                  </ul>`
-      },
+  {
+    title: "Very quick HTTP refresher",
+    content: `<ul>
+                <li>A request is what your browser sends: it has a method (GET/POST), a path (which page), headers, and sometimes a body.</li>
+                <li>A response is what the server sends back: it has a status (200, 404, etc.), headers, and a body (usually HTML).</li>
+                <li>Use the browser Network panel to see what you send and what the server returns — it helps you follow the app's behavior.</li>
+              </ul>`
+  },
 
-      {
-        title: "Why SSTI matters",
-        content: `<ul>
-                    <li>Can lead to information disclosure (sensitive files, configuration).</li>
-                    <li>Can lead to remote code execution in some environments.</li>
-                    <li>Even if full RCE isn't possible, SSTI can reveal internal structure that makes further exploitation easier.</li>
-                  </ul>`
-      },
+  {
+    title: "What is a template engine?",
+    content: `<p>A template engine is a tool the server uses to create web pages. Think of a template like a blank form with placeholders; the server fills those placeholders with data to make the final HTML that your browser shows.</p>
+              <p>Important: templates can also run small pieces of code (expressions). If user input ends up being treated as code, the template might run it.</p>`
+  },
 
-      {
-        title: "Safe testing principles",
-        content: `<ul>
-                    <li>Start with harmless probes: simple arithmetic or text that demonstrates evaluation without harming the host.</li>
-                    <li>Avoid destructive actions (file deletion, heavy commands)</li>
-                    <li>Use local sandboxes to practice</li>
-                  </ul>`
-      },
+  {
+    title: "Server-Side Template Injection (SSTI) — simple idea",
+    content: `<ul>
+                <li>SSTI happens when user input is accidentally treated as template code by the server.</li>
+                <li>That can let someone make the template do things it wasn't meant to, like show hidden data.</li>
+                <li>How bad it is depends on the template engine and what the server lets templates access.</li>
+              </ul>`
+  },
 
-      {
-        title: "Template engines to be familiar with",
-        content: `<ul>
-                    <li><b>Jinja2</b> (Python/Flask) : common in CTFs and web apps.</li>
-                    <li><b>Twig</b> (PHP), <b>ERB</b> (Ruby), <b>Handlebars</b> (JS) : each has its syntax/behaviour.</li>
-                    <li>Knowing the engine helps: syntax clues, available builtins, and typical server patterns.</li>
-                  </ul>`
-      },
+  {
+    title: "Why SSTI matters (beginner view)",
+    content: `<ul>
+                <li>It can reveal sensitive information (files, config values).</li>
+                <li>In some setups, it can let an attacker make the server run commands — that is more serious.</li>
+                <li>Even small leaks help an attacker learn more about the app, which can lead to bigger problems.</li>
+              </ul>`
+  },
 
-      {
-        title: "How to detect templates in the wild",
-        content: `<ul>
-                    <li>Look for rendered user input that seems evaluated rather than escaped.</li>
-                    <li>Check for predictable markers in the output or the app's stack (HTTP headers, error messages).</li>
-                    <li>Sometimes the app reveals the framework in an error page or in JavaScript comments.</li>
-                  </ul>`
-      },
+  {
+    title: "Safe testing principles",
+    content: `<ul>
+                <li>Start with harmless tests — e.g., simple math expressions that show whether something was evaluated.</li>
+                <li>Do NOT run destructive commands (like deleting files) on real servers.</li>
+                <li>Practice in your own sandbox or CTF environment where you're allowed to test.</li>
+              </ul>`
+  },
 
-      {
-        title: "DevTools & quick checks",
-        content: `<ul>
-                    <li>Network tab: capture requests/response headers and bodies.</li>
-                    <li>Application/Storage: inspect cookies and local storage values.</li>
-                    <li>Console: quick helpers to decode/encode values (for example base64).</li>
-                  </ul>`
-      },
+  {
+    title: "Template engines to know (simple list)",
+    content: `<ul>
+                <li><b>Jinja2</b> — often used with Python/Flask.</li>
+                <li><b>Twig</b> — common with PHP frameworks. <b>ERB</b> — Ruby. <b>Handlebars</b> — JS.</li>
+                <li>Each engine has its own syntax and available functions — spotting the engine helps you pick the right tests.</li>
+              </ul>`
+  },
 
-      {
-        title: "Probing methodology (non-spoiler)",
-        content: `<ol>
-                    <li>Observe: where is user input shown back to you? Which parameter or field?</li>
-                    <li>Probe: use harmless template expressions to confirm evaluation behaviour.</li>
-                    <li>Enumerate: once you know the engine evaluates code, learn what builtin objects/functions are accessible  without performing damaging operations.</li>
-                    <li>Exploit carefully: Use your knowledge into a proof-of-concept that demonstrates an impact (info leak, auth bypass) without unnecessary damage.</li>
-                  </ol>`
-      },
+  {
+    title: "How to spot templates being used",
+    content: `<ul>
+                <li>Look where the site shows back what you typed. Is it shown exactly, or transformed/evaluated?</li>
+                <li>Error messages or odd output sometimes reveal the framework or template engine.</li>
+                <li>Check the page source and network responses for hints (comments, headers, or stack traces).</li>
+              </ul>`
+  },
 
-      {
-        title: "Common defensive patterns (what devs should do)",
-        content: `<ul>
-                    <li>Never render raw user input as a template — prefer template variables bound to server-side values.</li>
-                    <li>Escape/sanitize user content for the target context (HTML, JS, CSS).</li>
-                    <li>Use template engine sandboxes or restricted environments when available.</li>
-                    <li>Avoid template features that let templates import or execute arbitrary objects/functions.</li>
-                  </ul>`
-      },
+  {
+    title: "DevTools & quick checks",
+    content: `<ul>
+                <li>Network tab: see each request and response.</li>
+                <li>Console: try small encodings/decodings (base64, URL) to understand data flow.</li>
+                <li>Application/Storage: inspect cookies and local storage to know what the app remembers about you.</li>
+              </ul>`
+  },
 
-      {
-        title: "Server side best practices",
-        content: `<ul>
-                    <li>Keep secret material out of templates; don't expose sensitive objects to the template context.</li>
-                    <li>Log and rate-limit suspicious requests; alert on unusual template errors or stack traces.</li>
-                    <li>Apply least privilege to the process running the app (file access, system commands).</li>
-                  </ul>`
-      },
+  {
+    title: "A gentle probing method (non-spoiler)",
+    content: `<ol>
+                <li><strong>Observe</strong>: find where your input appears in the page.</li>
+                <li><strong>Probe</strong>: send harmless tests (like ` + "`{{1+1}}`" + ` or other engine-appropriate small expressions) to check if the server evaluated them.</li>
+                <li><strong>Learn</strong>: when evaluation is confirmed, test which objects or functions are visible — but avoid dangerous actions.</li>
+                <li><strong>Demonstrate</strong>: create a minimal, non-destructive proof that something is wrong (for example, showing a hidden config value that is safe to demonstrate).</li>
+              </ol>`
+  },
 
-      {
-        title: "How this maps to OWASP & CWE",
-        content: `<ul>
-                    <li><strong>OWASP A01 / A07</strong>: Broken Access Control & Authentication issues can appear together with template flaws when developers place trust incorrectly.</li>
-                    <li>CWEs such as improper authentication, reliance on client data, or unsafe use of language features are commonly relevant.</li>
-                  </ul>`
-      },
+  {
+    title: "What developers should do (defensive patterns)",
+    content: `<ul>
+                <li>Never treat raw user input as template code.</li>
+                <li>Escape or sanitize user content based on where it will appear (HTML, JavaScript, CSS).</li>
+                <li>Use sandboxed template features or restrict what templates can access if the engine supports it.</li>
+              </ul>`
+  },
 
-      {
-        title: "Tooling you'll rely on",
-        content: `<ul>
-                    <li><strong>Browser DevTools</strong> — first line for inspection.</li>
-                    <li><strong>Burp/ZAP</strong> — intercept, modify, and replay requests.</li>
-                    <li><strong>curl/httpie</strong> — scripted proofs of concept.</li>
-                    <li><strong>Decoders</strong> (base64, URL) and quick REPLs to test transformations.</li>
-                  </ul>`
-      },
+  {
+    title: "Server side best practices (simple)",
+    content: `<ul>
+                <li>Don't put secrets into templates or the template context.</li>
+                <li>Log unusual template errors and rate-limit suspicious requests.</li>
+                <li>Run the app with minimal permissions so it cannot access more than it needs.</li>
+              </ul>`
+  },
 
-      {
-        title: "Ethics & scope",
-        content: `<p>Always practice within authorised scopes (CTF targets or lab environments). When working on real systems, avoid destructive actions report issues responsibly.</p>`
-      },
+  {
+    title: "How this maps to OWASP & CWE (high level)",
+    content: `<ul>
+                <li>Template issues relate to injection problems and to mistakes in how access or data trust is handled.</li>
+                <li>Learning these concepts helps you understand categories used by OWASP and CWE — useful for reading reports or guides later.</li>
+              </ul>`
+  },
 
-      {
-        title: "References (CVE / OWASP / CWE)",
-        content: `
-          <ul>
-            <li><a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">OWASP Top Ten</a></li>
-            <li><a href="https://cwe.mitre.org" target="_blank" rel="noopener noreferrer">MITRE CWE Catalog</a></li>
-            <li><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer">NVD / CVE database</a></li>
-            <li>
-              <strong>Payloads & testing reference </strong> —
-              <a href="https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/?utm_source=chatgpt.com"
-                target="_blank" rel="noopener noreferrer">
-                PayloadsAllTheThings: SSTI Cheatsheet
-              </a>
-              <div style="margin-top:8px; color:var(--muted); font-size:0.9em;">
-                Note: Use payload lists for learning and local lab testing only. Avoid destructive actions on live targets.
-              </div>
-            </li>
-          </ul>
-          <p>These resources will help you map observed behaviour to risk categories and mitigations.</p>
-        `
-}
-,
+  {
+    title: "Tools you'll use (beginner friendly)",
+    content: `<ul>
+                <li><b>Browser DevTools</b> — inspect pages and network traffic.</li>
+                <li><b>curl / httpie</b> — send crafted requests from the command line.</li>
+                <li>Simple decoders and a REPL (Python/Node) to try quick transformations.</li>
+              </ul>`
+  },
 
-      {
-        title: "Developer fixes recap",
-        content: `<ul>
-                    <li>Do not evaluate user input as template code.</li>
-                    <li>Render user content with proper escaping and use server-side state for sensitive decisions.</li>
-                    <li>Limit what template contexts can access; avoid exposing OS/file APIs or critical objects.</li>
-                  </ul>`
-      },
+  {
+    title: "Ethics & scope",
+    content: `<p>Only test systems where you have permission (CTF targets or personal labs). If you find a problem on a real site, do not exploit it — report it responsibly.</p>`
+  },
 
+  {
+    title: "Further reading (beginner picks)",
+    content: `<ul>
+                <li>Start with OWASP pages about Injection and Web Security (for concepts, not payloads).</li>
+                <li>Practice on intentionally vulnerable labs or CTF problems.</li>
+                <li>Read secure template usage guides for frameworks you use (Flask, Django, PHP, etc.).</li>
+              </ul>`
+  },
 
-      {
-        title: "Challenge overview (non-spoiler)",
-        content: `<p>The CTF task you'll attempt later is intentionally focused: it's designed to teach you how template engines behave and how server trust can be misapplied.</p>
-                  <p>Goal: apply the concepts we have seen so far to discover a server-side misconfiguration or exposure, then produce a controlled proof-of-concept demonstrating the issue.</p>`
-      },
+  {
+    title: "Challenge overview (non-spoiler)",
+    content: `<p>The upcoming CTF challenge is designed to teach you how template engines behave and how small mistakes in server trust can lead to information leaks. Your goal is to apply safe tests to discover a misconfiguration and make a careful, non-destructive proof-of-concept.</p>`
+  },
 
-      {
-        title: "What next — a suggested playbook",
-        content: `<ol>
-                    <li>Explore the UI: find inputs that are reflected back in responses.</li>
-                    <li>Confirm evaluation with harmless probes.</li>
-                    <li>Enumerate what the template environment exposes.</li>
-                
-                  </ol>`
-      },
+  {
+    title: "Playbook (what to try first)",
+    content: `<ol>
+                <li>Explore the UI and find inputs that are echoed back.</li>
+                <li>Confirm whether input is evaluated using harmless tests.</li>
+                <li>See what the template environment exposes without running anything dangerous.</li>
+              </ol>`
+  },
 
-      {
-        title: "Further reading & learning paths",
-        content: `<ul>
-                    <li>Read OWASP pages on Injection and Broken Access Control.</li>
-                    <li>Practice on deliberately vulnerable VMs/labs .</li>
-                    <li>Review secure template usage guides for your framework (Flask/Django/PHP/etc.).</li>
-                  </ul>`
-      },
+  {
+    title: "Developer fixes recap (simple)",
+    content: `<ul>
+                <li>Don't evaluate user input as code in templates.</li>
+                <li>Escape user content and rely on server-side state for sensitive actions.</li>
+                <li>Limit what template contexts can access.</li>
+              </ul>`
+  },
 
-      {
-        title: "Let's begin the challenge — Good luck!",
-        content: `<p>🎯 You now have the mental model: what template engines do, how to safely probe them, and how to think like the server. Go explore the CTF — learn, practice, and report responsibly.</p>
-     `
-      }
-    ];
+  {
+    title: "Good luck!",
+    content: `<p>You're ready with a basic mental model: what vulnerabilities are, what injection means, how templates work, and how to test safely. Go explore the challenge, learn, and report responsibly. 🎯</p>`
+  }
+];
+
 
     let step = 0;
     const titleEl = document.getElementById('slide-title');
