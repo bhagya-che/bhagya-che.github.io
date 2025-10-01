@@ -82,9 +82,9 @@
     // Slides: invitation + technical primer on SSTI and supporting knowledge (no exploit payloads)
     const slides = [
       {
-        title: "You're Invited — PicoCTF Style",
-        content: `<p>Welcome! This deck prepares you for a friendly web challenge in the PicoCTF style. We'll cover the concepts you'll need to explore a web app safely and effectively — while keeping the actual solution hidden so you can learn by doing.</p>
-                  <p><strong>Call to action:</strong> Gather your browser DevTools, a proxy (Burp/ZAP optional), and curiosity. Let’s dive.</p>`
+        title: "Welcome to STL CTF 2025",
+        content: `<p>Welcome! This deck prepares you for a friendly STL CTF Challenge. We'll cover the concepts you'll need to explore a web app safely and effectively.</p>
+                  <p> Gather your browser DevTools, a proxy (Burp/ZAP optional), and curiosity. Let’s dive.</p>`
       },
 
       {
@@ -108,12 +108,12 @@
 
       {
         title: "What is a template engine?",
-        content: `<p>A template engine (Jinja2, Twig, ERB, etc.) combines static templates with dynamic data on the server to produce HTML. Templates evaluate expressions and can call functions — so they are powerful.</p>
-                  <p>Key idea: when user input is rendered inside a template without strict controls, it can change what the template evaluates to.</p>`
+        content: `<p>A template engine (Jinja2, Twig, ERB, etc.) combines static templates with dynamic data on the server to produce HTML. Templates evaluate expressions and can call functions</p>
+                  <p>Note: when user input is rendered inside a template without strict controls, it can change what the template evaluates to.</p>`
       },
 
       {
-        title: "Server-Side Template Injection (SSTI) — concept",
+        title: "Server-Side Template Injection (SSTI)",
         content: `<ul>
                     <li>SSTI arises when user-controlled input is treated as template code by the server.</li>
                     <li>Result: the attacker may cause the template to compute unexpected values, call functions, or access server resources.</li>
@@ -122,7 +122,7 @@
       },
 
       {
-        title: "Why SSTI matters (high level)",
+        title: "Why SSTI matters",
         content: `<ul>
                     <li>Can lead to information disclosure (sensitive files, configuration).</li>
                     <li>Can lead to remote code execution in some environments.</li>
@@ -131,19 +131,19 @@
       },
 
       {
-        title: "Safe testing principles (don't ruin the challenge)",
+        title: "Safe testing principles",
         content: `<ul>
                     <li>Start with harmless probes: simple arithmetic or text that demonstrates evaluation without harming the host.</li>
-                    <li>Avoid destructive actions (file deletion, heavy commands). Practice restraint and learn the model instead.</li>
-                    <li>Use local sandboxes to practice before trying anything against a target you don't own.</li>
+                    <li>Avoid destructive actions (file deletion, heavy commands)</li>
+                    <li>Use local sandboxes to practice</li>
                   </ul>`
       },
 
       {
         title: "Template engines to be familiar with",
         content: `<ul>
-                    <li><b>Jinja2</b> (Python/Flask) — common in CTFs and web apps.</li>
-                    <li><b>Twig</b> (PHP), <b>ERB</b> (Ruby), <b>Handlebars</b> (JS) — each has its syntax/behaviour.</li>
+                    <li><b>Jinja2</b> (Python/Flask) : common in CTFs and web apps.</li>
+                    <li><b>Twig</b> (PHP), <b>ERB</b> (Ruby), <b>Handlebars</b> (JS) : each has its syntax/behaviour.</li>
                     <li>Knowing the engine helps: syntax clues, available builtins, and typical server patterns.</li>
                   </ul>`
       },
@@ -171,8 +171,8 @@
         content: `<ol>
                     <li>Observe: where is user input shown back to you? Which parameter or field?</li>
                     <li>Probe: use harmless template expressions to confirm evaluation behaviour.</li>
-                    <li>Enumerate: once you know the engine evaluates code, learn what builtin objects/functions are accessible — without performing damaging operations.</li>
-                    <li>Exploit carefully: chain knowledge into a proof-of-concept that demonstrates an impact (info leak, auth bypass) without unnecessary damage.</li>
+                    <li>Enumerate: once you know the engine evaluates code, learn what builtin objects/functions are accessible  without performing damaging operations.</li>
+                    <li>Exploit carefully: Use your knowledge into a proof-of-concept that demonstrates an impact (info leak, auth bypass) without unnecessary damage.</li>
                   </ol>`
       },
 
@@ -200,7 +200,6 @@
         content: `<ul>
                     <li><strong>OWASP A01 / A07</strong>: Broken Access Control & Authentication issues can appear together with template flaws when developers place trust incorrectly.</li>
                     <li>CWEs such as improper authentication, reliance on client data, or unsafe use of language features are commonly relevant.</li>
-                    <li>References below point to official guidance for triage and fixes.</li>
                   </ul>`
       },
 
@@ -216,7 +215,7 @@
 
       {
         title: "Ethics & scope",
-        content: `<p>Always practice within authorised scopes (CTF targets or lab environments). When working on real systems, avoid destructive actions — report issues responsibly.</p>`
+        content: `<p>Always practice within authorised scopes (CTF targets or lab environments). When working on real systems, avoid destructive actions report issues responsibly.</p>`
       },
 
       {
@@ -227,7 +226,7 @@
             <li><a href="https://cwe.mitre.org" target="_blank" rel="noopener noreferrer">MITRE CWE Catalog</a></li>
             <li><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer">NVD / CVE database</a></li>
             <li>
-              <strong>Payloads & testing reference (educational)</strong> —
+              <strong>Payloads & testing reference </strong> —
               <a href="https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/?utm_source=chatgpt.com"
                 target="_blank" rel="noopener noreferrer">
                 PayloadsAllTheThings: SSTI Cheatsheet
@@ -251,19 +250,11 @@
                   </ul>`
       },
 
-      {
-        title: "How to practice safely",
-        content: `<ol>
-                    <li>Spin up a local app that uses a common template engine and practise with intentionally vulnerable examples.</li>
-                    <li>Recreate safe, controlled scenarios before testing live CTF tasks.</li>
-                    <li>Share findings as proof-of-concepts that demonstrate impact without revealing destructive details.</li>
-                  </ol>`
-      },
 
       {
         title: "Challenge overview (non-spoiler)",
         content: `<p>The CTF task you'll attempt later is intentionally focused: it's designed to teach you how template engines behave and how server trust can be misapplied.</p>
-                  <p>Goal: apply the concepts above to discover a server-side misconfiguration or exposure, then produce a controlled proof-of-concept demonstrating the issue.</p>`
+                  <p>Goal: apply the concepts we have seen so far to discover a server-side misconfiguration or exposure, then produce a controlled proof-of-concept demonstrating the issue.</p>`
       },
 
       {
@@ -271,8 +262,8 @@
         content: `<ol>
                     <li>Explore the UI: find inputs that are reflected back in responses.</li>
                     <li>Confirm evaluation with harmless probes.</li>
-                    <li>Enumerate what the template environment exposes (read-only exploration; be ethical).</li>
-                    <li>Construct a minimal, non-destructive PoC that proves the issue.</li>
+                    <li>Enumerate what the template environment exposes.</li>
+                
                   </ol>`
       },
 
@@ -280,15 +271,15 @@
         title: "Further reading & learning paths",
         content: `<ul>
                     <li>Read OWASP pages on Injection and Broken Access Control.</li>
-                    <li>Practice on deliberately vulnerable VMs/labs (e.g., WebGoat variants, Mutillidae, Juice Shop).</li>
+                    <li>Practice on deliberately vulnerable VMs/labs .</li>
                     <li>Review secure template usage guides for your framework (Flask/Django/PHP/etc.).</li>
                   </ul>`
       },
 
       {
-        title: "Join the challenge — Good luck!",
+        title: "Let's begin the challenge — Good luck!",
         content: `<p>🎯 You now have the mental model: what template engines do, how to safely probe them, and how to think like the server. Go explore the CTF — learn, practice, and report responsibly.</p>
-                  <p>Have fun — and if you want a follow-up deck that walks through safe lab examples (local only), say the word and I’ll prepare one that you can run on your machine.</p>`
+     `
       }
     ];
 
