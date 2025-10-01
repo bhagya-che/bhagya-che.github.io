@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Web Challenges Story — HTML Slides</title>
   <style>
     :root {
-      --bg: #0f172a;          /* slate-900 */
-      --panel: #0b1229;       /* deep navy */
-      --text: #e5e7eb;        /* gray-200 */
-      --muted: #9ca3af;       /* gray-400 */
-      --primary: #60a5fa;     /* blue-400 */
-      --accent: #34d399;      /* emerald-400 */
-      --warn: #f59e0b;        /* amber-500 */
-      --danger: #f87171;      /* red-400 */
+      --bg: #0f172a;
+      --panel: #0b1229;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --primary: #60a5fa;
+      --accent: #34d399;
+      --warn: #f59e0b;
+      --danger: #f87171;
     }
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    html,body { height: 100%; }
     body {
-      margin: 0; background: linear-gradient(180deg, #0b1022, var(--bg));
-      color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0; background: linear-gradient(180deg,#0b1022,var(--bg));
+      color: var(--text); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       display: flex; align-items: center; justify-content: center; padding: 2.5vh 2vw;
     }
-    .deck { width: min(1100px, 96vw); }
-    .card { background: radial-gradient(1200px 600px at 100% 0%, #0e1b45 0%, var(--panel) 50%);
-      border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 48px 56px; box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-      min-height: 68vh; display: flex; flex-direction: column; justify-content: space-between; }
-    h1 { font-size: clamp(28px, 4vw, 44px); margin: 0 0 18px; line-height: 1.15; letter-spacing: 0.2px; }
-    .content { font-size: clamp(18px, 2.2vw, 24px); line-height: 1.6; }
+    .deck { width: min(1100px,96vw); }
+    .card {
+      background: radial-gradient(1200px 600px at 100% 0%, #0e1b45 0%, var(--panel) 50%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 22px; padding: 48px 56px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35); min-height: 68vh; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    h1 { font-size: clamp(28px,4vw,44px); margin: 0 0 18px; line-height:1.12; letter-spacing:0.2px; }
+    .content { font-size: clamp(18px,2.2vw,24px); line-height:1.6; }
     .content p { margin: 0 0 12px; }
     .content ul, .content ol { margin: 10px 0 0 0; padding-left: 26px; }
     .content li { margin: 10px 0; }
-    code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
-    pre { background: rgba(255,255,255,0.06); padding: 14px 16px; border-radius: 12px; overflow-x: auto; }
-
-    .nav { display: flex; align-items: center; gap: 16px; margin-top: 26px; }
-    .nav .spacer { flex: 1; }
-    button { background: var(--primary); color: #081327; border: none; padding: 14px 22px; border-radius: 12px; font-weight: 700; font-size: 18px; cursor: pointer; }
-    button[disabled] { opacity: 0.5; cursor: not-allowed; }
+    code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius:6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:0.9em; }
+    pre { background: rgba(255,255,255,0.06); padding: 14px 16px; border-radius:12px; overflow-x:auto; }
+    .nav { display:flex; align-items:center; gap:16px; margin-top:26px; }
+    .nav .spacer { flex:1; }
+    button { background: var(--primary); color: #081327; border: none; padding: 14px 22px; border-radius:12px; font-weight:700; font-size:18px; cursor:pointer; }
+    button[disabled] { opacity: 0.5; cursor:not-allowed; }
     .ghost { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,0.18); }
-
-    .meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; color: var(--muted); font-size: 16px; }
-    .bar { height: 8px; width: 100%; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
-    .bar > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--primary)); }
-
-    .kbhint { font-size: 14px; color: var(--muted); }
-    a { color: #93c5fd; text-decoration: none; }
+    .meta { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:14px; color:var(--muted); font-size:16px; }
+    .bar { height:8px; width:100%; background: rgba(255,255,255,0.08); border-radius:999px; overflow:hidden; }
+    .bar > span { display:block; height:100%; width:0%; background: linear-gradient(90deg,var(--accent),var(--primary)); }
+    .kbhint { font-size:14px; color:var(--muted); }
+    a { color:#93c5fd; text-decoration:none; }
     a:hover { text-decoration: underline; }
-
     @media print {
       body { background: #fff; color: #111; }
       .card { box-shadow: none; border: 1px solid #ddd; }
@@ -61,7 +59,6 @@
     <div class="card">
       <div>
         <h1 id="slide-title">Web Challenges Story</h1>
-    
         <div id="slide-content" class="content"></div>
       </div>
 
@@ -71,6 +68,7 @@
           <div class="bar"><span id="progress"></span></div>
           <div class="kbhint">Tip: ← / → to navigate • P to print</div>
         </div>
+
         <div class="nav">
           <button id="prev" class="ghost">◀ Previous</button>
           <div class="spacer"></div>
@@ -81,34 +79,217 @@
   </div>
 
   <script>
-    // Slides: concepts first; challenge overview ONLY at the very end + wishing slide
+    // Slides: invitation + technical primer on SSTI and supporting knowledge (no exploit payloads)
     const slides = [
-      { title: "Web Challenges Story", content: `Let us master web identity & sessions before the STL CTF challenges.` },
-      { title: "Learning Outcomes", content: `<ul><li>Explain HTTP + redirects.</li><li>AuthN vs AuthZ vs Session.</li><li>DevTools/Proxy skills.</li><li>Map to OWASP A01/A07 & CWEs.</li><li>Server-side enforcement & cookie hardening.</li></ul>` },
-      { title: "How the Web Talks (HTTP Basics)", content: `<ul><li><b>Request line:</b> <code>POST /login HTTP/1.1</code></li><li><b>Headers</b> (e.g., <code>Content-Type</code>, <code>Cookie</code>).</li><li><b>Body</b> for POST/PUT/PATCH.</li><li><b>Response</b>: status, headers, body.</li></ul>` },
-      { title: "Methods, Forms, Redirects", content: `<ul><li>GET fetches; POST submits credentials.</li><li>Login often returns 302/303 → browser follows <code>Location</code>.</li><li>Session typically begins via <code>Set-Cookie</code>.</li></ul>` },
-      { title: "Cookie Primer", content: `<ul><li>Server sets via <code>Set-Cookie</code>.</li><li>Browser auto-sends cookie on matching domain/path.</li><li>Best: store only a <b>random session id</b>.</li></ul>` },
-      { title: "Web Storage vs Cookies", content: `<ul><li><b>Local/SessionStorage</b> is JS-only; not auto-sent.</li><li>Great for UI state; <b>not</b> for secrets or trust.</li><li>Client data is editable by users.</li></ul>` },
-      { title: "Session Management Deep Dive", content: `<ul><li>sid ↔ server store (user id, roles, expiry, CSRF).</li><li>Rotate sid on login/elevation (fixation).</li><li>Expire/invalidate on logout; short lifetime.</li></ul>` },
-      { title: "AuthN vs AuthZ vs Session", content: `<ul><li><b>AuthN</b>: who you are (password/MFA/OAuth).</li><li><b>AuthZ</b>: what you can do (RBAC/ABAC/policies).</li><li><b>Session</b>: binds browser to server identity.</li><li>Bug: trusting client to do any of these.</li></ul>` },
-      { title: "Threat Model: Hostile Client", content: `<ul><li>Edit cookies, storage, hidden inputs, URLs.</li><li>Replay/forge with curl/Burp/ZAP.</li><li>Decode Base64/URL; guess predictable values.</li></ul>` },
-      { title: "Must‑Know Headers", content: `<ul><li><code>Set-Cookie</code>, <code>Cookie</code></li><li><code>Location</code> (redirects)</li><li><code>Cache-Control</code> (avoid caching secrets)</li><li><code>CSP</code>, <code>HSTS</code> (later)</li></ul>` },
-      { title: "Tooling: DevTools", content: `<ul><li><b>Network</b>: follow login flow, inspect cookies/redirects.</li><li><b>Application/Storage</b>: view/edit Cookies & Web Storage.</li><li><b>Console</b>: try <code>atob()</code> quickly.</li></ul>` },
-      { title: "Tooling: Proxies & CLI", content: `<ul><li><b>Burp/ZAP</b>: intercept & modify.</li><li><b>curl/httpie</b>: reproducible PoC.<br><code>curl -i -H "Cookie: sid=ABC" https://site/profile</code></li></ul>` },
-      { title: "Encoding & Decoding 101", content: `<ul><li>URL‑encoding: <code>%3D</code> → <code>=</code></li><li>Base64: <code>YWRtaW4=</code> → <code>admin</code> (not encryption)</li><li>Tools: CyberChef / <code>base64 -d</code> / <code>atob()</code>.</li></ul>` },
-      { title: "OWASP Top 10 Map", content: `<ul><li><b>A07</b>: Identification & Authentication Failures.</li><li><b>A01</b>: Broken Access Control.</li><li>Cookie flags/session relate to both.</li></ul><p>See <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top Ten</a></p>` },
-      { title: "CWE Map (shared language)", content: `<ul><li><b>CWE‑287</b>: Improper Authentication.</li><li><b>CWE‑565/472/784</b>: Trusting client cookies/params.</li><li><b>CWE‑384</b>: Session Fixation.</li><li><b>CWE‑1275</b>: Improper SameSite.</li></ul><p>See <a href="https://cwe.mitre.org" target="_blank">MITRE CWE</a></p>` },
-      { title: "Vuln: Improper Authentication", content: `<ul><li>Server accepts identity without solid verification.</li><li>Example: trusting hidden field or <code>username</code> cookie.</li><li>Impact: bypass/impersonation (A07/CWE‑287).</li></ul>` },
-      { title: "Vuln: Cookie Tampering", content: `<ul><li>AuthZ by client-held value (<code>role=admin</code>).</li><li>Edit → escalate privileges.</li><li>Map: A01/A07; CWE‑565/472/784.</li></ul>` },
-      { title: "Vuln: Session Fixation", content: `<ul><li>Attacker sets/forces known sid; victim logs in.</li><li>Attacker reuses sid to hijack.</li><li>Defense: regenerate on login; flags (CWE‑384).</li></ul>` },
-      { title: "Cookie Hardening", content: `<ul><li><b>HttpOnly</b>: JS can’t read (mitigate theft).</li><li><b>Secure</b>: HTTPS only.</li><li><b>SameSite</b>: mitigate CSRF (<code>Lax</code>/<code>Strict</code>).</li></ul><pre><code>Set-Cookie: sid=abc123; Path=/; HttpOnly; Secure; SameSite=Lax</code></pre>` },
-      { title: "Exploitation Playbook", content: `<ol><li>Trace login → check <code>Set-Cookie</code> & redirects.</li><li>Inspect storage → tweak values → reload.</li><li>Decode if opaque.</li><li>PoC with Burp/<code>curl</code>.</li></ol>` },
-      { title: "Mitigation Playbook", content: `<ul><li>Server-side checks on every sensitive route.</li><li>Cookie holds only random sid; roles server-side.</li><li>Rotate sid on login/elevation; expire on logout.</li><li>Log anomalies.</li></ul>` },
-      { title: "References (CVE/Articles)", content: `<ul><li><a target="_blank" href="https://nvd.nist.gov/vuln/detail/CVE-2023-25556">NVD entry (CWE‑287)</a></li><li><a target="_blank" href="https://cwe.mitre.org/data/definitions/565.html">CWE‑565 Reliance on Cookies</a></li><li><a target="_blank" href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">OWASP A01</a></li><li><a target="_blank" href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">OWASP A07</a></li></ul>` },
-      { title: "So far.....", content: `<ol><li>Intro → live DevTools demo.</li><li>Practice decoding.</li><li>Show hardening; verify fix blocks PoC.</li></ol>` },
-      { title: "Challenge Overview", content: `<p>Now that you have the model, here’s what’s coming:</p><ul><li><b>Login Mystery</b>: an app that accidentally trusts client hints about identity.</li><li><b>Cookie Monster</b>: privileges controlled by a cookie value.</li></ul><p>These are intentionally simple so you can focus on <i>thinking like the server</i>.</p>` },
-      { title: "What You Might Use", content: `<ul><li>DevTools → Network & Application/Storage.</li><li>Burp/ZAP to intercept/modify requests.</li><li>Decoders: URL & Base64 (CyberChef, <code>atob()</code>).</li><li><b>Mental model</b>: client is editable; server is the source of truth.</li></ul>` },
-      { title: "Good Luck!", content: `<p>🎯 Spot one client‑side value that should be server‑side truth, and fix it.<br>🌟 You’ve got the tools, the map (OWASP/CWE), and the mindset. Go ship something safer.</p>` },
+      {
+        title: "You're Invited — PicoCTF Style",
+        content: `<p>Welcome! This deck prepares you for a friendly web challenge in the PicoCTF style. We'll cover the concepts you'll need to explore a web app safely and effectively — while keeping the actual solution hidden so you can learn by doing.</p>
+                  <p><strong>Call to action:</strong> Gather your browser DevTools, a proxy (Burp/ZAP optional), and curiosity. Let’s dive.</p>`
+      },
+
+      {
+        title: "What you'll learn",
+        content: `<ul>
+                    <li>How template engines work and where they run (server vs client).</li>
+                    <li>Safe ways to probe template behaviour without leaking sensitive data.</li>
+                    <li>Testing techniques and defensive controls.</li>
+                    <li>How the topic maps to OWASP/CWE/CVE guidance you should know.</li>
+                  </ul>`
+      },
+
+      {
+        title: "Quick HTTP refresher",
+        content: `<ul>
+                    <li>Requests: method, path, headers, body.</li>
+                    <li>Responses: status, headers, body — headers like <code>Set-Cookie</code> and <code>Location</code> matter when tracing flows.</li>
+                    <li>Use Network panel to watch redirects, cookies, and payloads sent to the server.</li>
+                  </ul>`
+      },
+
+      {
+        title: "What is a template engine?",
+        content: `<p>A template engine (Jinja2, Twig, ERB, etc.) combines static templates with dynamic data on the server to produce HTML. Templates evaluate expressions and can call functions — so they are powerful.</p>
+                  <p>Key idea: when user input is rendered inside a template without strict controls, it can change what the template evaluates to.</p>`
+      },
+
+      {
+        title: "Server-Side Template Injection (SSTI) — concept",
+        content: `<ul>
+                    <li>SSTI arises when user-controlled input is treated as template code by the server.</li>
+                    <li>Result: the attacker may cause the template to compute unexpected values, call functions, or access server resources.</li>
+                    <li>Severity depends on the engine, server configuration, and what code/functions are available to templates.</li>
+                  </ul>`
+      },
+
+      {
+        title: "Why SSTI matters (high level)",
+        content: `<ul>
+                    <li>Can lead to information disclosure (sensitive files, configuration).</li>
+                    <li>Can lead to remote code execution in some environments.</li>
+                    <li>Even if full RCE isn't possible, SSTI can reveal internal structure that makes further exploitation easier.</li>
+                  </ul>`
+      },
+
+      {
+        title: "Safe testing principles (don't ruin the challenge)",
+        content: `<ul>
+                    <li>Start with harmless probes: simple arithmetic or text that demonstrates evaluation without harming the host.</li>
+                    <li>Avoid destructive actions (file deletion, heavy commands). Practice restraint and learn the model instead.</li>
+                    <li>Use local sandboxes to practice before trying anything against a target you don't own.</li>
+                  </ul>`
+      },
+
+      {
+        title: "Template engines to be familiar with",
+        content: `<ul>
+                    <li><b>Jinja2</b> (Python/Flask) — common in CTFs and web apps.</li>
+                    <li><b>Twig</b> (PHP), <b>ERB</b> (Ruby), <b>Handlebars</b> (JS) — each has its syntax/behaviour.</li>
+                    <li>Knowing the engine helps: syntax clues, available builtins, and typical server patterns.</li>
+                  </ul>`
+      },
+
+      {
+        title: "How to detect templates in the wild",
+        content: `<ul>
+                    <li>Look for rendered user input that seems evaluated rather than escaped.</li>
+                    <li>Check for predictable markers in the output or the app's stack (HTTP headers, error messages).</li>
+                    <li>Sometimes the app reveals the framework in an error page or in JavaScript comments.</li>
+                  </ul>`
+      },
+
+      {
+        title: "DevTools & quick checks",
+        content: `<ul>
+                    <li>Network tab: capture requests/response headers and bodies.</li>
+                    <li>Application/Storage: inspect cookies and local storage values.</li>
+                    <li>Console: quick helpers to decode/encode values (for example base64).</li>
+                  </ul>`
+      },
+
+      {
+        title: "Probing methodology (non-spoiler)",
+        content: `<ol>
+                    <li>Observe: where is user input shown back to you? Which parameter or field?</li>
+                    <li>Probe: use harmless template expressions to confirm evaluation behaviour.</li>
+                    <li>Enumerate: once you know the engine evaluates code, learn what builtin objects/functions are accessible — without performing damaging operations.</li>
+                    <li>Exploit carefully: chain knowledge into a proof-of-concept that demonstrates an impact (info leak, auth bypass) without unnecessary damage.</li>
+                  </ol>`
+      },
+
+      {
+        title: "Common defensive patterns (what devs should do)",
+        content: `<ul>
+                    <li>Never render raw user input as a template — prefer template variables bound to server-side values.</li>
+                    <li>Escape/sanitize user content for the target context (HTML, JS, CSS).</li>
+                    <li>Use template engine sandboxes or restricted environments when available.</li>
+                    <li>Avoid template features that let templates import or execute arbitrary objects/functions.</li>
+                  </ul>`
+      },
+
+      {
+        title: "Server side best practices",
+        content: `<ul>
+                    <li>Keep secret material out of templates; don't expose sensitive objects to the template context.</li>
+                    <li>Log and rate-limit suspicious requests; alert on unusual template errors or stack traces.</li>
+                    <li>Apply least privilege to the process running the app (file access, system commands).</li>
+                  </ul>`
+      },
+
+      {
+        title: "How this maps to OWASP & CWE",
+        content: `<ul>
+                    <li><strong>OWASP A01 / A07</strong>: Broken Access Control & Authentication issues can appear together with template flaws when developers place trust incorrectly.</li>
+                    <li>CWEs such as improper authentication, reliance on client data, or unsafe use of language features are commonly relevant.</li>
+                    <li>References below point to official guidance for triage and fixes.</li>
+                  </ul>`
+      },
+
+      {
+        title: "Tooling you'll rely on",
+        content: `<ul>
+                    <li><strong>Browser DevTools</strong> — first line for inspection.</li>
+                    <li><strong>Burp/ZAP</strong> — intercept, modify, and replay requests.</li>
+                    <li><strong>curl/httpie</strong> — scripted proofs of concept.</li>
+                    <li><strong>Decoders</strong> (base64, URL) and quick REPLs to test transformations.</li>
+                  </ul>`
+      },
+
+      {
+        title: "Ethics & scope",
+        content: `<p>Always practice within authorised scopes (CTF targets or lab environments). When working on real systems, avoid destructive actions — report issues responsibly.</p>`
+      },
+
+      {
+        title: "References (CVE / OWASP / CWE)",
+        content: `
+          <ul>
+            <li><a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">OWASP Top Ten</a></li>
+            <li><a href="https://cwe.mitre.org" target="_blank" rel="noopener noreferrer">MITRE CWE Catalog</a></li>
+            <li><a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer">NVD / CVE database</a></li>
+            <li>
+              <strong>Payloads & testing reference (educational)</strong> —
+              <a href="https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/?utm_source=chatgpt.com"
+                target="_blank" rel="noopener noreferrer">
+                PayloadsAllTheThings: SSTI Cheatsheet
+              </a>
+              <div style="margin-top:8px; color:var(--muted); font-size:0.9em;">
+                Note: Use payload lists for learning and local lab testing only. Avoid destructive actions on live targets.
+              </div>
+            </li>
+          </ul>
+          <p>These resources will help you map observed behaviour to risk categories and mitigations.</p>
+        `
+}
+,
+
+      {
+        title: "Developer fixes recap",
+        content: `<ul>
+                    <li>Do not evaluate user input as template code.</li>
+                    <li>Render user content with proper escaping and use server-side state for sensitive decisions.</li>
+                    <li>Limit what template contexts can access; avoid exposing OS/file APIs or critical objects.</li>
+                  </ul>`
+      },
+
+      {
+        title: "How to practice safely",
+        content: `<ol>
+                    <li>Spin up a local app that uses a common template engine and practise with intentionally vulnerable examples.</li>
+                    <li>Recreate safe, controlled scenarios before testing live CTF tasks.</li>
+                    <li>Share findings as proof-of-concepts that demonstrate impact without revealing destructive details.</li>
+                  </ol>`
+      },
+
+      {
+        title: "Challenge overview (non-spoiler)",
+        content: `<p>The CTF task you'll attempt later is intentionally focused: it's designed to teach you how template engines behave and how server trust can be misapplied.</p>
+                  <p>Goal: apply the concepts above to discover a server-side misconfiguration or exposure, then produce a controlled proof-of-concept demonstrating the issue.</p>`
+      },
+
+      {
+        title: "What next — a suggested playbook",
+        content: `<ol>
+                    <li>Explore the UI: find inputs that are reflected back in responses.</li>
+                    <li>Confirm evaluation with harmless probes.</li>
+                    <li>Enumerate what the template environment exposes (read-only exploration; be ethical).</li>
+                    <li>Construct a minimal, non-destructive PoC that proves the issue.</li>
+                  </ol>`
+      },
+
+      {
+        title: "Further reading & learning paths",
+        content: `<ul>
+                    <li>Read OWASP pages on Injection and Broken Access Control.</li>
+                    <li>Practice on deliberately vulnerable VMs/labs (e.g., WebGoat variants, Mutillidae, Juice Shop).</li>
+                    <li>Review secure template usage guides for your framework (Flask/Django/PHP/etc.).</li>
+                  </ul>`
+      },
+
+      {
+        title: "Join the challenge — Good luck!",
+        content: `<p>🎯 You now have the mental model: what template engines do, how to safely probe them, and how to think like the server. Go explore the CTF — learn, practice, and report responsibly.</p>
+                  <p>Have fun — and if you want a follow-up deck that walks through safe lab examples (local only), say the word and I’ll prepare one that you can run on your machine.</p>`
+      }
     ];
 
     let step = 0;
