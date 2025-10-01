@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Web Challenges Story — HTML Slides</title>
+  <title>Web Challenges Story  HTML Slides</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -85,7 +85,7 @@
     title: "What is a vulnerability?",
     content: `<p>A vulnerability is a <b>weakness or flaw</b> in a computer system or program that could let someone cause problems. </p>
               <ul>
-                <li>Example: a door with a broken lock — anyone could walk in.</li>
+                <li>Example: a door with a broken lock  anyone could walk in.</li>
                 <li>In computers: a program with a missing check could let attackers steal or change data.</li>
                 <li>A vulnerability is just the weak spot. An <i>attack</i> happens when someone takes advantage of it.</li>
               </ul>`
@@ -96,14 +96,14 @@
     content: `<p>Injection happens when <b>untrusted input</b> is mixed into code or commands in a way the program did not expect.</p>
               <ul>
                 <li>Example: If you ask a calculator for "2+2" that’s fine, but if you sneak in "delete everything" and it runs that, it’s a problem.</li>
-                <li>In web apps, injection means user input changes how the server behaves — instead of just being stored or shown.</li>
+                <li>In web apps, injection means user input changes how the server behaves  instead of just being stored or shown.</li>
                 <li>Different types: SQL Injection, Command Injection, Template Injection, etc.</li>
               </ul>`
   },
 
   {
     title: "Welcome to STL CTF 2025",
-    content: `<p>Welcome! This session will give you the basic ideas you need to explore a simple web app safely. No prior web or security experience required — we'll build step by step.</p>`
+    content: `<p>Welcome! This session will give you the basic ideas you need to explore a simple web app safely. No prior web or security experience required  we'll build step by step.</p>`
   },
 
   {
@@ -121,7 +121,7 @@
     content: `<ul>
                 <li>A request is what your browser sends: it has a method (GET/POST), a path (which page), headers, and sometimes a body.</li>
                 <li>A response is what the server sends back: it has a status (200, 404, etc.), headers, and a body (usually HTML).</li>
-                <li>Use the browser Network panel to see what you send and what the server returns — it helps you follow the app's behavior.</li>
+                <li>Use the browser Network panel to see what you send and what the server returns  it helps you follow the app's behavior.</li>
               </ul>`
   },
 
@@ -132,7 +132,7 @@
   },
 
   {
-    title: "Server-Side Template Injection (SSTI) — simple idea",
+    title: "Server-Side Template Injection (SSTI)",
     content: `<ul>
                 <li>SSTI happens when user input is accidentally treated as template code by the server.</li>
                 <li>That can let someone make the template do things it wasn't meant to, like show hidden data.</li>
@@ -141,10 +141,10 @@
   },
 
   {
-    title: "Why SSTI matters (beginner view)",
+    title: "Why SSTI matters",
     content: `<ul>
                 <li>It can reveal sensitive information (files, config values).</li>
-                <li>In some setups, it can let an attacker make the server run commands — that is more serious.</li>
+                <li>In some setups, it can let an attacker make the server run commands  that is more serious.</li>
                 <li>Even small leaks help an attacker learn more about the app, which can lead to bigger problems.</li>
               </ul>`
   },
@@ -152,18 +152,18 @@
   {
     title: "Safe testing principles",
     content: `<ul>
-                <li>Start with harmless tests — e.g., simple math expressions that show whether something was evaluated.</li>
+                <li>Start with harmless tests  e.g., simple math expressions that show whether something was evaluated.</li>
                 <li>Do NOT run destructive commands (like deleting files) on real servers.</li>
                 <li>Practice in your own sandbox or CTF environment where you're allowed to test.</li>
               </ul>`
   },
 
   {
-    title: "Template engines to know (simple list)",
+    title: "Template engines to know",
     content: `<ul>
-                <li><b>Jinja2</b> — often used with Python/Flask.</li>
-                <li><b>Twig</b> — common with PHP frameworks. <b>ERB</b> — Ruby. <b>Handlebars</b> — JS.</li>
-                <li>Each engine has its own syntax and available functions — spotting the engine helps you pick the right tests.</li>
+                <li><b>Jinja2</b>  often used with Python/Flask.</li>
+                <li><b>Twig</b>  common with PHP frameworks. <b>ERB</b>  Ruby. <b>Handlebars</b>  JS.</li>
+                <li>Each engine has its own syntax and available functions  spotting the engine helps you pick the right tests.</li>
               </ul>`
   },
 
@@ -186,11 +186,11 @@
   },
 
   {
-    title: "A gentle probing method (non-spoiler)",
+    title: "A gentle probing method ",
     content: `<ol>
                 <li><strong>Observe</strong>: find where your input appears in the page.</li>
                 <li><strong>Probe</strong>: send harmless tests (like ` + "`{{1+1}}`" + ` or other engine-appropriate small expressions) to check if the server evaluated them.</li>
-                <li><strong>Learn</strong>: when evaluation is confirmed, test which objects or functions are visible — but avoid dangerous actions.</li>
+                <li><strong>Learn</strong>: when evaluation is confirmed, test which objects or functions are visible  but avoid dangerous actions.</li>
                 <li><strong>Demonstrate</strong>: create a minimal, non-destructive proof that something is wrong (for example, showing a hidden config value that is safe to demonstrate).</li>
               </ol>`
   },
@@ -205,7 +205,7 @@
   },
 
   {
-    title: "Server side best practices (simple)",
+    title: "Server side best practices",
     content: `<ul>
                 <li>Don't put secrets into templates or the template context.</li>
                 <li>Log unusual template errors and rate-limit suspicious requests.</li>
@@ -214,29 +214,29 @@
   },
 
   {
-    title: "How this maps to OWASP & CWE (high level)",
+    title: "How this maps to OWASP & CWE ",
     content: `<ul>
                 <li>Template issues relate to injection problems and to mistakes in how access or data trust is handled.</li>
-                <li>Learning these concepts helps you understand categories used by OWASP and CWE — useful for reading reports or guides later.</li>
+                <li>Learning these concepts helps you understand categories used by OWASP and CWE  useful for reading reports or guides later.</li>
               </ul>`
   },
 
   {
-    title: "Tools you'll use (beginner friendly)",
+    title: "Tools you'll use",
     content: `<ul>
-                <li><b>Browser DevTools</b> — inspect pages and network traffic.</li>
-                <li><b>curl / httpie</b> — send crafted requests from the command line.</li>
+                <li><b>Browser DevTools</b>  inspect pages and network traffic.</li>
+                <li><b>curl / httpie</b>  send crafted requests from the command line.</li>
                 <li>Simple decoders and a REPL (Python/Node) to try quick transformations.</li>
               </ul>`
   },
 
   {
     title: "Ethics & scope",
-    content: `<p>Only test systems where you have permission (CTF targets or personal labs). If you find a problem on a real site, do not exploit it — report it responsibly.</p>`
+    content: `<p>Only test systems where you have permission (CTF targets or personal labs). If you find a problem on a real site, do not exploit it  report it responsibly.</p>`
   },
 
   {
-    title: "Further reading (beginner picks)",
+    title: "Further reading",
     content: `<ul>
                 <li>Start with OWASP pages about Injection and Web Security (for concepts, not payloads).</li>
                 <li>Practice on intentionally vulnerable labs or CTF problems.</li>
@@ -246,7 +246,7 @@
 
   {
     title: "Challenge overview (non-spoiler)",
-    content: `<p>The upcoming CTF challenge is designed to teach you how template engines behave and how small mistakes in server trust can lead to information leaks. Your goal is to apply safe tests to discover a misconfiguration and make a careful, non-destructive proof-of-concept.</p>`
+    content: `<p>The CTF challenge is designed to teach you how template engines behave and how small mistakes in server trust can lead to information leaks. Your goal is to apply safe tests to discover a misconfiguration and make a careful, non-destructive proof-of-concept.</p>`
   },
 
   {
@@ -258,14 +258,7 @@
               </ol>`
   },
 
-  {
-    title: "Developer fixes recap (simple)",
-    content: `<ul>
-                <li>Don't evaluate user input as code in templates.</li>
-                <li>Escape user content and rely on server-side state for sensitive actions.</li>
-                <li>Limit what template contexts can access.</li>
-              </ul>`
-  },
+
 
   {
     title: "Good luck!",
