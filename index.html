@@ -339,9 +339,38 @@
     </section>
 
     <!-- Floating Action Button -->
-    <a href="#contact" class="fab" title="Contact Me">
+    <!-- Replace the existing FAB with this -->
+<div class="fab-container">
+    <button class="fab" id="contactFab" title="Contact Me">
         <span>✉️</span>
-    </a>
+    </button>
+</div>
+
+<!-- Add this modal HTML before the closing </body> tag -->
+<div class="contact-modal" id="contactModal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Contact Me</h3>
+            <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+            <iframe 
+                src="https://docs.google.com/forms/d/e/1FAIpQLScBxSOadEr2b6aimW2bDNCjEip7hyYCaV1aID_57GYkwaFI_Q/viewform?embedded=true" 
+                width="100%" 
+                height="100%" 
+                frameborder="0" 
+                marginheight="0" 
+                marginwidth="0"
+                id="googleForm"
+                title="Contact Form">
+                Loading…
+            </iframe>
+        </div>
+    </div>
+</div>
+
+
 
     <script>
         // Terminal animation
@@ -507,6 +536,48 @@
 
         console.log('🔒 Security Researcher Profile Loaded');
         console.log('💡 Navigate to ctf.html to start hacking!');
-    </script>
+
+        <!-- Add this script before the closing </body> tag -->
+        // Contact modal functionality
+        const contactFab = document.getElementById('contactFab');
+        const contactModal = document.getElementById('contactModal');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const googleForm = document.getElementById('googleForm');
+
+        function openModal() {
+            contactModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Fix iframe height on mobile
+            if (window.innerWidth < 768) {
+                googleForm.style.height = '600px';
+            }
+        }
+
+        function closeModal() {
+            contactModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners
+        contactFab.addEventListener('click', openModal);
+        modalOverlay.addEventListener('click', closeModal);
+        modalClose.addEventListener('click', closeModal);
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && contactModal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // Replace YOUR_FORM_ID with actual Google Form ID
+        // Instructions:
+        // 1. Create Google Form at forms.google.com
+        // 2. Click "Send" → "Embed" → Copy iframe src
+        // 3. Replace the src value above
+        console.log('📧 Contact form modal ready. Add your Google Form ID to activate!');
+   </script>
 </body>
 </html>
