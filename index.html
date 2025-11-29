@@ -1,363 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BhaChe — Blog</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="stylesheet" href="styles.css"/>
-  <meta name="description" content="Bhagya Chembakottu — PhD student at McGill University researching security awareness in web application development."/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhagya Chembakottu - Security Researcher</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Header with navigation -->
-  <header>
-    <nav aria-label="Primary">
-      <ul>
-        <li><a href="#bio">Bio</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#publications">Publications</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#activities">Activities</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- Intro Section with Typewriter Animation -->
-  <section id="intro">
-    <div class="container">
-      <div class="typewriter line1" aria-label="Name">Bhagya Chembakottu</div>
-      <div class="typewriter line2" aria-label="Role and research">PhD Student, Computer Science @ McGill</div>
-      <!-- <div class="typewriter line3" aria-label="Focus">Research: Security awareness in Web Application Development</div> -->
-    </div>
-  </section>
-
-  <!-- Bio Section: Image and Bio -->
-  <section id="bio">
-    <div class="bio-container">
-      <img src="assets/profile.jpg" alt="Portrait of Bhagya Chembakottu" class="bio-image" loading="lazy">
-      <section id="intro">
-  <p>
-    Hi, I'm <strong>Bhagya</strong>, passionate about defending digital frontiers.
-    I build safer software, one line of code at a time.
-    Welcome to my personal blog where I share my projects, publications, and activities.
-    I’m supervised by
-    <a href="https://www.cs.mcgill.ca/~martin/" target="_blank" rel="noopener">Prof. Martin P. Robillard</a>
-    as part of the
-    <a href="https://www.cs.mcgill.ca/~martin/students.html" target="_blank" rel="noopener">Software Technology Lab (STL) at McGill</a>.
-  </p>
-</section>
-
-      <p class="cta-row">
-        <!-- <a class="btn" href="./assets/Bhagya_Resume.pdf" download>Download Résumé (PDF)</a> -->
-        <a class="btn ghost" href="https://www.linkedin.com/in/bhagya-c/" target="_blank" rel="noopener">LinkedIn</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects">
-    <h2>Projects</h2>
-
-    <ul class="cards">
-      <li class="card">
-        <h3>Usability of Static Application Security Testing Workflows</h3>
-        <p class="muted">Project aligned with SANER Conference 2025</p>
-        <p>Studying developer experience and usability of SAST workflows to improve adoption and effectiveness.</p>
-        <p class="tags">
-          <span class="badge">SAST</span>
-          <span class="badge">DevSecOps</span>
-          <span class="badge">Usability</span>
-        </p>
-      </li>
-
-      <li class="card">
-        <h3>Secbyz</h3>
-        <p>Privacy-enhanced technology example for POS systems that follows Quebec’s Bill 64 and PIPEDA requirements.</p>
-        <p class="tags">
-          <span class="badge">Privacy</span>
-          <span class="badge">Compliance</span>
-          <span class="badge">PIPEDA</span>
-        </p>
-      </li>
-
-      <li class="card">
-        <h3>Secure Actions</h3>
-        <p>Rule-based security testing for GitHub Actions in Python projects, informed by SLSA and supply-chain security principles.</p>
-        <p class="tags">
-          <span class="badge">CI/CD</span>
-          <span class="badge">SLSA</span>
-          <span class="badge">Supply Chain</span>
-        </p>
-      </li>
-
-      <li class="card">
-        <h3>AutoML systems with HPO and CASH</h3>
-        <p>End-to-end AutoML benchmark system to streamline model baselining for data scientists.</p>
-        <p class="tags">
-          <span class="badge">AutoML</span>
-          <span class="badge">HPO</span>
-          <span class="badge">MLOps</span>
-        </p>
-      </li>
-
-      <li class="card">
-        <h3>Decoding Gender Bias</h3>
-        <p>Scalar inference method to analyze pragmatics in word embeddings and detect bias.</p>
-        <p class="tags">
-          <span class="badge">NLP</span>
-          <span class="badge">Fairness</span>
-        </p>
-      </li>
-
-      <li class="card">
-        <h3>JavaParser & AST generation</h3>
-        <p>Program analysis experiments using JavaParser and ASTs for quality and security checks.</p>
-        <p class="tags">
-          <span class="badge">Java</span>
-          <span class="badge">AST</span>
-        </p>
-      </li>
-
-      <li class="card">
-        <h3>Retrieval & Graph improvements</h3>
-        <p>Improved graph search and SharePoint taxonomy; built document similarity & knowledge graph retrieval for enterprise search.</p>
-        <p class="tags">
-          <span class="badge">IR</span>
-          <span class="badge">Knowledge Graphs</span>
-        </p>
-      </li>
-
-      <li class="card">
-        <h3>More</h3>
-        <p>Curriculum learning scaling analysis; Conversational model using BERT; Resume parsing with NLP/NER.</p>
-        <p class="tags">
-          <span class="badge">BERT</span>
-          <span class="badge">NLP</span>
-        </p>
-      </li>
-    </ul>
-  </section>
-
- <!-- Publications Section -->
-<section id="publications">
-  <h2>Publications</h2>
-  <ol class="pub-list">
-    <li class="pub-item">
-      <div class="pub-title">
-        Usability of Static Application Security Testing Workflows
-      </div>
-      <div class="pub-authors">
-        <strong class="me">Chembakottu, B.</strong>; Robillard, M. P.
-      </div>
-      <div class="pub-venue">
-        SANER 2025 Workshops (program listing).
-      </div>
-      <div class="pub-links">
-        <a href="https://conf.researchr.org/details/saner-2025/saner-2025-workshops-track/41/Usability-of-Static-Application-Security-Testing-Workflows"
-           target="_blank" rel="noopener">Workshop page</a>
-      </div>
-    </li>
-    <li class="pub-item">
-      <div class="pub-title">
-        A Large-Scale Exploratory Study of Android Sports Apps in the Google Play Store
-      </div>
-      <div class="pub-authors">
-        <strong class="me">Chembakottu, B.</strong>;Li, H.; Khomh, F.
-      </div>
-      <div class="pub-venue">
-        <em>Information and Software Technology</em>, 164, 107321, 2023.
-      </div>
-      <div class="pub-links">
-        <a href="https://www.sciencedirect.com/science/article/pii/S0950584923002230" target="_blank" rel="noopener">Publisher page</a>
-        <!-- If you later host a preprint/PDF, add it here -->
-      </div>
-    </li>
-
-    <li class="pub-item">
-      <div class="pub-title">
-        Studying the Practices of Deploying Machine Learning Projects on Docker
-      </div>
-      <div class="pub-authors">
-        Openja, M.; Majidi, F.; Khomh, F.; <strong class="me">Chembakottu, B.</strong>; Li, H.
-      </div>
-      <div class="pub-venue">
-        In: <em>Proceedings of the 26th Int’l Conf. on Evaluation and Assessment in Software Engineering (EASE ’22)</em>, pp. 190–200, 2022.
-      </div>
-      <div class="pub-links">
-        <a href="https://dl.acm.org/doi/10.1145/3530019.3530039" target="_blank" rel="noopener">ACM page</a>
-      </div>
-    </li>
-
-    <li class="pub-item">
-      <div class="pub-title">
-        Understanding User Perception of Mobile App Quality: A Large-Scale Multi-Dimension Study of the Reviews and Ratings of Android Sports Apps
-      </div>
-      <div class="pub-authors">
-        <strong class="me">Chembakottu, B.</strong>
-      </div>
-      <div class="pub-venue">
-        Master’s thesis, Polytechnique Montréal, 2023.
-      </div>
-      <div class="pub-links">
-        <a href="https://publications.polymtl.ca/53358/1/2023_BhagyaChembakottu.pdf" target="_blank" rel="noopener">PDF</a>
-      </div>
-    </li>
-
-    <!-- Optional: workshop paper that’s already public on the conference site -->
+    <!-- Binary background pattern -->
+    <div class="binary-bg" id="binaryBg"></div>
     
-  </ol>
-</section>
+    <!-- Security icon -->
+    <div class="security-icon" id="securityIcon">🔐</div>
 
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#bio" class="nav-link">Bio</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#publications" class="nav-link">Publications</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="ctf.html" class="nav-link">Learn CTF</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <!-- Experience Section -->
-  <section id="experience">
-    <h2>Experience</h2>
+    <!-- Terminal intro -->
+    <section id="intro" class="terminal-intro">
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <div class="terminal-title">security_researcher@bhagya:~$</div>
+                <div class="terminal-controls">
+                    <span class="terminal-dot" style="background: var(--terminal-blue);"></span>
+                    <span class="terminal-dot" style="background: var(--terminal-green);"></span>
+                    <span class="terminal-dot" style="background: var(--terminal-yellow);"></span>
+                </div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command" id="cmd1"></span>
+                    <span class="cursor" id="cursor1">█</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output" id="output1"></span>
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">$</span>
+                    <span class="command" id="cmd2"></span>
+                    <span class="cursor" id="cursor2">█</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="output" id="output2"></span>
+                </div>
+                <div class="terminal-line status-line">
+                    <span class="status">[SECURE] Profile loaded successfully</span>
+                    <span class="cursor" id="cursor3">█</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <div class="scroll-text">scroll to decrypt profile</div>
+        </div>
+    </section>
 
-    <div class="timeline">
-      <article>
-        <h3>Teaching Assistant — McGill University</h3>
-        <p class="muted">Aug 2024 – Dec 2024 · Montréal</p>
-        <ul>
-          <li>Assisted in Information & Application Security, Software Design Patterns (Java), Database Systems, and Network Science.</li>
+    <section id="bio">
+        <div class="bio-container">
+            <img src="assets/profile.jpg" alt="Bhagya Chembakottu" class="bio-image reveal">
+            <div class="bio-text reveal">
+                I'm a PhD student at McGill University focusing on <strong>security awareness in web application development</strong>. 
+                I research static application security testing (SAST), secure software engineering practices, and developer experience.
+            </div>
+            <div class="cta-row">
+                <a href="ctf.html" class="btn ctf-btn">🔓 Learn CTF</a>
+                <a href="#projects" class="btn ghost">View Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 class="section-title">Security Projects</h2>
+        <ul class="cards">
+            <li class="card reveal">
+                <h3>Usability of Static Application Security Testing Workflows</h3>
+                <p class="muted">Project aligned with SANER Conference 2025</p>
+                <p>Studying developer experience and usability of SAST workflows to improve adoption and effectiveness.</p>
+                <div class="tags">
+                    <span class="badge tag-sast">SAST</span>
+                    <span class="badge tag-devsecops">DevSecOps</span>
+                    <span class="badge tag-usability">Usability</span>
+                </div>
+            </li>
+            <li class="card reveal">
+                <h3>Secbyz</h3>
+                <p class="muted">Privacy-enhanced technology for POS systems</p>
+                <p>Follows Quebec's Bill 64 and PIPEDA requirements for privacy compliance.</p>
+                <div class="tags">
+                    <span class="badge tag-privacy">Privacy</span>
+                    <span class="badge tag-compliance">Compliance</span>
+                    <span class="badge tag-pipeda">PIPEDA</span>
+                </div>
+            </li>
+            <li class="card reveal">
+                <h3>Secure Actions</h3>
+                <p class="muted">Rule-based security testing for GitHub Actions</p>
+                <p>Security testing for Python projects, informed by SLSA and supply-chain security principles.</p>
+                <div class="tags">
+                    <span class="badge tag-cicd">CI/CD</span>
+                    <span class="badge tag-slsa">SLSA</span>
+                    <span class="badge tag-supply">Supply Chain</span>
+                </div>
+            </li>
+            <li class="card reveal">
+                <h3>AutoML systems with HPO and CASH</h3>
+                <p>End-to-end AutoML benchmark system to streamline model baselining for data scientists.</p>
+                <div class="tags">
+                    <span class="badge tag-automl">AutoML</span>
+                    <span class="badge tag-hpo">HPO</span>
+                    <span class="badge tag-mlops">MLOps</span>
+                </div>
+            </li>
+            <li class="card reveal">
+                <h3>Decoding Gender Bias</h3>
+                <p>Scalar inference method to analyze pragmatics in word embeddings and detect bias.</p>
+                <div class="tags">
+                    <span class="badge tag-nlp">NLP</span>
+                    <span class="badge tag-fairness">Fairness</span>
+                </div>
+            </li>
+            <li class="card reveal">
+                <h3>JavaParser & AST generation</h3>
+                <p>Program analysis experiments using JavaParser and ASTs for quality and security checks.</p>
+                <div class="tags">
+                    <span class="badge tag-java">Java</span>
+                    <span class="badge tag-ast">AST</span>
+                </div>
+            </li>
+            <li class="card reveal">
+                <h3>Retrieval & Graph improvements</h3>
+                <p>Improved graph search and SharePoint taxonomy; built document similarity & knowledge graph retrieval.</p>
+                <div class="tags">
+                    <span class="badge tag-ir">IR</span>
+                    <span class="badge tag-knowledge">Knowledge Graphs</span>
+                </div>
+            </li>
+            <li class="card reveal">
+                <h3>More</h3>
+                <p>Curriculum learning scaling analysis; Conversational model using BERT; Resume parsing with NLP/NER.</p>
+                <div class="tags">
+                    <span class="badge tag-bert">BERT</span>
+                    <span class="badge tag-nlp">NLP</span>
+                </div>
+            </li>
         </ul>
-      </article>
+    </section>
 
-      <article>
-        <h3>Data Science Intern — Ericsson</h3>
-        <p class="muted">Jan 2023 – Apr 2024 · Montréal</p>
-        <ul>
-          <li>Improved workflows with MLOps/RLOps using MLflow; integrated Kubeflow on Kubernetes via Helm.</li>
-          <li>Built an end-to-end AutoML system for baseline benchmarks.</li>
+    <div class="section-divider"></div>
+
+    <section id="publications">
+        <h2 class="section-title">Research Publications</h2>
+        <ol class="pub-list">
+            <li class="pub-item reveal">
+                <div class="pub-title">Usability of Static Application Security Testing Workflows</div>
+                <div class="pub-authors"><span class="me">B. Chembakottu</span>, H. Li, F. Khomh</div>
+                <div class="pub-venue">SANER 2025 Workshops (program listing)</div>
+                <div class="pub-links">
+                    <a href="#">📄 Paper</a>
+                    <a href="#">🔍 DOI</a>
+                </div>
+            </li>
+            <li class="pub-item reveal">
+                <div class="pub-title">A Large-Scale Exploratory Study of Android Sports Apps in the Google Play Store</div>
+                <div class="pub-authors"><span class="me">B. Chembakottu</span>, H. Li, F. Khomh</div>
+                <div class="pub-venue"><em>Information and Software Technology</em>, 164, 107321, 2023</div>
+                <div class="pub-links">
+                    <a href="#">📄 Paper</a>
+                    <a href="#">📊 Citations (15)</a>
+                </div>
+            </li>
+            <li class="pub-item reveal">
+                <div class="pub-title">Studying the Practices of Deploying Machine Learning Projects on Docker</div>
+                <div class="pub-authors">M. Openja, F. Majidi, F. Khomh, <span class="me">B. Chembakottu</span>, H. Li</div>
+                <div class="pub-venue">Proceedings of the 26th Int'l Conf. on Evaluation and Assessment in Software Engineering (EASE '22), pp. 190–200, 2022</div>
+                <div class="pub-links">
+                    <a href="#">📄 Paper</a>
+                </div>
+            </li>
+            <li class="pub-item reveal">
+                <div class="pub-title">Understanding User Perception of Mobile App Quality: A Large-Scale Multi-Dimension Study</div>
+                <div class="pub-authors"><span class="me">B. Chembakottu</span></div>
+                <div class="pub-venue">Master's thesis, Polytechnique Montréal, 2023</div>
+                <div class="pub-links">
+                    <a href="#">📄 Thesis</a>
+                </div>
+            </li>
+        </ol>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="experience">
+        <h2 class="section-title">Professional Experience</h2>
+        <div class="timeline">
+            <article class="timeline-item reveal">
+                <h3>Teaching Assistant — McGill University</h3>
+                <div class="timeline-date">Aug 2024 – Dec 2024 · Montréal</div>
+                <p>Assisted in Information & Application Security, Software Design Patterns (Java), Database Systems, and Network Science.</p>
+            </article>
+            <article class="timeline-item reveal">
+                <h3>Data Science Intern — Ericsson</h3>
+                <div class="timeline-date">Jan 2023 – Apr 2024 · Montréal</div>
+                <p>Improved workflows with MLOps/RLOps using MLflow; integrated Kubeflow on Kubernetes via Helm. Built an end-to-end AutoML system for baseline benchmarks.</p>
+            </article>
+            <article class="timeline-item reveal">
+                <h3>AI Engineer Intern — National Bank of Canada</h3>
+                <div class="timeline-date">Nov 2021 – May 2022 · Montréal</div>
+                <p>Developed document similarity and knowledge-graph retrieval to improve employee search experience.</p>
+            </article>
+            <article class="timeline-item reveal">
+                <h3>Practical Work Supervisor — Polytechnique Montréal</h3>
+                <div class="timeline-date">May 2019 – Present · Montréal</div>
+                <p>Tutored Software Quality Assurance (maintainability, performance, security testing with JUnit, JMeter, JProfiler/VisualVM, ZAP/SonarCloud).</p>
+            </article>
+            <article class="timeline-item reveal">
+                <h3>Artificial Intelligence Engineer — impress.ai</h3>
+                <div class="timeline-date">May 2019 – Apr 2021 · Kochi</div>
+                <p>Led a small AI team; met with clients to define problems; proposed algorithms and architectures. Work mentioned in Singapore Parliament for reducing man-hours using technology.</p>
+            </article>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="education">
+        <h2 class="section-title">Education</h2>
+        <ul class="edu">
+            <li class="reveal">
+                <strong>Ph.D., Computer Science</strong> — McGill University, Montréal (Sep 2023 – Sep 2027) · CGPA: 3.92/4
+                <br>Research: Security awareness in Web Application Development
+            </li>
+            <li class="reveal">
+                <strong>M.A.Sc., Computer & Software Engineering</strong> — Polytechnique Montréal (May 2021 – May 2023) · CGPA: 4/4
+            </li>
+            <li class="reveal">
+                <strong>B.Eng., Computer Science & Engineering</strong> — Cochin University of Science & Technology (Jul 2015 – May 2019) · CGPA: 9.5/10
+            </li>
         </ul>
-      </article>
+    </section>
 
-      <article>
-        <h3>AI Engineer Intern — National Bank of Canada</h3>
-        <p class="muted">Nov 2021 – May 2022 · Montréal</p>
-        <ul>
-          <li>Developed document similarity and knowledge-graph retrieval to improve employee search experience.</li>
+    <div class="section-divider"></div>
+
+    <section id="skills">
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="skills-grid">
+            <!-- In the #skills section, replace the AI/ML tools paragraph with: -->
+
+          <div class="skill-category reveal">
+              <h3>AI/ML Stack</h3>
+              <div class="tags">
+                  <span class="badge">Python</span>
+                  <span class="badge">PyTorch</span>
+                  <span class="badge">TensorFlow</span>
+                  <span class="badge">Scikit-learn</span>
+                  <span class="badge">NLTK</span>
+                  <span class="badge">SpaCy</span>
+                  <span class="badge">Django</span>
+                  <span class="badge">Docker</span>
+                  <span class="badge">Kafka</span>
+                  <span class="badge">Spring</span>
+              </div>
+          </div>
+
+          <div class="skill-category reveal">
+              <h3>Security Tooling</h3>
+              <div class="tags">
+                  <span class="badge">Git</span>
+                  <span class="badge">Jira</span>
+                  <span class="badge">CodeQL</span>
+                  <span class="badge">SonarCloud</span>
+                  <span class="badge">OWASP ZAP</span>
+                  <span class="badge">Burp Suite</span>
+                  <span class="badge">Metasploit</span>
+              </div>
+          </div>
+
+          <div class="skill-category reveal">
+              <h3>Cloud & DevOps</h3>
+              <div class="tags">
+                  <span class="badge">Kubernetes</span>
+                  <span class="badge">Helm</span>
+                  <span class="badge">MLflow</span>
+                  <span class="badge">Kubeflow</span>
+                  <span class="badge">AWS</span>
+                  <span class="badge">GCP</span>
+              </div>
+          </div>
+
+          <div class="skill-category reveal">
+              <h3>Languages</h3>
+              <div class="tags">
+                  <span class="badge">English (Advanced)</span>
+                  <span class="badge">French (Intermediate)</span>
+                  <span class="badge">Malayalam (Native)</span>
+                  <span class="badge">Tamil (Advanced)</span>
+                  <span class="badge">Hindi (Advanced)</span>
+              </div>
+          </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section id="activities">
+        <h2 class="section-title">Activities & Outreach</h2>
+        <ul class="reveal">
+            <li>Teaching, mentoring, and open-source experiments in secure software engineering.</li>
+            <li><a href="stf.html">Presentation for STL CTF 2025</a></li>
+            <li><a href="interactive_3col_network.html">Companion tutorials dependency</a></li>
         </ul>
-      </article>
+    </section>
 
-      <article>
-        <h3>Practical Work Supervisor — Polytechnique Montréal</h3>
-        <p class="muted">May 2019 – Present · Montréal</p>
-        <ul>
-          <li>Tutored Software Quality Assurance (maintainability, performance, security testing with JUnit, JMeter, JProfiler/VisualVM, ZAP/SonarCloud).</li>
+    <div class="section-divider"></div>
+
+    <section id="contact">
+        <h2 class="section-title">Contact</h2>
+        <ul class="contact reveal">
+            <li>📧 <a href="mailto:bhagya.chembakottu@mail.mcgill.ca">bhagya.chembakottu@mail.mcgill.ca</a></li>
+            <li>🔗 <a href="https://www.linkedin.com/in/bhagya-chembakottu/">LinkedIn</a></li>
+            <li>💻 <a href="https://github.com/bhagya-che">GitHub</a></li>
         </ul>
-      </article>
+    </section>
 
-      <article>
-        <h3>Artificial Intelligence Engineer — impress.ai</h3>
-        <p class="muted">May 2019 – Apr 2021 · Kochi</p>
-        <ul>
-          <li>Led a small AI team; met with clients to define problems; proposed algorithms and architectures.</li>
-          <li>Work mentioned in Singapore Parliament for reducing man-hours using technology.</li>
-        </ul>
-      </article>
+    <!-- Floating Action Button -->
+    <a href="#contact" class="fab" title="Contact Me">
+        <span>✉️</span>
+    </a>
 
-      <article>
-        <h3>Research Intern — IIT Guwahati</h3>
-        <p class="muted">May 2018 – July 2018 · Assam</p>
-        <ul>
-          <li>User-centric computing & networking lab; computer-network projects.</li>
-        </ul>
-      </article>
+    <script>
+        // Terminal animation
+        const commands = [
+            { cmd: 'whoami', output: 'Bhagya Chembakottu' },
+            { cmd: 'cat role.txt', output: 'PhD Student, Computer Science @ McGill' }
+        ];
 
-      <article>
-        <h3>Research Intern — National Ilan University</h3>
-        <p class="muted">Feb 2018 – Mar 2018 · Ilan, Taiwan</p>
-        <ul>
-          <li>Worked on ML, computer graphics, and computer networks with NIU faculty.</li>
-        </ul>
-      </article>
-    </div>
-  </section>
+        function typeCommand(element, text, speed = 50) {
+            return new Promise(resolve => {
+                let i = 0;
+                const timer = setInterval(() => {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    if (i >= text.length) {
+                        clearInterval(timer);
+                        setTimeout(resolve, 300);
+                    }
+                }, speed);
+            });
+        }
 
-  <!-- Education Section -->
-  <section id="education">
-    <h2>Education</h2>
-    <ul class="edu">
-      <li>
-        <strong>Ph.D., Computer Science</strong> — McGill University, Montréal (Sep 2023 – Sep 2027) · CGPA: 3.92/4  
-        <div class="muted">Research: Security awareness in Web Application Development</div>
-      </li>
-      <li>
-        <strong>M.A.Sc., Computer & Software Engineering</strong> — Polytechnique Montréal (May 2021 – May 2023) · CGPA: 4/4
-      </li>
-      <li>
-        <strong>B.Eng., Computer Science & Engineering</strong> — Cochin University of Science & Technology (Jul 2015 – May 2019) · CGPA: 9.5/10
-      </li>
-    </ul>
-  </section>
+        async function runTerminalAnimation() {
+            const cmd1 = document.getElementById('cmd1');
+            const output1 = document.getElementById('output1');
+            const cursor1 = document.getElementById('cursor1');
+            const cmd2 = document.getElementById('cmd2');
+            const output2 = document.getElementById('output2');
+            const cursor2 = document.getElementById('cursor2');
+            const cursor3 = document.getElementById('cursor3');
 
-  <!-- Skills Section -->
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills-grid">
-      <div>
-        <h3>Programming</h3>
-        <p class="tags">
-          <span class="badge">Java</span><span class="badge">Python</span><span class="badge">C</span><span class="badge">R</span>
-        </p>
-      </div>
-      <div>
-        <h3>AI/ML</h3>
-        <p class="tags">
-          <span class="badge">AI/ML/NLP</span><span class="badge">Django</span><span class="badge">Docker</span><span class="badge">Kafka</span><span class="badge">Spring</span>
-        </p>
-      </div>
-      <div>
-        <h3>Tooling</h3>
-        <p class="tags">
-          <span class="badge">Git</span><span class="badge">Jira</span><span class="badge">CodeQL</span><span class="badge">SonarCloud</span><span class="badge">OWASP ZAP</span>
-        </p>
-      </div>
-      <div>
-        <h3>Languages</h3>
-        <p class="tags">
-          <span class="badge">English (Advanced)</span>
-          <span class="badge">French (Intermediate)</span>
-          <span class="badge">Malayalam (Native)</span>
-          <span class="badge">Tamil (Advanced)</span>
-          <span class="badge">Hindi (Advanced)</span>
-          <span class="badge">Punjabli (Intermediate)</span>
+            cursor1.style.display = 'inline-block';
+            cursor2.style.display = 'none';
+            cursor3.style.display = 'none';
 
+            await typeCommand(cmd1, commands[0].cmd);
+            cursor1.style.display = 'none';
+            
+            output1.textContent = commands[0].output;
+            output1.style.opacity = '1';
+            
+            cursor2.style.display = 'inline-block';
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await typeCommand(cmd2, commands[1].cmd);
+            cursor2.style.display = 'none';
+            
+            output2.textContent = commands[1].output;
+            output2.style.opacity = '1';
+            
+            cursor3.style.display = 'inline-block';
+            
+            setInterval(() => {
+                cursor3.style.opacity = cursor3.style.opacity === '0' ? '1' : '0';
+            }, 500);
+        }
 
+        window.addEventListener('load', () => {
+            setTimeout(runTerminalAnimation, 500);
+        });
 
-        </p>
-      </div>
-    </div>
-  </section>
+        // Parallax scroll effects
+        const intro = document.getElementById('intro');
+        const binaryBg = document.getElementById('binaryBg');
+        const securityIcon = document.getElementById('securityIcon');
 
-  <!-- Other Activities Section -->
-  <section id="activities">
-  <h2>Other Activities</h2>
-  <ul>
-    <li>Teaching, mentoring, and open-source experiments in secure software engineering.</li>
-  
-    <li>
-  <a href="stf.html" class="btn">Presentation for STL CTF 2025</a>
-</li>
-<li>
-  <a href="interactive_3col_network.html" class="btn">Companion tutorials dependency</a>
-</li>
-  </ul>
-</section>
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const introHeight = intro.offsetHeight;
+            
+            if (scrollY < introHeight) {
+                intro.style.transform = `translateY(${scrollY * 0.5}px)`;
+                intro.style.opacity = 1 - (scrollY / introHeight);
+                
+                binaryBg.style.transform = `translateY(${-scrollY * 0.3}px)`;
+                
+                securityIcon.style.transform = `translate(${scrollY * 0.2}px, ${-scrollY * 0.1}px) rotate(${scrollY * 0.1}deg)`;
+            }
+            
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (scrollIndicator) {
+                scrollIndicator.style.opacity = 1 - (scrollY / 300);
+            }
+        });
 
+        // Mouse movement effect
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            
+            securityIcon.style.transform += ` translate(${x}px, ${y}px)`;
+        });
 
+        // Reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-  <!-- Auto-scroll script: scrolls to the bio section after the typewriter animations complete -->
-  <script>
-    window.addEventListener('load', function () {
-      // Delay matches the cumulative typewriter timing below (2s each + 1s/3s/5s offsets).
-      setTimeout(function () {
-        document.getElementById('bio').scrollIntoView({ behavior: "smooth" });
-      }, 7000);
-    });
-  </script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Skill bars animation
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const fills = entry.target.querySelectorAll('.progress-fill');
+                    fills.forEach(fill => {
+                        const width = fill.getAttribute('data-width');
+                        fill.style.width = width;
+                    });
+                    skillObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.skill-bars').forEach(el => {
+            skillObserver.observe(el);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Generate binary pattern
+        function generateBinaryPattern() {
+            const binaryBg = document.getElementById('binaryBg');
+            const columns = Math.floor(window.innerWidth / 20);
+            const rows = Math.floor(window.innerHeight / 20);
+            
+            let binaryText = '';
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                    binaryText += Math.random() > 0.5 ? '1' : '0';
+                }
+                binaryText += '\n';
+            }
+            
+            binaryBg.textContent = binaryText;
+        }
+
+        generateBinaryPattern();
+        window.addEventListener('resize', generateBinaryPattern);
+
+        console.log('🔒 Security Researcher Profile Loaded');
+        console.log('💡 Navigate to ctf.html to start hacking!');
+    </script>
 </body>
 </html>
