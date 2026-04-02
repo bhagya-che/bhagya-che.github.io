@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vulnerable Gradebook</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 400px; margin: 0 auto; }
+        .hidden { display: none; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #0056b3; }
+        input { padding: 10px; margin: 10px 0; width: 80%; }
+        .alert { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="login-screen">
+    <h2>Student Login</h2>
+    <p>Enter your Student ID to view grades.</p>
+    <p><i>(Hint: You are Bob. Your ID is 102)</i></p>
+    <input type="text" id="username_input" placeholder="Enter Student ID (e.g., 102)">
+    <br>
+    <button onclick="login()">Login</button>
+</div>
+
+<div class="container hidden" id="dashboard-screen">
+    <h2>Grade Report</h2>
+    <div id="result_area">Loading...</div>
+    <br>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+    // --- 1. THE FAKE DATABASE ---
+    const database = {
+        "101": { name: "Alice", grade: "A+", secret: "Teacher's Pet" },
+        "102": { name: "Bob",   grade: "F",  secret: "Skipped 5 classes" },
+        "103": { name: "Eve",   grade: "C",  secret: "Average Student" }
+    };
+
+    // --- 2. ON PAGE LOAD: CHECK URL ---
+    // This runs every time the page refreshes or the URL changes
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const loggedInUser = localStorage.getItem("user_session"); // Simulates a "Cookie"
+        const requestedId = urlParams.get('id'); // This is the ?id=102 part
+
+        // If user is "logged in" and requesting a specific ID
+        if (loggedInUser && requestedId) {
+            showDashboard(requestedId);
+        }
+    };
+
+    // --- 3. THE LOGIN FUNCTION ---
+    function login() {
+        const userId = document.getElementById("username_input").value;
+        
+        if (database[userId]) {
+            // Save "session" (Simulating a cookie)
+            localStorage.setItem("user_session", userId);
+            
+            // ❌ VULNERABILITY HERE:
+            // We are redirecting the browser to include the ID in the URL.
+            // This exposes the ID to manipulation.
+            window.location.search = `?id=${userId}`; 
+        } else {
+            alert("User ID not found!");
+        }
+    }
+
+    // --- 4. THE DISPLAY FUNCTION ---
+    function showDashboard(id) {
+        document.getElementById("login-screen").classList.add("hidden");
+        document.getElementById("dashboard-screen").classList.remove("hidden");
+
+        const record = database[id];
+
+        // ❌ VULNERABILITY:
+        // We are showing whatever ID is in the URL (id), 
+        // regardless of who is logged in (localStorage).
+        if (record) {
+            document.getElementById("result_area").innerHTML = `
+                <p>Student Name: <b>${record.name}</b></p>
+                <h1 style="color: ${record.grade === 'F' ? 'red' : 'green'}">${record.grade}</h1>
+                <p><i>Secret Note: ${record.secret}</i></p>
+            `;
+        } else {
+            document.getElementById("result_area").innerHTML = "<p class='alert'>Student ID not found in database.</p>";
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("user_session");
+        window.location.href = window.location.pathname; // Reset URL
+    }
+</script>
+
+</body>
+</html>

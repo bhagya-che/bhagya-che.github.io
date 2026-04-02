@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web App CWE Training Lab</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --soft: #334155;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --card: #ffffff;
+      --card-text: #111827;
+      --border: #dbeafe;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #111827 45%, #1e293b);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-card, .score-card, .panel {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.22);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    .title-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      background: rgba(56, 189, 248, 0.12);
+      border-radius: 16px;
+      font-size: 24px;
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+    }
+
+    .chip {
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    .progress-wrap { margin-top: 12px; }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 14px;
+      background: rgba(148, 163, 184, 0.18);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      transition: width 0.25s ease;
+    }
+
+    .score-list { display: grid; gap: 10px; }
+
+    .score-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .score-status {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pending { background: rgba(148,163,184,0.14); color: #e2e8f0; }
+    .solved { background: rgba(34,197,94,0.16); color: #bbf7d0; }
+
+    .challenge-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(148,163,184,0.18);
+      border-radius: 16px;
+      color: var(--text);
+      padding: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.2s ease;
+    }
+
+    .tab:hover, .tab.active {
+      border-color: rgba(56, 189, 248, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15);
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.12);
+      color: #bae6fd;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .website-card {
+      background: #f8fafc;
+      color: var(--card-text);
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      padding: 18px;
+    }
+
+    .mini-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 14px;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      background: white;
+      color: #111827;
+      outline: none;
+    }
+
+    textarea { min-height: 120px; resize: vertical; }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 11px 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary { background: #0ea5e9; color: white; }
+    .secondary { background: #e2e8f0; color: #0f172a; }
+    .ghost { background: transparent; color: var(--text); border: 1px solid rgba(148, 163, 184, 0.25); }
+    .danger-lite { background: #fee2e2; color: #991b1b; }
+    .success-lite { background: #dcfce7; color: #166534; }
+
+    .result-box, .help-box {
+      margin-top: 14px;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 14px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+    }
+
+    .codebox {
+      width: 100%;
+      min-height: 460px;
+      background: #020617;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      border-radius: 18px;
+      padding: 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    .code-note {
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      color: var(--muted);
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .hint-box {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      color: #fde68a;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .attempts {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 100;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-card {
+      width: min(460px, 100%);
+      background: white;
+      color: #111827;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 24px 50px rgba(0,0,0,0.24);
+    }
+
+    .modal-card h3 { margin-bottom: 8px; }
+
+    .muted { color: var(--muted); }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .preview-box {
+      border: 1px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 70px;
+      background: #fff;
+    }
+
+    .safe-text {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    @media (max-width: 1100px) {
+      .hero, .main { grid-template-columns: 1fr; }
+      .challenge-tabs { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .challenge-tabs, .row-2 { grid-template-columns: 1fr; }
+      .btn-row { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="hero-card">
+        <div class="title-row">
+          <div class="icon">🐞</div>
+          <div>
+            <h1>BUNFI</h1>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span><strong>Progress</strong></span>
+            <span id="progressLabel">0/100 · New session</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="score-card">
+        <h3>Scoreboard</h3>
+        <p class="muted">Complete each fix to unlock points.</p>
+        <div class="score-list" id="scoreList"></div>
+      </div>
+    </div>
+
+    <div class="challenge-tabs" id="challengeTabs"></div>
+
+    <div class="main">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 id="scenarioTitle">Interactive Website</h2>
+            <p id="scenarioDescription" class="muted"></p>
+          </div>
+          <span class="badge" id="scenarioBadge">CWE</span>
+        </div>
+        <div class="website-card" id="websitePanel"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Fix the Code</h2>
+            <p class="muted">Edit the vulnerable snippet. Click <strong>Fixed</strong> when you think the issue is solved.</p>
+          </div>
+          <span class="badge" id="pointsBadge">20 points</span>
+        </div>
+
+        <div class="code-note">
+          These are  examples for learning. They are simplified and intentionally incomplete, so you can focus on the security concept.
+        </div>
+
+        <textarea class="codebox" id="codeEditor" spellcheck="false"></textarea>
+
+        <div class="btn-row">
+          <button class="primary" id="fixedBtn">Fixed ✅</button>
+          <button class="secondary" id="hintBtn">Hint 💡</button>
+          <button class="ghost" id="solutionBtn">Show Sample Fix</button>
+          <button class="ghost" id="resetBtn">Reset</button>
+          <button class="ghost" id="resetAllBtn">Reset All Progress</button>
+        </div>
+
+        <div class="attempts" id="attemptsText">Attempts: 0</div>
+        <div id="hintBox"></div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Progress is saved in your browser with localStorage. You can close the page and continue later on the same browser.
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h3 id="modalTitle">Nice work</h3>
+      <p id="modalText">You solved the challenge.</p>
+      <div class="btn-row">
+        <button class="primary" id="modalClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'cwe-training-lab-progress-v1';
+
+    const challenges = [
+      {
+        id: 'sqli',
+        title: 'SQL Injection',
+        cwe: 'CWE-89',
+        points: 20,
+        scenarioTitle: 'Demo Login Page',
+        scenarioDescription: 'Try regular input and attack-style input on the left. You then fix the code on the right.',
+        hint: 'Do not build SQL with string concatenation. Use parameterized queries and avoid comparing raw passwords.',
+        vulnerableCode: `# Vulnerable Python login handler\ndef login(username, password, db):\n    query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'"\n    result = db.execute(query)\n    return len(result) > 0\n`,
+        secureCode: `# Safer Python login handler\ndef login(username, password, db):\n    query = "SELECT * FROM users WHERE username = %s AND password_hash = %s"\n    result = db.execute(query, [username, hash_password(password)])\n    return len(result) > 0\n`,
+        check(code) {
+          return !(/\+\s*username|username\s*\+|\+\s*password|password\s*\+/i.test(code))
+            && /execute\s*\(\s*query\s*,/i.test(code)
+            && /password_hash|hash_password|verify_password/i.test(code);
+        },
+        renderWebsite() {
+          return `
+            <div class="mini-bar"><span>🔐 SecureBank Portal</span><span>Login</span></div>
+            <label>Username</label>
+            <input id="loginUser" value="admin" />
+            <label style="margin-top:12px;">Password</label>
+            <input id="loginPass" value="wrong-password" />
+            <div class="btn-row">
+              <button class="primary" onclick="runSQLiDemo()">Sign in</button>
+              <button class="secondary" onclick="loadSQLiAttack()">Try attack payload</button>
+            </div>
+            <div class="result-box" id="loginResult">Try the login form.</div>
+          `;
+        },
+        bindWebsite() {}
+      },
+      {
+        id: 'xss',
+        title: 'Cross-Site Scripting',
+        cwe: 'CWE-79',
+        points: 20,
+        scenarioTitle: 'Comment Widget',
+        scenarioDescription: 'Students can compare unsafe rendering and safe rendering without executing scripts.',
+        hint: 'Avoid innerHTML for untrusted input. Prefer textContent or a trusted sanitizer when HTML is truly needed.',
+        vulnerableCode: `// Vulnerable JavaScript comment preview\nfunction renderComment(input) {\n  document.getElementById('preview').innerHTML = input;\n}\n`,
+        secureCode: `// Safer JavaScript comment preview\nfunction renderComment(input) {\n  document.getElementById('preview').textContent = input;\n}\n`,
+        check(code) {
+          return !/innerHTML/i.test(code) && /textContent|createTextNode|sanitize/i.test(code);
+        },
+        renderWebsite() {
+          return `
+            <div class="mini-bar"><span>💬 Team Comments</span><span>Preview</span></div>
+            <label>Comment</label>
+            <textarea id="xssInput">Hello team, this looks great.</textarea>
+            <div class="btn-row">
+              <button class="secondary" onclick="setXSSMode('unsafe')">Unsafe view</button>
+              <button class="primary" onclick="setXSSMode('safe')">Safe view</button>
+              <button class="secondary" onclick="loadXSSPayload()">Try payload</button>
+            </div>
+            <div class="result-box">
+              <strong>Preview</strong>
+              <div class="preview-box" id="xssPreview"></div>
+            </div>
+          `;
+        },
+        bindWebsite() {
+          setXSSMode('safe');
+        }
+      },
+      {
+        id: 'idor',
+        title: 'Broken Access Control',
+        cwe: 'CWE-639',
+        points: 20,
+        scenarioTitle: 'Invoice Portal',
+        scenarioDescription: 'Change the logged-in user and invoice ID to see the difference between insecure and secure behavior.',
+        hint: 'Check ownership or authorization on every object fetch. Do not trust user-controlled identifiers alone.',
+        vulnerableCode: `# Vulnerable Flask-like route\n@app.get('/invoice/<invoice_id>')\ndef get_invoice(invoice_id):\n    invoice = db.find_invoice(invoice_id)\n    return invoice\n`,
+        secureCode: `# Safer Flask-like route\n@app.get('/invoice/<invoice_id>')\ndef get_invoice(invoice_id, current_user):\n    invoice = db.find_invoice(invoice_id)\n    if not invoice or invoice.owner_id != current_user.id:\n        return {"error": "forbidden"}, 403\n    return invoice\n`,
+        check(code) {
+          return /current_user|user/i.test(code) && /owner_id|user_id|authorize|permission|403|forbidden/i.test(code);
+        },
+        renderWebsite() {
+          return `
+            <div class="mini-bar"><span>🧾 Billing Portal</span><span>Invoices</span></div>
+            <div class="row-2">
+              <div>
+                <label>Logged in as</label>
+                <select id="idorUser" onchange="renderIDORDemo()">
+                  <option value="alice">alice</option>
+                  <option value="bob">bob</option>
+                </select>
+              </div>
+              <div>
+                <label>Invoice ID</label>
+                <select id="idorInvoice" onchange="renderIDORDemo()">
+                  <option value="INV-1001">INV-1001</option>
+                  <option value="INV-1002">INV-1002</option>
+                  <option value="INV-1003">INV-1003</option>
+                </select>
+              </div>
+            </div>
+            <div class="row-2" style="margin-top:14px;">
+              <div class="result-box"><strong>Vulnerable output</strong><div id="idorUnsafe" style="margin-top:8px;"></div></div>
+              <div class="result-box"><strong>Secure output</strong><div id="idorSafe" style="margin-top:8px;"></div></div>
+            </div>
+          `;
+        },
+        bindWebsite() {
+          renderIDORDemo();
+        }
+      },
+      {
+        id: 'csrf',
+        title: 'CSRF',
+        cwe: 'CWE-352',
+        points: 20,
+        scenarioTitle: 'Profile Settings',
+        scenarioDescription: 'Students can see why a state-changing form needs anti-CSRF validation.',
+        hint: 'Include and validate an anti-CSRF token on state-changing requests. Cookie settings help, but are not enough alone.',
+        vulnerableCode: `# Vulnerable state-changing handler\n@app.post('/update-email')\ndef update_email(request, current_user):\n    current_user.email = request.form['email']\n    db.save(current_user)\n    return 'ok'\n`,
+        secureCode: `# Safer state-changing handler\n@app.post('/update-email')\ndef update_email(request, current_user):\n    verify_csrf(request.form['csrf_token'], request.session)\n    current_user.email = request.form['email']\n    db.save(current_user)\n    return 'ok'\n`,
+        check(code) {
+          return /csrf/i.test(code) && /verify|validate|check/i.test(code);
+        },
+        renderWebsite() {
+          return `
+            <div class="mini-bar"><span>⚙️ Account Settings</span><span>Profile</span></div>
+            <label>New email</label>
+            <input id="csrfEmail" value="alice@example.com" />
+            <div style="margin-top:12px;">
+              <label><input type="checkbox" id="csrfTokenBox" /> Include CSRF token</label>
+            </div>
+            <div class="btn-row">
+              <button class="primary" onclick="runCSRFDemo()">Save profile</button>
+              <button class="secondary" onclick="enableCSRFSecure()">Use secure mode</button>
+            </div>
+            <div class="result-box" id="csrfResult">Waiting for update.</div>
+          `;
+        },
+        bindWebsite() {}
+      },
+      {
+        id: 'path',
+        title: 'Path Traversal',
+        cwe: 'CWE-22',
+        points: 20,
+        scenarioTitle: 'Reports Download Center',
+        scenarioDescription: 'Try normal filenames and traversal-style input to explain why server-side file handling matters.',
+        hint: 'Do not concatenate a path with user input. Normalize the path and constrain it to a safe base directory or allowlist.',
+        vulnerableCode: `# Vulnerable download handler\ndef download(filename):\n    path = '/app/reports/' + filename\n    return open(path).read()\n`,
+        secureCode: `# Safer download handler\nfrom pathlib import Path\n\nBASE = Path('/app/reports').resolve()\n\ndef download(filename):\n    safe_name = Path(filename).name\n    path = (BASE / safe_name).resolve()\n    if BASE not in path.parents and path != BASE:\n        return 'forbidden', 403\n    return open(path).read()\n`,
+        check(code) {
+          return !(/\+\s*filename|filename\s*\+/i.test(code)) && /Path\(|basename|allowlist|resolve/i.test(code) && /403|forbidden|deny/i.test(code);
+        },
+        renderWebsite() {
+          return `
+            <div class="mini-bar"><span>📁 Reports Center</span><span>Downloads</span></div>
+            <label>Requested file name</label>
+            <input id="pathInput" value="report-q1.pdf" />
+            <div class="btn-row">
+              <button class="primary" onclick="runPathDemo()">Download</button>
+              <button class="secondary" onclick="loadPathPayload()">Try traversal input</button>
+            </div>
+            <div class="row-2">
+              <div class="result-box"><strong>Vulnerable path</strong><div id="pathUnsafe" style="margin-top:8px;"></div></div>
+              <div class="result-box"><strong>Secure handling</strong><div id="pathSafe" style="margin-top:8px;"></div></div>
+            </div>
+          `;
+        },
+        bindWebsite() {
+          runPathDemo();
+        }
+      }
+    ];
+
+    let state = loadState();
+    let currentId = state.currentId || challenges[0].id;
+
+    function defaultState() {
+      const byId = {};
+      challenges.forEach(ch => {
+        byId[ch.id] = {
+          code: ch.vulnerableCode,
+          solved: false,
+          attempts: 0,
+          hintShown: false
+        };
+      });
+      return { currentId: challenges[0].id, byId };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        const fresh = defaultState();
+        for (const ch of challenges) {
+          if (parsed.byId && parsed.byId[ch.id]) {
+            fresh.byId[ch.id] = {
+              ...fresh.byId[ch.id],
+              ...parsed.byId[ch.id]
+            };
+          }
+        }
+        fresh.currentId = parsed.currentId || fresh.currentId;
+        return fresh;
+      } catch {
+        return defaultState();
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function currentChallenge() {
+      return challenges.find(ch => ch.id === currentId);
+    }
+
+    function totalPoints() {
+      return challenges.reduce((sum, ch) => sum + (state.byId[ch.id].solved ? ch.points : 0), 0);
+    }
+
+    function progressLabel(score) {
+      if (score === 100) return 'All challenges fixed';
+      if (score >= 60) return 'Good progress';
+      if (score >= 20) return 'Getting started';
+      return 'New session';
+    }
+
+    function renderTabs() {
+      const wrap = document.getElementById('challengeTabs');
+      wrap.innerHTML = challenges.map(ch => `
+        <button class="tab ${ch.id === currentId ? 'active' : ''}" onclick="selectChallenge('${ch.id}')">
+          <div style="font-weight:700; margin-bottom:4px;">${ch.title}</div>
+          <div class="muted" style="font-size:12px;">${ch.cwe}</div>
+        </button>
+      `).join('');
+    }
+
+    function renderScoreboard() {
+      const list = document.getElementById('scoreList');
+      list.innerHTML = challenges.map(ch => {
+        const solved = state.byId[ch.id].solved;
+        return `
+          <div class="score-item">
+            <div>
+              <div style="font-weight:700;">${ch.title}</div>
+              <div class="muted" style="font-size:12px;">${ch.cwe}</div>
+            </div>
+            <span class="score-status ${solved ? 'solved' : 'pending'}">${solved ? 'Solved' : ch.points + ' pts'}</span>
+          </div>
+        `;
+      }).join('');
+
+      const points = totalPoints();
+      document.getElementById('progressLabel').textContent = `${points}/100 · ${progressLabel(points)}`;
+      document.getElementById('progressFill').style.width = `${points}%`;
+    }
+
+    function renderChallenge() {
+      const ch = currentChallenge();
+      state.currentId = currentId;
+      saveState();
+
+      renderTabs();
+      renderScoreboard();
+
+      document.getElementById('scenarioTitle').textContent = ch.scenarioTitle;
+      document.getElementById('scenarioDescription').textContent = ch.scenarioDescription;
+      document.getElementById('scenarioBadge').textContent = `${ch.cwe}`;
+      document.getElementById('pointsBadge').textContent = `${ch.points} points`;
+      document.getElementById('codeEditor').value = state.byId[ch.id].code;
+      document.getElementById('attemptsText').textContent = `Attempts: ${state.byId[ch.id].attempts}`;
+
+      const hintBox = document.getElementById('hintBox');
+      if (state.byId[ch.id].hintShown) {
+        hintBox.innerHTML = `<div class="hint-box"><strong>Hint:</strong> ${escapeHtml(ch.hint)}</div>`;
+      } else {
+        hintBox.innerHTML = '';
+      }
+
+      const website = document.getElementById('websitePanel');
+      website.innerHTML = ch.renderWebsite();
+      if (typeof ch.bindWebsite === 'function') ch.bindWebsite();
+    }
+
+    function selectChallenge(id) {
+      syncEditorToState();
+      currentId = id;
+      renderChallenge();
+    }
+
+    function syncEditorToState() {
+      const editor = document.getElementById('codeEditor');
+      if (!editor) return;
+      state.byId[currentId].code = editor.value;
+      saveState();
+    }
+
+    function showModal(title, text) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalText').textContent = text;
+      document.getElementById('modal').classList.add('show');
+    }
+
+    function hideModal() {
+      document.getElementById('modal').classList.remove('show');
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function checkFix() {
+      syncEditorToState();
+      const ch = currentChallenge();
+      const code = state.byId[ch.id].code;
+      state.byId[ch.id].attempts += 1;
+      const ok = ch.check(code);
+
+      if (ok) {
+        const firstSolve = !state.byId[ch.id].solved;
+        state.byId[ch.id].solved = true;
+        saveState();
+        renderScoreboard();
+        document.getElementById('attemptsText').textContent = `Attempts: ${state.byId[ch.id].attempts}`;
+        showModal('Nice work', firstSolve
+          ? `You fixed ${ch.title} and earned ${ch.points} points.`
+          : `This challenge is already solved. Good job reviewing it again.`);
+      } else {
+        saveState();
+        document.getElementById('attemptsText').textContent = `Attempts: ${state.byId[ch.id].attempts}`;
+        showModal('Try again', 'That fix is not complete yet. Use the hint or compare your code to a safer pattern.');
+      }
+    }
+
+    function showHint() {
+      const ch = currentChallenge();
+      state.byId[ch.id].hintShown = true;
+      saveState();
+      document.getElementById('hintBox').innerHTML = `<div class="hint-box"><strong>Hint:</strong> ${escapeHtml(ch.hint)}</div>`;
+    }
+
+    function showSolution() {
+      const ch = currentChallenge();
+      state.byId[ch.id].code = ch.secureCode;
+      saveState();
+      document.getElementById('codeEditor').value = ch.secureCode;
+    }
+
+    function resetChallenge() {
+      const ch = currentChallenge();
+      state.byId[ch.id].code = ch.vulnerableCode;
+      state.byId[ch.id].hintShown = false;
+      saveState();
+      renderChallenge();
+    }
+
+    function resetAll() {
+      if (!confirm('Reset all progress and code edits?')) return;
+      state = defaultState();
+      currentId = state.currentId;
+      saveState();
+      renderChallenge();
+    }
+
+    document.getElementById('fixedBtn').addEventListener('click', checkFix);
+    document.getElementById('hintBtn').addEventListener('click', showHint);
+    document.getElementById('solutionBtn').addEventListener('click', showSolution);
+    document.getElementById('resetBtn').addEventListener('click', resetChallenge);
+    document.getElementById('resetAllBtn').addEventListener('click', resetAll);
+    document.getElementById('modalClose').addEventListener('click', hideModal);
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if (e.target.id === 'modal') hideModal();
+    });
+    document.getElementById('codeEditor').addEventListener('input', syncEditorToState);
+
+    function runSQLiDemo() {
+      const username = document.getElementById('loginUser').value;
+      const password = document.getElementById('loginPass').value;
+      const suspicious = /'|--|\bor\b|\b1=1\b/i.test(username) || /'|--|\bor\b|\b1=1\b/i.test(password);
+      const result = document.getElementById('loginResult');
+      if (suspicious) {
+        result.innerHTML = '<strong>Vulnerable result:</strong> This  demo treats the input as a likely login bypass when the query is built by string concatenation.';
+      } else if (username === 'admin' && password === 'summer2026') {
+        result.innerHTML = '<strong>Result:</strong> Valid login.';
+      } else {
+        result.innerHTML = '<strong>Result:</strong> Login failed.';
+      }
+    }
+
+    function loadSQLiAttack() {
+      document.getElementById('loginUser').value = "admin' OR '1'='1";
+      document.getElementById('loginPass').value = 'anything';
+      runSQLiDemo();
+    }
+
+    let xssMode = 'safe';
+    function setXSSMode(mode) {
+      xssMode = mode;
+      renderXSSPreview();
+    }
+
+    function loadXSSPayload() {
+      document.getElementById('xssInput').value = '<img src=x onerror=alert(1)>';
+      renderXSSPreview();
+    }
+
+    function renderXSSPreview() {
+      const value = document.getElementById('xssInput').value;
+      const preview = document.getElementById('xssPreview');
+      const suspicious = /<script|onerror=|onload=|<img|<svg|javascript:/i.test(value);
+      if (xssMode === 'unsafe') {
+        preview.innerHTML = suspicious
+          ? '<span style="color:#b45309;">Unsafe renderer would treat this as HTML-capable input in a vulnerable app.</span>'
+          : '<span style="color:#475569;">Unsafe renderer would insert this directly with innerHTML.</span>';
+      } else {
+        preview.innerHTML = `<div class="safe-text"></div>`;
+        preview.querySelector('.safe-text').textContent = value;
+      }
+      const area = document.getElementById('xssInput');
+      area.oninput = renderXSSPreview;
+    }
+
+    function renderIDORDemo() {
+      const invoices = {
+        'INV-1001': { owner: 'alice', amount: '$120' },
+        'INV-1002': { owner: 'bob', amount: '$450' },
+        'INV-1003': { owner: 'alice', amount: '$980' }
+      };
+      const user = document.getElementById('idorUser').value;
+      const invoiceId = document.getElementById('idorInvoice').value;
+      const invoice = invoices[invoiceId];
+      document.getElementById('idorUnsafe').textContent = invoice ? `${invoice.amount} for ${invoice.owner}` : 'Invoice not found';
+      document.getElementById('idorSafe').textContent = invoice
+        ? (invoice.owner === user ? `${invoice.amount} for ${invoice.owner}` : '403 Forbidden')
+        : 'Invoice not found';
+    }
+
+    function runCSRFDemo() {
+      const email = document.getElementById('csrfEmail').value;
+      const hasToken = document.getElementById('csrfTokenBox').checked;
+      const result = document.getElementById('csrfResult');
+      if (hasToken) {
+        result.innerHTML = `<strong>Secure flow:</strong> Email updated to ${escapeHtml(email)} because the request includes a token to validate.`;
+      } else {
+        result.innerHTML = '<strong>Vulnerable flow:</strong> This state-changing request is forgeable because no CSRF token was verified.';
+      }
+    }
+
+    function enableCSRFSecure() {
+      document.getElementById('csrfTokenBox').checked = true;
+      runCSRFDemo();
+    }
+
+    function loadPathPayload() {
+      document.getElementById('pathInput').value = '../../etc/passwd';
+      runPathDemo();
+    }
+
+    function runPathDemo() {
+      const filename = document.getElementById('pathInput').value;
+      const suspicious = /\.\.|\//.test(filename);
+      document.getElementById('pathUnsafe').textContent = `/app/reports/${filename}`;
+      document.getElementById('pathSafe').textContent = suspicious
+        ? 'Reject request or normalize it against a safe allowlist and base directory.'
+        : 'Normalize the name and constrain it to the reports directory.';
+    }
+
+    renderChallenge();
+  </script>
+</body>
+</html>
