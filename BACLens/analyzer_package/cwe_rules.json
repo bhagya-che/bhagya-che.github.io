@@ -1,0 +1,1364 @@
+{
+  "schema_version": "1.0",
+  "ruleset": "spring_django_bac_cwe_combined",
+  "description": "Combined and lightly corrected CWE rules for login/registration/dashboard tutorial snippets. Each rule is heuristic and should be manually reviewed before vulnerability claims.",
+  "frameworks": [
+    "Spring Boot",
+    "Spring Security",
+    "Spring MVC",
+    "Django"
+  ],
+  "global_references": {
+    "owasp_bac_2025": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+    "owasp_top10_2025_intro": "https://owasp.org/Top10/2025/0x00_2025-Introduction/",
+    "spring_authorize_http_requests": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html",
+    "spring_method_security": "https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html",
+    "spring_csrf": "https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html",
+    "mitre_cwe": "https://cwe.mitre.org/"
+  },
+  "matching": {
+    "window_lines": 6,
+    "case_insensitive": true,
+    "multiline": true,
+    "dotall": true,
+    "finding_policy": "A finding is raised when at least one vulnerable pattern matches in a bounded window and no anti-pattern matches in that same window."
+  },
+  "rules": [
+    {
+      "cwe_id": "CWE-862",
+      "name": "Missing Authorization",
+      "why": "Tutorials forget @login_required, @PreAuthorize, or is_authenticated checks on sensitive views",
+      "patterns": [
+        "def (dashboard|profile|account|admin|settings|home|user_list|delete_user)\\s*\\(",
+        "@GetMapping\\(['\"]/(dashboard|profile|admin|account|user)['\"]\\)(?!.*@PreAuthorize)",
+        "@RequestMapping\\(['\"]/(dashboard|profile|admin)['\"]\\)(?!.*@PreAuthorize)",
+        "@PostMapping\\(['\"]/(delete|update|edit)['\"]\\)(?!.*@PreAuthorize)",
+        "def (get|post|put|delete)_?(user|profile|account)\\s*\\(",
+        "class.*View\\(View\\)(?!.*LoginRequiredMixin)",
+        "@GetMapping\\s*\\([^)]*['\\\"]/(?:dashboard|profile|admin|account|user)[^)]*\\)",
+        "@PostMapping\\s*\\([^)]*['\\\"]/(?:delete|update|edit|admin|account|profile)[^)]*\\)",
+        "requestMatchers\\s*\\([^)]*['\\\"]/(?:dashboard|profile|admin|account)[^)]*\\)\\s*\\.permitAll\\s*\\("
+      ],
+      "anti_patterns": [
+        "@login_required",
+        "@staff_member_required",
+        "@permission_required",
+        "@PreAuthorize",
+        "@Secured",
+        "@RolesAllowed",
+        "is_authenticated",
+        "LoginRequiredMixin",
+        "UserDetailsService",
+        "AuthenticationPrincipal",
+        "authorizeHttpRequests",
+        "requestMatchers\\s*\\([^)]*(?:dashboard|profile|admin|account)[^)]*\\)\\s*\\.(?:authenticated|hasRole|hasAuthority)",
+        "anyRequest\\s*\\(\\)\\s*\\.authenticated\\s*\\("
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/862.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/auth/default/#the-login-required-decorator",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-862",
+      "category": "authorization",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": [
+        "Spring annotations can appear above mappings; analyzer evaluates a bounded code window before applying anti-patterns."
+      ]
+    },
+    {
+      "cwe_id": "CWE-284",
+      "name": "Improper Access Control",
+      "why": "Missing permission checks on CRUD endpoints - tutorials expose all data without filtering",
+      "patterns": [
+        "def (create|update|delete|edit|remove)_?(post|user|item|article|comment|task)\\s*\\(",
+        "User\\.objects\\.all\\(\\)\\.delete",
+        "User\\.findAll\\(\\)(?!.*getCurrentUser)",
+        "SELECT \\* FROM users(?!.*WHERE)",
+        "userRepository\\.findAll\\(\\)(?!.*isAdmin)",
+        "@Query\\(value\\s*=\\s*['\"]SELECT.*FROM.*users['\"]\\)",
+        "(?:@PostMapping|@PutMapping|@DeleteMapping)\\s*\\([^)]*\\)"
+      ],
+      "anti_patterns": [
+        "has_perm",
+        "permission_classes",
+        "IsAuthenticated",
+        "IsAdminUser",
+        "request\\.user\\.is_staff",
+        "@PreAuthorize.*hasRole",
+        "@Secured",
+        "checkPermission",
+        "access\\.denied",
+        "authorizeHttpRequests",
+        "@PreAuthorize",
+        "hasAuthority",
+        "hasPermission",
+        "findByIdAnd(?:UserId|Owner|OwnerId)"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/284.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/auth/default/#permissions",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-284",
+      "category": "authorization",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-285",
+      "name": "Improper Authorization",
+      "why": "Wrong logic in permission checks - checking is_staff instead of object ownership",
+      "patterns": [
+        "request\\.user\\.is_staff(?!.*and.*is_owner)",
+        "request\\.user\\.is_superuser",
+        "req\\.user\\.role\\s*===?\\s*['\"]admin['\"]",
+        "user\\.getRole\\(\\)\\.equals.*ADMIN(?!.*ownerCheck)",
+        "if\\s+user\\.isAdmin\\(\\)(?!.*userId)"
+      ],
+      "anti_patterns": [
+        "request\\.user\\s*==\\s*.*\\.owner",
+        "request\\.user\\.id\\s*==\\s*.*\\.user_id",
+        "obj\\.getUser\\(\\)\\.equals.*principal",
+        "@PostAuthorize.*returnObject",
+        "hasPermission.*#id",
+        "findByIdAnd(?:UserId|Owner|OwnerId)",
+        "authentication\\.name",
+        "principal\\.getName"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/285.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/auth/default/#object-level-permissions",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html#_using_postauthorize"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-285",
+      "category": "authorization",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": [
+        "Role checks are not sufficient for object-specific authorization; this rule flags role-only checks in owner-sensitive contexts.",
+        "Removed broad @PreAuthorize hasRole ADMIN signal to avoid flagging ordinary protected admin endpoints without object-specific context."
+      ]
+    },
+    {
+      "cwe_id": "CWE-863",
+      "name": "Incorrect Authorization",
+      "why": "Logic errors allowing role bypass or privilege escalation via request parameters",
+      "patterns": [
+        "role\\s*=\\s*request\\.(GET|POST|data)\\[['\"]role['\"]\\]",
+        "is_admin\\s*=\\s*request\\.(GET|POST|data)",
+        "user_type\\s*=\\s*request\\.(GET|POST|data)",
+        "@RequestParam.*role",
+        "request\\.getParameter\\(['\"]isAdmin['\"]\\)",
+        "@RequestParam\\s+\\w*role\\b",
+        "setRole\\s*\\(\\s*request\\.getParameter",
+        "user\\.setRole\\s*\\("
+      ],
+      "anti_patterns": [
+        "PermissionDenied",
+        "HttpResponseForbidden",
+        "status\\.HTTP_403_FORBIDDEN",
+        "ResponseStatus\\.HttpStatus\\.FORBIDDEN",
+        "AccessDeniedException",
+        "hasRole",
+        "hasAuthority",
+        "GrantedAuthority"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/863.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/exceptions/#permissiondenied",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/handling-access-denied.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-863",
+      "category": "authorization",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-639",
+      "name": "Authorization Bypass Through User-Controlled Key (IDOR)",
+      "why": "Missing ownership verification in detail views - tutorials use raw IDs without checking ownership",
+      "patterns": [
+        "get_object_or_404\\(\\w+,\\s*(pk|id)\\s*=\\s*(pk|id|kwargs\\[['\"]pk['\"]\\])(?!.*user)\\)",
+        "userRepository\\.findById\\(id\\)(?!.*filter.*owner)",
+        "\\.findById\\(req\\.params\\.(id|userId)\\)(?!.*principal)",
+        "SELECT.*WHERE.*id\\s*=\\s*\\?.*(?!.*AND.*user_id)",
+        "@Query\\(['\"].*WHERE.*id\\s*=\\s*:id['\"]\\)(?!.*user)",
+        "@GetMapping\\s*\\([^)]*\\{(?:id|userId)\\}[^)]*\\)",
+        "@PathVariable\\s+(?:Long|Integer|String)?\\s*(?:id|userId)",
+        "findById\\s*\\(\\s*(?:id|userId)\\s*\\)"
+      ],
+      "anti_patterns": [
+        "request\\.user\\s*==\\s*.*\\.owner",
+        "filter\\(.*user=request\\.user",
+        "get_object_or_404.*user=request\\.user",
+        "findByIdAndUserId",
+        "findByIdAndOwner",
+        "@PostAuthorize.*returnObject.*principal",
+        "@PreAuthorize[^\\n]*(?:authentication|principal|hasPermission)",
+        "findByIdAnd(?:UserId|Owner|OwnerId)",
+        "owner\\.getId\\s*\\(\\s*\\)\\.equals"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/639.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/db/queries/#retrieving-specific-objects-with-get",
+          "spring": "https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-639",
+      "category": "authorization",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-283",
+      "name": "Unverified Ownership",
+      "why": "Missing request.user == object.owner checks before updates/deletes",
+      "patterns": [
+        "\\.objects\\.get\\(pk=\\)(?!.*owner)",
+        "\\.objects\\.get\\(id=\\)(?!.*user)\\)",
+        "findById\\(id\\)\\.(save|delete)\\(\\)(?!.*owner)",
+        "userRepository\\.deleteById\\(\\)(?!.*check)"
+      ],
+      "anti_patterns": [
+        "request\\.user\\s*==",
+        "req\\.user\\.id\\s*===",
+        "filter\\(.*user=request\\.user",
+        "owned_by",
+        "is_owner",
+        "@PreAuthorize.*authentication"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/283.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/auth/default/#storing-additional-information-about-users",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-283",
+      "category": "ownership",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-668",
+      "name": "Exposure of Resource to Wrong Sphere",
+      "why": "Returning all users' data instead of filtering by owner - tutorials expose entire dataset",
+      "patterns": [
+        "User\\.objects\\.all\\(\\)\\.(values|list)",
+        "User\\.findAll\\(\\)(?!.*where)",
+        "SELECT \\* FROM users(?!.*WHERE)",
+        "Post\\.objects\\.all\\(\\)(?!.*filter)",
+        "userRepository\\.findAll\\(\\)(?!.*Pageable)"
+      ],
+      "anti_patterns": [
+        "\\.filter\\(.*user=request\\.user",
+        "\\.filter\\(.*owner=request\\.user",
+        "WHERE.*user_id\\s*=\\s*['\"]?\\$",
+        "findAllByUserId",
+        "findByOwner"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/668.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/db/queries/#retrieving-specific-objects-with-filter",
+          "spring": "https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-668",
+      "category": "exposure",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-425",
+      "name": "Direct Request (Forced Browsing)",
+      "why": "No checks on direct URL access to admin/dashboard pages - common in beginner tutorials",
+      "patterns": [
+        "path\\(['\"]admin/['\"]",
+        "url\\(r['\"]^admin/",
+        "@GetMapping\\(['\"]/(admin|dashboard|panel)['\"]\\)(?!.*@PreAuthorize)",
+        "@RequestMapping\\(['\"]/(admin|dashboard)['\"]\\)(?!.*authenticated)"
+      ],
+      "anti_patterns": [
+        "@login_required",
+        "@staff_member_required",
+        "LoginRequiredMixin",
+        "@PreAuthorize.*isAuthenticated",
+        "@Secured",
+        "WebSecurityCustomizer",
+        "@PreAuthorize",
+        "@PreAuthorize.*hasRole",
+        "@PreAuthorize.*hasAuthority",
+        "hasRole",
+        "hasAuthority"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/425.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/contrib/admin/#hooking-adminsite-instances-into-your-urlconf",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-425",
+      "category": "forced_browsing",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-352",
+      "name": "Cross-Site Request Forgery (CSRF)",
+      "why": "Tutorials disable CSRF for simplicity or forget tokens in forms/AJAX",
+      "patterns": [
+        "csrf_exempt",
+        "CSRF_COOKIE_SECURE\\s*=\\s*False",
+        "CsrfViewMiddleware.*#",
+        "@CrossOrigin\\(origins\\s*=\\s*['\"]\\*['\"]\\)",
+        "cors\\.Configurer.*allowedOrigins\\(['\"]\\*['\"]\\)",
+        "http\\.csrf\\(\\)\\.disable\\(\\)",
+        "csrf\\.disable",
+        "'django\\.middleware\\.csrf\\.CsrfViewMiddleware'.*#"
+      ],
+      "anti_patterns": [
+        "csrf_token",
+        "csrfmiddlewaretoken",
+        "X-CSRFToken",
+        "@EnableWebSecurity.*csrf",
+        "CsrfTokenRepository",
+        "CookieCsrfTokenRepository",
+        "csrf\\s*\\(\\s*[^)]*\\)\\s*\\.csrfTokenRepository",
+        "csrfTokenRepository"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/352.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/csrf/",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-352",
+      "category": "csrf",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": [
+        "CORS wildcard patterns are retained as access-policy smells; CSRF-specific evidence is strongest when csrf().disable() appears in a state-changing app."
+      ]
+    },
+    {
+      "cwe_id": "CWE-200",
+      "name": "Exposure of Sensitive Information to an Unauthorized Actor",
+      "why": "Leaking user data in API responses or error messages - tutorials return full objects",
+      "patterns": [
+        "return\\s+JsonResponse\\(user\\.__dict__",
+        "return\\s+Response\\(user\\)",
+        "return\\s+ResponseEntity\\.ok\\(user\\)(?!.*DTO)",
+        "UserSerializer\\(User\\.objects\\.all\\(\\)\\)",
+        "except.*:\\s*\\n\\s*return.*message.*str\\(e\\)",
+        "print\\(traceback",
+        "@ExceptionHandler.*printStackTrace"
+      ],
+      "anti_patterns": [
+        "exclude\\(['\"]password['\"]",
+        "del.*password",
+        "fields.*exclude.*password",
+        "write_only.*password",
+        "@JsonIgnore",
+        "ResponseEntity\\.badRequest"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/200.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/serialization/",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authentication/persistence.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-200",
+      "category": "information_exposure",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-359",
+      "name": "Exposure of Private Personal Information (PII) to an Unauthorized Actor",
+      "why": "Exposing PII in templates or JSON responses without authentication checks",
+      "patterns": [
+        "\\{\\{\\s*user\\.email\\s*\\}\\}",
+        "\\{\\{\\s*user\\.phone\\s*\\}\\}",
+        "return\\s+Response\\(\\{.*'email'.*:.*user\\.email",
+        "user\\.getEmail\\(\\)(?!.*mask)",
+        "user\\.getPhone\\(\\)(?!.*mask)"
+      ],
+      "anti_patterns": [
+        "@login_required",
+        "is_authenticated",
+        "IsAuthenticated",
+        "@PreAuthorize.*isAuthenticated",
+        "maskEmail",
+        "maskPhone"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/359.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/settings/#std-setting-AUTH_USER_MODEL",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authentication/persistence.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-359",
+      "category": "information_exposure",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-201",
+      "name": "Exposure of Sensitive Information Through Sent Data",
+      "why": "Including passwords/secrets in API responses - tutorials return user objects with passwords",
+      "patterns": [
+        "password.*:.*user\\.password",
+        "['\"]password['\"]\\s*:\\s*",
+        "return.*password",
+        "user\\.getPassword\\(\\)(?!.*matches)",
+        "JsonResponse.*password"
+      ],
+      "anti_patterns": [
+        "make_password",
+        "check_password",
+        "PasswordEncoder",
+        "BCryptPasswordEncoder",
+        "write_only",
+        "@JsonIgnore.*password"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/201.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/auth/passwords/",
+          "spring": "https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-201",
+      "category": "information_exposure",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-601",
+      "name": "URL Redirection to Untrusted Site (Open Redirect)",
+      "why": "next= parameter abuse in login redirects - tutorials redirect to arbitrary URLs",
+      "patterns": [
+        "redirect\\(request\\.GET\\.get\\(['\"]next['\"]",
+        "redirect\\(request\\.POST\\.get\\(['\"]next['\"]",
+        "return\\s+redirect\\(next_url\\)",
+        "return.*redirect\\(request\\.getParameter\\(['\"]redirect['\"]\\)\\)",
+        "response\\.sendRedirect\\(request\\.getParameter",
+        "RedirectView\\(request\\.getParameter"
+      ],
+      "anti_patterns": [
+        "url_has_allowed_host_and_scheme",
+        "is_safe_url",
+        "UriComponentsBuilder",
+        "AntPathMatcher",
+        "redirect\\(reverse"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/601.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/http/shortcuts/#redirect",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/exploits/redirect.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-601",
+      "category": "redirect",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-922",
+      "name": "Insecure Storage of Sensitive Information",
+      "why": "Plaintext passwords, weak hashing, exposed session data in tutorials",
+      "patterns": [
+        "password\\s*=\\s*request\\.(POST|data|body)\\[['\"]password['\"]\\](?!.*hash|.*encrypt|.*bcrypt|.*make_password)",
+        "md5.*password",
+        "sha1.*password",
+        "hashlib\\.md5",
+        "hashlib\\.sha1",
+        "SECRET_KEY\\s*=\\s*['\"][a-z0-9]{1,20}['\"]",
+        "session\\[['\"]password['\"]\\]",
+        "NoOpPasswordEncoder"
+      ],
+      "anti_patterns": [
+        "make_password",
+        "bcrypt",
+        "argon2",
+        "pbkdf2",
+        "set_password",
+        "BCryptPasswordEncoder",
+        "Argon2PasswordEncoder",
+        "Pbkdf2PasswordEncoder"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/922.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/auth/passwords/",
+          "spring": "https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-922",
+      "category": "secret_storage",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": [
+        "Removed passwordEncoder.matches from vulnerable patterns because it is normally part of secure password verification."
+      ]
+    },
+    {
+      "cwe_id": "CWE-540",
+      "name": "Inclusion of Sensitive Information in Source Code",
+      "why": "Hardcoded API keys, database passwords in settings - common in tutorial code",
+      "patterns": [
+        "SECRET_KEY\\s*=\\s*['\"][^'\"]{10,}['\"](?!.*environ)",
+        "PASSWORD\\s*=\\s*['\"][^'\"]{3,}['\"](?!.*env)",
+        "API_KEY\\s*=\\s*['\"][^'\"]{8,}['\"](?!.*config)",
+        "DATABASE_URL\\s*=\\s*['\"]postgresql://.*:",
+        "JWT_SECRET\\s*=\\s*['\"][^'\"]{5,}['\"](?!.*env)",
+        "spring\\.datasource\\.password\\s*=\\s*['\"][^'\"]+['\"]",
+        "@Value\\(['\"]\\$\\{.*password['\"]\\)(?!.*:)",
+        "token\\s*=\\s*['\"][a-zA-Z0-9_\\-\\.]{20,}['\"]"
+      ],
+      "anti_patterns": [
+        "os\\.environ",
+        "os\\.getenv",
+        "@Value\\(.*\\$\\{.*:.*\\}",
+        "Environment",
+        "dotenv",
+        "application\\.properties.*\\$\\{",
+        "application\\.yml.*\\$\\{",
+        "\\$\\{[A-Z0-9_]+\\}",
+        "System\\.getenv",
+        "Environment\\.getProperty"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/540.html",
+          "django": "https://docs.djangoproject.com/en/stable/howto/deployment/checklist/#secret-key",
+          "spring": "https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto.properties-and-configuration"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-540",
+      "category": "secret_storage",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-615",
+      "name": "Inclusion of Sensitive Information in Source Code Comments",
+      "why": "Credentials left in tutorial code comments or TODOs",
+      "patterns": [
+        "#.*password\\s*[:=]\\s*\\S+",
+        "#.*api.?key\\s*[:=]\\s*\\S+",
+        "#.*secret\\s*[:=]\\s*\\S+",
+        "//.*password\\s*[:=]\\s*\\S+",
+        "//.*api.?key\\s*[:=]\\s*\\S+",
+        "/\\*.*password.*=",
+        "<!--.*password.*=.*-->",
+        "TODO.*password",
+        "FIXME.*secret"
+      ],
+      "anti_patterns": [],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/615.html",
+          "django": "https://docs.djangoproject.com/en/stable/internals/security/",
+          "spring": "https://spring.io/security"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-615",
+      "category": "secret_storage",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-1275",
+      "name": "Sensitive Cookie with Improper SameSite Attribute",
+      "why": "SameSite=None in auth cookie settings for 'compatibility' in tutorials",
+      "patterns": [
+        "SameSite\\s*=\\s*['\"]?None['\"]?",
+        "samesite\\s*=\\s*['\"]?none['\"]?(?!.*Secure)",
+        "httpOnly\\s*:\\s*false",
+        "secure\\s*:\\s*false",
+        "SESSION_COOKIE_SAMESITE\\s*=\\s*None",
+        "SESSION_COOKIE_SECURE\\s*=\\s*False",
+        "server\\.servlet\\.session\\.cookie\\.same-site\\s*=\\s*none"
+      ],
+      "anti_patterns": [
+        "SameSite.*Strict",
+        "SameSite.*Lax",
+        "samesite.*strict",
+        "samesite.*lax",
+        "server\\.servlet\\.session\\.cookie\\.same-site\\s*=\\s*strict",
+        "HttpOnly",
+        "http-only\\s*=\\s*true",
+        "server\\.servlet\\.session\\.cookie\\.secure\\s*=\\s*true"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/1275.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/settings/#session-cookie-samesite",
+          "spring": "https://docs.spring.io/spring-session/reference/configuration/cookie.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-1275",
+      "category": "cookie",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-281",
+      "name": "Improper Preservation of Permissions",
+      "why": "File uploads not preserving or incorrectly setting permissions (e.g., 777)",
+      "patterns": [
+        "os\\.chmod\\(.*0o777",
+        "setPermissions\\(\\s*777",
+        "Files\\.setPosixFilePermissions\\(.*ALL_PERMISSIONS",
+        "uploaded_file\\.chmod\\(0o777",
+        "FileUtils\\.copyFile\\(\\)(?!.*preserve)",
+        "@chmod\\(.*777"
+      ],
+      "anti_patterns": [
+        "os\\.chmod\\(.*0o644",
+        "os\\.chmod\\(.*0o600",
+        "setPermissions\\(\\s*644",
+        "PosixFilePermissions\\.fromString\\(['\"]rw-r--r--['\"]\\)"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/281.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/files/",
+          "spring": "https://docs.spring.io/spring-framework/reference/integration/file-resources.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-281",
+      "category": "permissions",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-282",
+      "name": "Improper Ownership Management",
+      "why": "File uploads not verifying or setting proper file ownership",
+      "patterns": [
+        "open\\(.*request\\.(?:FILES|POST).*\\)(?!.*owner)",
+        "FileOutputStream\\(uploadDir\\s*+\\s*filename\\)(?!.*chown)",
+        "Files\\.copy\\(.*,\\s*Paths\\.get\\(uploadPath\\)(?!.*owner)",
+        "file\\.transferTo\\(new\\s+File\\(uploadPath\\)(?!.*check)"
+      ],
+      "anti_patterns": [
+        "Files\\.setOwner",
+        "chown",
+        "setuid",
+        "setgid",
+        "UserPrincipalLookupService"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/282.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/files/",
+          "spring": "https://docs.spring.io/spring-framework/reference/integration/file-resources.html"
+        }
+      ],
+      "ruleset": "primary",
+      "id": "CWE-282",
+      "category": "permissions",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-22",
+      "name": "Path Traversal",
+      "why": "File upload/download path manipulation via user input",
+      "patterns": [
+        "open\\(.*request\\.FILES",
+        "File\\(request\\.POST",
+        "FileOutputStream\\(uploadDir\\s*\\+\\s*request\\.",
+        "Paths\\.get\\(basePath,\\s*request\\.getParameter",
+        "send_file\\(request\\.args",
+        "@GetMapping.*fileName.*PathVariable"
+      ],
+      "anti_patterns": [
+        "FilenameUtils\\.getName",
+        "secure_filename",
+        "Paths\\.get\\(basePath\\).normalize",
+        "StringUtils\\.cleanPath",
+        "Path\\.normalize",
+        "\\.normalize\\s*\\(\\s*\\)",
+        "startsWith\\s*\\(\\s*basePath",
+        "toRealPath\\s*\\("
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/22.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/security/#user-uploaded-content-security",
+          "spring": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-config-static-resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-22",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-23",
+      "name": "Relative Path Traversal",
+      "why": "Using ../ sequences to access files outside intended directory",
+      "patterns": [
+        "open\\(\\.\\./",
+        "File\\(f['\"]\\.\\./",
+        "Paths\\.get\\(['\"]\\.\\./",
+        "FileInputStream\\(userInput\\)(?!.*validation)"
+      ],
+      "anti_patterns": [
+        "normalize\\(\\)",
+        "getCanonicalPath",
+        "getCanonicalFile",
+        "Path\\.normalize",
+        "\\.normalize\\s*\\(\\s*\\)",
+        "startsWith\\s*\\(\\s*basePath",
+        "toRealPath\\s*\\("
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/23.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/files/storage/#django.core.files.storage.Storage",
+          "spring": "https://docs.spring.io/spring-framework/reference/core/resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-23",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-36",
+      "name": "Absolute Path Traversal",
+      "why": "Using absolute paths to access system files",
+      "patterns": [
+        "open\\(/etc/",
+        "open\\(/var/",
+        "FileInputStream\\(['\"]/",
+        "Paths\\.get\\(['\"]/etc",
+        "Paths\\.get\\(['\"]/var"
+      ],
+      "anti_patterns": [
+        "getCanonicalPath",
+        "normalize",
+        "Path\\.normalize",
+        "\\.normalize\\s*\\(\\s*\\)",
+        "startsWith\\s*\\(\\s*basePath",
+        "toRealPath\\s*\\("
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/36.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/files/storage/",
+          "spring": "https://docs.spring.io/spring-framework/reference/core/resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-36",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-59",
+      "name": "Link Following",
+      "why": "Symlink traversal in file operations",
+      "patterns": [
+        "os\\.symlink\\(",
+        "os\\.readlink\\(",
+        "Files\\.createSymbolicLink",
+        "Files\\.readSymbolicLink"
+      ],
+      "anti_patterns": [
+        "os\\.path\\.realpath",
+        "toRealPath",
+        "getCanonicalFile"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/59.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/files/storage/",
+          "spring": "https://docs.spring.io/spring-framework/reference/core/resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-59",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-61",
+      "name": "UNIX Symbolic Link (Symlink) Following",
+      "why": "UNIX-specific symlink vulnerabilities in file operations",
+      "patterns": [
+        "os\\.symlink\\(",
+        "subprocess.*ln.*-s",
+        "Files\\.createSymbolicLink"
+      ],
+      "anti_patterns": [],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/61.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/files/storage/",
+          "spring": "https://docs.spring.io/spring-framework/reference/core/resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-61",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-65",
+      "name": "Windows Hard Link",
+      "why": "Windows-specific hard link vulnerabilities",
+      "patterns": [
+        "CreateHardLink",
+        "mklink",
+        "os\\.link\\("
+      ],
+      "anti_patterns": [],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/65.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/files/storage/",
+          "spring": "https://docs.spring.io/spring-framework/reference/core/resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-65",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-219",
+      "name": "Storage of File with Sensitive Data Under Web Root",
+      "why": "Serving sensitive files from web-accessible directories",
+      "patterns": [
+        "STATICFILES_DIRS.*=.*\\[.*'\\.'",
+        "STATIC_ROOT\\s*=\\s*BASE_DIR",
+        "ResourceHandler.*addResourceLocations.*file:",
+        "@Value\\(['\"]\\$\\{upload\\.dir['\"]\\).*String uploadDir",
+        "registry\\.addResourceHandler.*addResourceLocations.*file"
+      ],
+      "anti_patterns": [
+        "X-Accel-Redirect",
+        "X-Sendfile",
+        "serveFile\\(\\)",
+        "protected\\s+Resource"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/219.html",
+          "django": "https://docs.djangoproject.com/en/stable/howto/static-files/",
+          "spring": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-config-static-resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-219",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-276",
+      "name": "Incorrect Default Permissions",
+      "why": "OS/deployment-level permission issues (chmod 777)",
+      "patterns": [
+        "os\\.chmod\\(.*0o777",
+        "os\\.chmod\\(.*0o666",
+        "chmod.*777",
+        "umask\\(0\\)",
+        "setPermissions\\(\\s*777",
+        "Files\\.setPosixFilePermissions\\(.*ALL_PERMISSIONS"
+      ],
+      "anti_patterns": [
+        "os\\.chmod\\(.*0o644",
+        "os\\.chmod\\(.*0o600",
+        "setPermissions\\(\\s*644"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/276.html",
+          "django": "https://docs.djangoproject.com/en/stable/howto/deployment/checklist/",
+          "spring": "https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto.properties-and-configuration"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-276",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-377",
+      "name": "Insecure Temporary File",
+      "why": "Creating temp files in predictable locations",
+      "patterns": [
+        "open\\(['\"]?/tmp/",
+        "tempfile\\.mktemp\\(",
+        "os\\.tmpnam\\(",
+        "File\\(System\\.getProperty\\(['\"]java\\.io\\.tmpdir['\"]\\),\\s*['\"]\\w+['\"]\\)",
+        "File\\(['\"]/tmp/['\"]\\s*\\+"
+      ],
+      "anti_patterns": [
+        "tempfile\\.mkstemp",
+        "tempfile\\.NamedTemporaryFile",
+        "Files\\.createTempFile",
+        "createTempFile"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/377.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/files/storage/",
+          "spring": "https://docs.spring.io/spring-framework/reference/integration/file-resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-377",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-379",
+      "name": "Creation of Temporary File in Directory with Insecure Permissions",
+      "why": "Temp files in world-writable directories",
+      "patterns": [
+        "tempfile\\.mktemp\\(",
+        "open\\(['\"]?/tmp/['\"]?[\\w]+['\"]?,\\s*['\"]w['\"]\\)",
+        "FileOutputStream\\(['\"]/tmp/",
+        "FileWriter\\(['\"]/tmp/"
+      ],
+      "anti_patterns": [
+        "mkstemp",
+        "createTempFile",
+        "Files\\.createTempFile"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/379.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/files/storage/",
+          "spring": "https://docs.spring.io/spring-framework/reference/integration/file-resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-379",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-402",
+      "name": "Transmission of Private Resources into a New Sphere (Resource Leak)",
+      "why": "Database connections or file handles not properly closed",
+      "patterns": [
+        "conn\\s*=\\s*(?:psycopg2|sqlite3|pymysql)\\.connect\\(",
+        "connection\\.open\\(",
+        "db\\.connect\\(",
+        "DriverManager\\.getConnection\\(",
+        "new\\s+FileInputStream\\(",
+        "Files\\.newInputStream\\("
+      ],
+      "anti_patterns": [
+        "with\\s+.*connect",
+        "\\.close\\(",
+        "finally.*close",
+        "try-with-resources",
+        "@Cleanup"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/402.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/databases/",
+          "spring": "https://docs.spring.io/spring-framework/reference/data-access/jdbc/core.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-402",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-424",
+      "name": "Improper Protection of Alternate Path",
+      "why": "Multiple access paths to resources without consistent protection",
+      "patterns": [
+        "@GetMapping\\(['\"]/api/v[0-9]",
+        "@RequestMapping\\(['\"]/internal/",
+        "@GetMapping\\(['\"]/debug/",
+        "path\\(['\"]api/",
+        "url\\(r['\"]^api/"
+      ],
+      "anti_patterns": [
+        "@login_required",
+        "@PreAuthorize",
+        "IsAuthenticated",
+        "http\\.authorizeHttpRequests"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/424.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/http/urls/",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-424",
+      "category": "forced_browsing",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-441",
+      "name": "Unintended Proxy or Intermediary (Confused Deputy)",
+      "why": "SSRF via URL fetching features in tutorials",
+      "patterns": [
+        "requests\\.get\\(url\\)(?!.*whitelist)",
+        "RestTemplate\\.getForObject\\(userInput",
+        "WebClient\\.get\\(\\)\\.uri\\(userInput",
+        "HttpURLConnection\\.connect\\(",
+        "@GetMapping.*url.*RequestParam"
+      ],
+      "anti_patterns": [
+        "ALLOWED_HOSTS",
+        "whitelist",
+        "allowedUrls",
+        "UriComponentsBuilder"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/441.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/settings/#allowed-hosts",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/exploits/ssrf.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-441",
+      "category": "ssrf",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-497",
+      "name": "Exposure of Sensitive System Information",
+      "why": "Debug mode enabled in production settings",
+      "patterns": [
+        "DEBUG\\s*=\\s*True(?!.*environ)",
+        "app\\.run\\(debug\\s*=\\s*True\\)",
+        "FLASK_DEBUG\\s*=\\s*1",
+        "SHOW_ERRORS\\s*=\\s*True",
+        "server\\.error\\.include-stacktrace\\s*=\\s*always",
+        "server\\.error\\.include-message\\s*=\\s*always"
+      ],
+      "anti_patterns": [
+        "DEBUG\\s*=\\s*os\\.environ",
+        "DEBUG\\s*=\\s*False",
+        "server\\.error\\.include-stacktrace\\s*=\\s*never"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/497.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/settings/#debug",
+          "spring": "https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#application-properties.server.server.error.include-stacktrace"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-497",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-538",
+      "name": "Insertion of Sensitive Information into Externally-Accessible File or Directory",
+      "why": "Sensitive config files in accessible locations",
+      "patterns": [
+        "\\.env.*ALLOWED_HOSTS",
+        "settings\\.py.*DATABASES.*PASSWORD",
+        "application\\.properties.*password",
+        "application\\.yml.*secret",
+        "@ConfigurationProperties.*password"
+      ],
+      "anti_patterns": [
+        "@Value\\(.*:.*\\}",
+        "Environment",
+        "encrypt"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/538.html",
+          "django": "https://docs.djangoproject.com/en/stable/howto/deployment/checklist/",
+          "spring": "https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto.properties-and-configuration"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-538",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-548",
+      "name": "Exposure of Information Through Directory Listing",
+      "why": "Directory indexes enabled in web server config",
+      "patterns": [
+        "autoindex\\s+on",
+        "Options.*Indexes",
+        "registry\\.addResourceHandler.*addResourceLocations.*file",
+        "ResourceHandlerRegistry"
+      ],
+      "anti_patterns": [
+        "autoindex\\s+off",
+        "-Indexes"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/548.html",
+          "django": "https://docs.djangoproject.com/en/stable/howto/deployment/checklist/",
+          "spring": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-config-static-resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-548",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-552",
+      "name": "Files or Directories Accessible to External Parties",
+      "why": "Media/uploads directories served without authentication",
+      "patterns": [
+        "MEDIA_ROOT.*public",
+        "MEDIA_URL.*=",
+        "registry\\.addResourceHandler\\(['\"]/uploads['\"]",
+        "@GetMapping\\(['\"]/uploads/",
+        "upload\\.dir.*public"
+      ],
+      "anti_patterns": [
+        "@login_required",
+        "private_storage",
+        "X-Accel-Redirect",
+        "@PreAuthorize",
+        "AuthenticationPrincipal"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/552.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/security/#user-uploaded-content-security",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-552",
+      "category": "exposure",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-566",
+      "name": "Authorization Bypass Through User-Controlled SQL Primary Key",
+      "why": "Raw SQL with user-controlled IDs without ownership checks",
+      "patterns": [
+        "SELECT.*WHERE.*id\\s*=.*%s",
+        "SELECT.*WHERE.*id\\s*=.*format\\(",
+        "@Query\\(value\\s*=\\s*['\"]SELECT.*WHERE.*id.*=.*:id['\"]\\)(?!.*user)",
+        "jdbcTemplate\\.queryForObject.*id.*=.*\\?"
+      ],
+      "anti_patterns": [
+        "parameterized",
+        "prepared.*statement",
+        "AND\\s+user_id\\s*=",
+        "findByIdAndUserId"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/566.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/db/sql/",
+          "spring": "https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-566",
+      "category": "authorization",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-732",
+      "name": "Incorrect Permission Assignment for Critical Resource",
+      "why": "Overly permissive file/directory permissions",
+      "patterns": [
+        "os\\.chmod\\(.*0o777",
+        "os\\.chmod\\(.*0o775",
+        "subprocess.*chmod.*777",
+        "setPermissions\\(\\s*777",
+        "Files\\.setPosixFilePermissions\\(.*ALL_PERMISSIONS"
+      ],
+      "anti_patterns": [
+        "os\\.chmod\\(.*0o644",
+        "os\\.chmod\\(.*0o600",
+        "setPermissions\\(\\s*644"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/732.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/files/",
+          "spring": "https://docs.spring.io/spring-framework/reference/integration/file-resources.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-732",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-749",
+      "name": "Exposed Dangerous Method or Function",
+      "why": "Dangerous methods accessible via user input (eval, exec, etc.)",
+      "patterns": [
+        "eval\\(request\\.",
+        "eval\\(req\\.",
+        "exec\\(request\\.",
+        "__import__\\(",
+        "subprocess\\.call\\(.*request\\.",
+        "Runtime\\.getRuntime\\(\\)\\.exec\\(request",
+        "ScriptEngine\\.eval\\("
+      ],
+      "anti_patterns": [
+        "ScriptEngine.*sandbox",
+        "SecurityManager",
+        "@PreAuthorize"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/749.html",
+          "django": "https://docs.djangoproject.com/en/stable/topics/security/",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-749",
+      "category": "secondary_feature",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    },
+    {
+      "cwe_id": "CWE-918",
+      "name": "Server-Side Request Forgery (SSRF)",
+      "why": "Fetching URLs from user input without validation",
+      "patterns": [
+        "requests\\.get\\(request\\.(?:GET|POST|data)",
+        "RestTemplate\\.getForObject\\(req\\.",
+        "WebClient\\.get\\(\\)\\.uri\\(req\\.",
+        "HttpURLConnection.*url.*request",
+        "@GetMapping.*url.*RequestParam",
+        "openConnection\\(new\\s+URL\\(userInput\\)\\)"
+      ],
+      "anti_patterns": [
+        "UriComponentsBuilder",
+        "ALLOWED_HOSTS",
+        "ip_address",
+        "is_private",
+        "InetAddress\\.getByName",
+        "allowlist",
+        "denylist",
+        "privateAddress",
+        "isLoopbackAddress",
+        "isSiteLocalAddress"
+      ],
+      "references": [
+        {
+          "cwe": "https://cwe.mitre.org/data/definitions/918.html",
+          "django": "https://docs.djangoproject.com/en/stable/ref/settings/#allowed-hosts",
+          "spring": "https://docs.spring.io/spring-security/reference/servlet/exploits/ssrf.html"
+        }
+      ],
+      "ruleset": "secondary",
+      "id": "CWE-918",
+      "category": "ssrf",
+      "severity": "medium",
+      "confidence": "heuristic",
+      "notes": []
+    }
+  ]
+}

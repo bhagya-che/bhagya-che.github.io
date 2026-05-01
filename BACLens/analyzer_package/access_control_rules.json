@@ -1,0 +1,448 @@
+{
+  "schema_version": "1.0",
+  "ruleset": "access_control_login_registration_dashboard",
+  "description": "Rule set for extracting access-control matrix elements and coarse BAC classes from Spring/Django login, registration, dashboard, profile, and account learning artifacts.",
+  "frameworks": [
+    "Spring Boot",
+    "Spring Security",
+    "Spring MVC",
+    "Django"
+  ],
+  "global_references": {
+    "owasp_bac_2025": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+    "spring_authorize_http_requests": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html",
+    "spring_method_security": "https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html",
+    "spring_csrf": "https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html",
+    "cwe_284": "https://cwe.mitre.org/data/definitions/284.html",
+    "cwe_862": "https://cwe.mitre.org/data/definitions/862.html",
+    "cwe_863": "https://cwe.mitre.org/data/definitions/863.html",
+    "cwe_639": "https://cwe.mitre.org/data/definitions/639.html"
+  },
+  "auth_context": {
+    "include_patterns": [
+      "\\blogin\\b",
+      "\\bsignin\\b",
+      "\\bsign-in\\b",
+      "\\bregister\\b",
+      "\\bsignup\\b",
+      "\\bsign-up\\b",
+      "\\bregistration\\b",
+      "\\bdashboard\\b",
+      "\\bprofile\\b",
+      "\\baccount\\b",
+      "\\buser.*page\\b",
+      "\\bauth\\b",
+      "\\bauthentication\\b",
+      "\\bauthorization\\b",
+      "\\bpassword\\b",
+      "\\bcredential\\b",
+      "\\bsession\\b",
+      "\\badmin\\b",
+      "\\buser.*panel\\b",
+      "\\bcontrol.*panel\\b"
+    ]
+  },
+  "matrix": {
+    "subjects": [
+      {
+        "label": "Admin/Privileged User",
+        "patterns": [
+          "hasRole\\s*\\(\\s*['\\\"](?:ADMIN|ROLE_ADMIN)['\\\"]\\s*\\)",
+          "hasAuthority\\s*\\(\\s*['\\\"](?:ADMIN|ROLE_ADMIN)['\\\"]\\s*\\)",
+          "request\\.user\\.is_staff",
+          "request\\.user\\.is_superuser",
+          "@Secured\\s*\\([^)]*(?:ADMIN|ROLE_ADMIN)[^)]*\\)"
+        ]
+      },
+      {
+        "label": "Authenticated User",
+        "patterns": [
+          "isAuthenticated\\s*\\(\\s*\\)",
+          "authenticated\\s*\\(\\s*\\)",
+          "@AuthenticationPrincipal",
+          "Principal\\s+\\w+",
+          "Authentication\\s+\\w+",
+          "request\\.user\\.is_authenticated",
+          "@login_required",
+          "LoginRequiredMixin"
+        ]
+      },
+      {
+        "label": "Owner/Self",
+        "patterns": [
+          "#\\w+\\.?\\w*\\s*==\\s*authentication\\.name",
+          "authentication\\.name\\s*==\\s*#\\w+",
+          "principal\\.getName\\s*\\(\\s*\\)",
+          "request\\.user\\s*==",
+          "request\\.user\\.id\\s*==",
+          "findByIdAnd(?:UserId|Owner|OwnerId)",
+          "findBy(?:Username|Email)\\s*\\("
+        ]
+      },
+      {
+        "label": "Anonymous User (Pre-Login)",
+        "patterns": [
+          "permitAll\\s*\\(\\s*\\)",
+          "anonymous\\s*\\(\\s*\\)",
+          "Guest/Any",
+          "Anonymous"
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "label": "Dashboard Resource",
+        "patterns": [
+          "\\bdashboard\\b",
+          "/dashboard"
+        ]
+      },
+      {
+        "label": "Profile Resource",
+        "patterns": [
+          "\\bprofile\\b",
+          "/profile"
+        ]
+      },
+      {
+        "label": "Account Resource",
+        "patterns": [
+          "\\baccount\\b",
+          "/account",
+          "AccountController"
+        ]
+      },
+      {
+        "label": "Admin Resource",
+        "patterns": [
+          "\\badmin\\b",
+          "/admin",
+          "AdminController"
+        ]
+      },
+      {
+        "label": "User Entity/Data",
+        "patterns": [
+          "UserRepository",
+          "\\bUser\\b",
+          "users",
+          "UserDetails",
+          "UserService"
+        ]
+      },
+      {
+        "label": "Session/Auth State",
+        "patterns": [
+          "HttpSession",
+          "request\\.session",
+          "SecurityContext",
+          "JSESSIONID",
+          "session"
+        ]
+      }
+    ],
+    "operations": [
+      {
+        "label": "LOGIN-FORM-GET",
+        "requires": [
+          "\\b(?:login|signin|auth)\\b",
+          "@GetMapping|RequestMethod\\.GET|HttpMethod\\.GET"
+        ]
+      },
+      {
+        "label": "LOGIN-POST",
+        "requires": [
+          "\\b(?:login|signin|auth)\\b",
+          "@PostMapping|RequestMethod\\.POST|HttpMethod\\.POST"
+        ]
+      },
+      {
+        "label": "REGISTER-FORM-GET",
+        "requires": [
+          "\\b(?:register|signup|create.*account)\\b",
+          "@GetMapping|RequestMethod\\.GET|HttpMethod\\.GET"
+        ]
+      },
+      {
+        "label": "REGISTER-POST",
+        "requires": [
+          "\\b(?:register|signup|create.*account)\\b",
+          "@PostMapping|RequestMethod\\.POST|HttpMethod\\.POST"
+        ]
+      },
+      {
+        "label": "LOGOUT",
+        "patterns": [
+          "\\b(?:logout|signout)\\b",
+          "logoutUrl\\s*\\("
+        ]
+      },
+      {
+        "label": "DASHBOARD-VIEW",
+        "requires": [
+          "\\b(?:dashboard|profile|account)\\b",
+          "@GetMapping|RequestMethod\\.GET|HttpMethod\\.GET"
+        ]
+      },
+      {
+        "label": "DASHBOARD-UPDATE",
+        "requires": [
+          "\\b(?:dashboard|profile|account)\\b",
+          "@PostMapping|RequestMethod\\.POST|HttpMethod\\.POST"
+        ]
+      },
+      {
+        "label": "PROFILE-UPDATE",
+        "requires": [
+          "\\b(?:profile|account)\\b",
+          "@PutMapping|RequestMethod\\.PUT|HttpMethod\\.PUT"
+        ]
+      },
+      {
+        "label": "FORM-GET/POST",
+        "patterns": [
+          "AuthenticationForm|LoginForm|UserCreationForm|RegisterForm"
+        ]
+      }
+    ]
+  },
+  "authorization_patterns": {
+    "rbac": [
+      {
+        "label": "Spring-PreAuthorize-Role",
+        "patterns": [
+          "@PreAuthorize\\s*\\([^)]*(?:hasRole|hasAuthority|hasAnyRole|hasAnyAuthority)[^)]*\\)"
+        ]
+      },
+      {
+        "label": "Spring-Secured",
+        "patterns": [
+          "@Secured\\s*\\([^)]+\\)",
+          "@RolesAllowed\\s*\\([^)]+\\)"
+        ]
+      },
+      {
+        "label": "Spring-AuthorizeHttpRequests-Role",
+        "patterns": [
+          "requestMatchers\\s*\\([^)]*(?:admin|dashboard|profile|account)[^)]*\\)\\s*\\.has(?:Role|Authority)",
+          "antMatchers\\s*\\([^)]*(?:admin|dashboard|profile|account)[^)]*\\)\\s*\\.has(?:Role|Authority)"
+        ]
+      },
+      {
+        "label": "Django-LoginRequired",
+        "patterns": [
+          "@login_required",
+          "LoginRequiredMixin",
+          "request\\.user\\.is_authenticated"
+        ]
+      },
+      {
+        "label": "Django-AdminRole",
+        "patterns": [
+          "@staff_member_required",
+          "@permission_required\\s*\\(",
+          "request\\.user\\.is_staff",
+          "request\\.user\\.is_superuser"
+        ]
+      }
+    ],
+    "abac_ownership": [
+      {
+        "label": "Spring-Principal-Ownership",
+        "patterns": [
+          "authentication\\.name\\s*==\\s*#?\\w+",
+          "#?\\w+\\s*==\\s*authentication\\.name",
+          "principal\\.getName\\s*\\(\\s*\\)\\s*\\.equals\\s*\\(",
+          "findByIdAnd(?:UserId|Owner|OwnerId)\\s*\\(",
+          "findBy(?:Username|Email)\\s*\\("
+        ]
+      },
+      {
+        "label": "Spring-PostAuthorize-ReturnedOwner",
+        "patterns": [
+          "@PostAuthorize\\s*\\([^)]*(?:returnObject|authentication|principal)[^)]*\\)",
+          "hasPermission\\s*\\("
+        ]
+      },
+      {
+        "label": "Django-Ownership",
+        "patterns": [
+          "request\\.user\\s*==\\s*\\w+\\.(?:user|owner)",
+          "request\\.user\\.id\\s*==\\s*\\w+\\.(?:id|user_id|owner_id)",
+          "\\.filter\\s*\\([^)]*(?:user|owner)\\s*=\\s*request\\.user",
+          "get_object_or_404\\s*\\([^)]*(?:user|owner)\\s*=\\s*request\\.user"
+        ]
+      }
+    ],
+    "workflow_context": [
+      {
+        "label": "Login-Bruteforce-State",
+        "patterns": [
+          "login_attempts|failed_logins|last_login_attempt|captcha|rate.?limit|throttle"
+        ]
+      },
+      {
+        "label": "Registration-Verification-State",
+        "patterns": [
+          "registration_step|verification_email_sent|email_verified|activation|verify.*email|send.*mail"
+        ]
+      },
+      {
+        "label": "Password-Reset-State",
+        "patterns": [
+          "reset_token|reset_email|reset_expires|PasswordResetToken|forgot.*password"
+        ]
+      },
+      {
+        "label": "Session-Rotation",
+        "patterns": [
+          "changeSessionId\\s*\\(",
+          "migrateSession\\s*\\(",
+          "newSession\\s*\\(",
+          "regenerate|rotate|sessionFixation"
+        ]
+      }
+    ]
+  },
+  "bac_inference_rules": [
+    {
+      "id": "AC-VERTICAL-DASHBOARD-NO-AUTH",
+      "name": "Dashboard/Profile Accessible Without Login",
+      "bac_class": "Vertical BAC",
+      "cwe_ids": [
+        "CWE-862",
+        "CWE-284"
+      ],
+      "severity": "critical",
+      "context_patterns": [
+        "\\b(?:dashboard|profile|account)\\b"
+      ],
+      "required_missing": [
+        "rbac"
+      ],
+      "description": "Protected post-login pages need an authentication or role gate.",
+      "references": {
+        "owasp": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html",
+        "cwe": "https://cwe.mitre.org/data/definitions/862.html"
+      }
+    },
+    {
+      "id": "AC-VERTICAL-ADMIN-NO-ROLE",
+      "name": "Admin Resource Without Role Check",
+      "bac_class": "Vertical BAC",
+      "cwe_ids": [
+        "CWE-862",
+        "CWE-863"
+      ],
+      "severity": "critical",
+      "context_patterns": [
+        "\\badmin\\b",
+        "/admin"
+      ],
+      "required_missing": [
+        "rbac"
+      ],
+      "description": "Administrative resources require explicit role or authority checks.",
+      "references": {
+        "owasp": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html",
+        "cwe": "https://cwe.mitre.org/data/definitions/863.html"
+      }
+    },
+    {
+      "id": "AC-HORIZONTAL-IDOR",
+      "name": "Identifier-Based Profile/Account Access Without Ownership Check",
+      "bac_class": "Horizontal BAC/IDOR",
+      "cwe_ids": [
+        "CWE-639",
+        "CWE-284"
+      ],
+      "severity": "high",
+      "context_patterns": [
+        "\\b(?:profile|account|dashboard)\\b",
+        "@PathVariable\\s+\\w*id\\b|@RequestParam\\s+\\w*id\\b|request\\.GET\\.get\\s*\\(['\\\"](?:id|user_id)['\\\"]\\)"
+      ],
+      "required_missing": [
+        "abac_ownership"
+      ],
+      "description": "Routes that accept user-controlled identifiers require subject-object ownership checks.",
+      "references": {
+        "owasp": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "spring": "https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html",
+        "cwe": "https://cwe.mitre.org/data/definitions/639.html"
+      }
+    },
+    {
+      "id": "AC-HORIZONTAL-UNFILTERED-USER-LIST",
+      "name": "Unfiltered User List Exposure",
+      "bac_class": "Horizontal BAC",
+      "cwe_ids": [
+        "CWE-668",
+        "CWE-200",
+        "CWE-284"
+      ],
+      "severity": "medium",
+      "context_patterns": [
+        "UserRepository\\.findAll\\s*\\(",
+        "userRepository\\.findAll\\s*\\(",
+        "User\\.objects\\.all\\s*\\(",
+        "SELECT\\s+\\*\\s+FROM\\s+users"
+      ],
+      "required_missing": [
+        "rbac",
+        "abac_ownership"
+      ],
+      "description": "User listings need an administrative gate or subject-specific filtering.",
+      "references": {
+        "owasp": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "spring": "https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html",
+        "cwe": "https://cwe.mitre.org/data/definitions/668.html"
+      }
+    },
+    {
+      "id": "AC-CONTEXT-LOGIN-NO-BRUTEFORCE",
+      "name": "Login POST Without Brute-Force Workflow Control",
+      "bac_class": "Context-dependent BAC",
+      "cwe_ids": [
+        "CWE-307",
+        "CWE-799"
+      ],
+      "severity": "medium",
+      "context_patterns": [
+        "\\b(?:login|signin)\\b",
+        "@PostMapping|def\\s+login"
+      ],
+      "required_missing": [
+        "workflow_context"
+      ],
+      "description": "Login submissions should include a workflow control such as rate limiting, throttling, CAPTCHA, or failed-attempt state.",
+      "references": {
+        "owasp": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "spring": "https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/form.html",
+        "cwe": "https://cwe.mitre.org/data/definitions/307.html"
+      }
+    },
+    {
+      "id": "AC-CONTEXT-RESET-NO-TOKEN",
+      "name": "Password Reset Flow Without Reset Token Validation Signal",
+      "bac_class": "Context-dependent BAC",
+      "cwe_ids": [
+        "CWE-640",
+        "CWE-863"
+      ],
+      "severity": "high",
+      "context_patterns": [
+        "password.*reset|forgot.*password"
+      ],
+      "required_missing": [
+        "workflow_context"
+      ],
+      "description": "Password reset flows require token, expiry, and state validation.",
+      "references": {
+        "owasp": "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "cwe": "https://cwe.mitre.org/data/definitions/640.html"
+      }
+    }
+  ]
+}
