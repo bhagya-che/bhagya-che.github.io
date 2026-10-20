@@ -1,0 +1,118 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    16px/1.65 "Courier New",
+    monospace;
+}
+a {
+  color: var(--link);
+  text-underline-offset: 3px;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+input,
+select,
+textarea {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  max-width: 100%;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 10000;
+  padding: 12px 20px;
+  background: var(--surface);
+  color: var(--text);
+}
+.skip-link:focus {
+  top: 10px;
+}
+.site-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 15px max(20px, calc((100vw - 1240px) / 2));
+  background: var(--surface);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+.site-brand {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+.site-brand span {
+  color: var(--accent);
+}
+.site-links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.site-links a {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--muted);
+}
+.site-links a:hover {
+  color: var(--accent);
+}
+.site-footer {
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+.notice {
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  background: var(--accent-soft);
+  border-radius: 10px;
+  color: var(--text);
+}
+@media (max-width: 800px) {
+  .site-bar {
+    gap: 12px;
+    padding: 12px 18px;
+  }
+  .site-links {
+    order: 3;
+    flex-basis: 100%;
+    gap: 14px;
+  }
+  html {
+    scroll-padding-top: 140px;
+  }
+}

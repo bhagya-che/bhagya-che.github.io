@@ -1,0 +1,478 @@
+.fitness-page {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 28px 60px;
+}
+.fitness-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 55px 0 30px;
+}
+.fitness-hero h1 {
+  font-size: clamp(34px, 5.2vw, 62px);
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+  margin: 12px 0 22px;
+}
+.fitness-hero h1 span {
+  color: var(--accent);
+}
+.fitness-hero p {
+  max-width: 630px;
+  color: var(--muted);
+}
+.eyebrow {
+  font:
+    700 11px/1.5 ui-monospace,
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent) !important;
+}
+.planner-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.fitness-page button {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+  padding: 10px 13px;
+}
+.fitness-page button.primary,
+.fitness-page button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+.fitness-page button:hover {
+  border-color: var(--accent);
+}
+.planner-nav {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0 20px;
+  font-size: 14px;
+  font-weight: 650;
+}
+.planner-nav a {
+  text-decoration: none;
+  color: var(--muted);
+}
+.privacy-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 16px 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.privacy-bar label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.privacy-bar button {
+  margin-left: auto;
+  padding: 6px 10px;
+}
+.fitness-page section {
+  border-top: 1px solid var(--border);
+  padding: 34px 0;
+  scroll-margin-top: 95px;
+}
+.section-heading {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.fitness-page h2 {
+  font-size: 25px;
+  letter-spacing: -0.035em;
+  margin: 6px 0 12px;
+}
+.fitness-page h3 {
+  font-size: 17px;
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+.muted {
+  color: var(--muted);
+}
+.small {
+  font-size: 12px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.stat-grid .card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+.stat-grid strong {
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+.stat-grid small {
+  color: var(--muted);
+}
+.settings summary,
+.exercise-library summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+.settings summary span {
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: 12px;
+}
+.settings[open] summary {
+  margin-bottom: 20px;
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+.field-grid p {
+  font-size: 12px;
+  grid-column: 1/-1;
+}
+.fitness-page label {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+.privacy-bar label {
+  flex-direction: row;
+}
+.fitness-page input:not([type="checkbox"]),
+.fitness-page select,
+.fitness-page textarea {
+  width: 100%;
+  padding: 10px 11px;
+  font-size: 14px;
+  min-width: 0;
+}
+.fitness-page input[type="checkbox"] {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--accent);
+}
+.chart-card canvas {
+  display: block;
+  width: 100%;
+  height: 240px;
+}
+.chart-card > p {
+  font-size: 13px;
+  margin-bottom: 0;
+}
+.week-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+  margin: 18px 0;
+}
+.week-strip button {
+  padding: 12px 4px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.week-strip strong {
+  font-size: 16px;
+}
+.training-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.segmented {
+  display: flex;
+  gap: 6px;
+}
+.exercise {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 115px 145px;
+  gap: 14px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+  align-items: center;
+}
+.exercise h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+.exercise p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.exercise.done h4 {
+  color: var(--accent);
+}
+.exercise-sets {
+  font-size: 12px;
+}
+.exercise-library h3 {
+  margin-top: 26px;
+}
+.exercise-library li {
+  margin: 12px 0;
+  font-size: 13px;
+}
+.meal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.meal-grid .card {
+  margin: 0;
+}
+.meal-grid p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.meal-type,
+.pill {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 5px 9px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.meal-type {
+  margin-bottom: 14px;
+}
+.meal-macros {
+  font-size: 12px;
+  color: var(--text);
+  padding: 12px 0;
+}
+.meal-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font-size: 13px;
+}
+.notes-label {
+  margin-top: 18px;
+}
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 600;
+}
+th,
+td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td:first-child {
+  white-space: normal;
+  min-width: 120px;
+  overflow-wrap: anywhere;
+}
+.food-totals {
+  font-size: 14px;
+  font-weight: 650;
+}
+.reference-list {
+  padding-left: 20px;
+}
+.reference-list li {
+  margin: 10px 0;
+}
+.reference-list a {
+  font-size: 14px;
+}
+#toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: min(600px, calc(100vw - 30px));
+  background: var(--text);
+  color: var(--bg);
+  padding: 13px 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  font-size: 13px;
+  display: none;
+}
+#toast.visible {
+  display: block;
+}
+.chart-card p {
+  font-size: 12px;
+}
+.field-grid button {
+  align-self: end;
+  min-height: 43px;
+}
+@media (max-width: 900px) {
+  .fitness-hero {
+    display: block;
+  }
+  .fitness-hero .planner-actions {
+    margin-top: 22px;
+  }
+  .field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .exercise {
+    grid-template-columns: 24px minmax(0, 1fr) 110px;
+  }
+  .exercise-sets {
+    grid-column: 2;
+  }
+  .exercise label {
+    grid-column: 3;
+    grid-row: 1/3;
+  }
+  .fitness-page section {
+    scroll-margin-top: 140px;
+  }
+}
+@media (max-width: 560px) {
+  .fitness-page {
+    padding: 0 16px 35px;
+  }
+  .card {
+    padding: 17px;
+  }
+  .fitness-hero {
+    padding-top: 30px;
+  }
+  .meal-grid {
+    grid-template-columns: 1fr;
+  }
+  .privacy-bar {
+    gap: 10px;
+  }
+  .privacy-bar span {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .planner-nav {
+    gap: 16px;
+    font-size: 13px;
+  }
+  .week-strip {
+    gap: 4px;
+  }
+  .week-strip button {
+    font-size: 10px;
+    padding: 10px 2px;
+  }
+  .exercise {
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+  .exercise label {
+    grid-column: 2;
+    grid-row: auto;
+  }
+  .exercise-sets {
+    grid-column: 2;
+  }
+  .stat-grid {
+    gap: 9px;
+  }
+  .stat-grid strong {
+    font-size: 23px;
+  }
+  .field-grid {
+    gap: 12px;
+  }
+  .training-options {
+    gap: 12px;
+  }
+  .settings summary span {
+    display: block;
+    margin-left: 18px;
+  }
+  .fitness-page section {
+    padding: 26px 0;
+  }
+  .table-wrap {
+    margin: 0 -2px;
+  }
+}
+@media print {
+  .planner-actions,
+  .planner-nav,
+  .privacy-bar,
+  #toast,
+  .fitness-page button {
+    display: none !important;
+  }
+  .fitness-page {
+    max-width: none;
+  }
+  .card {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+  .fitness-hero {
+    padding-top: 0;
+  }
+  .fitness-hero h1 {
+    font-size: 34px;
+  }
+  .meal-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

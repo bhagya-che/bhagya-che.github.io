@@ -1,0 +1,55 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 50px;
+  background-color: var(--bg);
+  color: var(--text);
+}
+.container {
+  background: var(--surface);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-width: 100%;
+  color: var(--text);
+  margin: 0 auto;
+}
+.hidden {
+  display: none;
+}
+button {
+  padding: 10px 20px;
+  background: var(--terminal-blue);
+  color: var(--on-accent);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+button:hover {
+  filter: brightness(0.9);
+}
+input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 80%;
+  max-width: 100%;
+  color: var(--text);
+  background: var(--surface-alt);
+}
+.alert {
+  color: var(--danger);
+  font-weight: bold;
+}
+
+.demo-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+.grade-fail {
+  color: var(--danger);
+}
+.grade-pass {
+  color: var(--success);
+}

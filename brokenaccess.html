@@ -1,100 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Vulnerable Gradebook</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; }
-        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 400px; margin: 0 auto; }
-        .hidden { display: none; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
-        button:hover { background: #0056b3; }
-        input { padding: 10px; margin: 10px 0; width: 80%; }
-        .alert { color: red; font-weight: bold; }
-    </style>
-</head>
-<body>
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+    />
+    <script src="assets/theme.js"></script>
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="assets/theme.css" />
+    <link rel="stylesheet" href="demo.css" />
+  </head>
+  <body>
+    <div class="page-tools floating-tools">
+      <a href="index.html">← Portfolio</a>
+      <div class="theme-controls" aria-label="Color theme">
+        <button
+          type="button"
+          data-theme-toggle
+          aria-label="Switch theme"
+          title="Switch theme"
+        >
+          <svg class="theme-sun" viewbox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+            ></path></svg
+          ><svg class="theme-moon" viewbox="0 0 24 24" aria-hidden="true">
+            <path d="M20.8 13A9 9 0 0 1 11 3.2 9 9 0 1 0 20.8 13Z"></path>
+          </svg></button
+        ><button
+          type="button"
+          data-theme-auto
+          aria-pressed="true"
+          title="Use browser theme"
+        >
+          Auto
+        </button>
+      </div>
+    </div>
+    <div class="container" id="login-screen">
+      <h2>Student Login</h2>
+      <p class="demo-note">
+        Fictional data · intentionally vulnerable access-control exercise.
+      </p>
+      <p>Enter your Student ID to view grades.</p>
+      <p><i>(Hint: You are Bob. Your ID is 102)</i></p>
+      <input
+        type="text"
+        id="username_input"
+        placeholder="Enter Student ID (e.g., 102)"
+        aria-label="Fictional student ID"
+      />
+      <br />
+      <button id="demoLogin">Login</button>
+    </div>
 
-<div class="container" id="login-screen">
-    <h2>Student Login</h2>
-    <p>Enter your Student ID to view grades.</p>
-    <p><i>(Hint: You are Bob. Your ID is 102)</i></p>
-    <input type="text" id="username_input" placeholder="Enter Student ID (e.g., 102)">
-    <br>
-    <button onclick="login()">Login</button>
-</div>
+    <div class="container hidden" id="dashboard-screen">
+      <h2>Grade Report</h2>
+      <div id="result_area">Loading...</div>
+      <br />
+      <button id="demoLogout">Logout</button>
+    </div>
 
-<div class="container hidden" id="dashboard-screen">
-    <h2>Grade Report</h2>
-    <div id="result_area">Loading...</div>
-    <br>
-    <button onclick="logout()">Logout</button>
-</div>
-
-<script>
-    // --- 1. THE FAKE DATABASE ---
-    const database = {
-        "101": { name: "Alice", grade: "A+", secret: "Teacher's Pet" },
-        "102": { name: "Bob",   grade: "F",  secret: "Skipped 5 classes" },
-        "103": { name: "Eve",   grade: "C",  secret: "Average Student" }
-    };
-
-    // --- 2. ON PAGE LOAD: CHECK URL ---
-    // This runs every time the page refreshes or the URL changes
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const loggedInUser = localStorage.getItem("user_session"); // Simulates a "Cookie"
-        const requestedId = urlParams.get('id'); // This is the ?id=102 part
-
-        // If user is "logged in" and requesting a specific ID
-        if (loggedInUser && requestedId) {
-            showDashboard(requestedId);
-        }
-    };
-
-    // --- 3. THE LOGIN FUNCTION ---
-    function login() {
-        const userId = document.getElementById("username_input").value;
-        
-        if (database[userId]) {
-            // Save "session" (Simulating a cookie)
-            localStorage.setItem("user_session", userId);
-            
-            // ❌ VULNERABILITY HERE:
-            // We are redirecting the browser to include the ID in the URL.
-            // This exposes the ID to manipulation.
-            window.location.search = `?id=${userId}`; 
-        } else {
-            alert("User ID not found!");
-        }
-    }
-
-    // --- 4. THE DISPLAY FUNCTION ---
-    function showDashboard(id) {
-        document.getElementById("login-screen").classList.add("hidden");
-        document.getElementById("dashboard-screen").classList.remove("hidden");
-
-        const record = database[id];
-
-        // ❌ VULNERABILITY:
-        // We are showing whatever ID is in the URL (id), 
-        // regardless of who is logged in (localStorage).
-        if (record) {
-            document.getElementById("result_area").innerHTML = `
-                <p>Student Name: <b>${record.name}</b></p>
-                <h1 style="color: ${record.grade === 'F' ? 'red' : 'green'}">${record.grade}</h1>
-                <p><i>Secret Note: ${record.secret}</i></p>
-            `;
-        } else {
-            document.getElementById("result_area").innerHTML = "<p class='alert'>Student ID not found in database.</p>";
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem("user_session");
-        window.location.href = window.location.pathname; // Reset URL
-    }
-</script>
-
-</body>
+    <script src="demo.js" defer></script>
+  </body>
 </html>

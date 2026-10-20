@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Fitness Planner · Workouts, Meals &amp; Daily Log</title>
+    <script src="assets/theme.js"></script>
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="stylesheet" href="assets/theme.css" />
+    <link rel="stylesheet" href="fitness-base.css" />
+    <link rel="stylesheet" href="fitness.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-bar">
+      <a class="site-brand" href="index.html">BC<span> / </span>Portfolio</a>
+      <nav class="site-links" aria-label="Main navigation">
+        <a href="index.html">Portfolio</a><a href="ctf.html">Learn CTF</a
+        ><a href="fitness.html">Fitness planner</a>
+      </nav>
+      <div class="theme-controls">
+        <button
+          type="button"
+          data-theme-toggle
+          aria-label="Switch theme"
+          title="Switch theme"
+        >
+          <svg class="theme-sun" viewbox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+            ></path></svg
+          ><svg class="theme-moon" viewbox="0 0 24 24" aria-hidden="true">
+            <path d="M20.8 13A9 9 0 0 1 11 3.2 9 9 0 1 0 20.8 13Z"></path>
+          </svg></button
+        ><button
+          type="button"
+          data-theme-auto
+          aria-pressed="true"
+          title="Use browser theme"
+        >
+          Auto
+        </button>
+      </div>
+    </header>
+    <main class="fitness-page" id="content">
+      <div class="fitness-hero">
+        <div>
+          <p class="eyebrow">Movement · Meals · Consistency</p>
+          <h1>Your everyday<br />fitness planner<span>.</span></h1>
+          <p>
+            Choose gym or home workouts, explore flexible meals, and keep a
+            daily log on your own device.
+          </p>
+        </div>
+        <div class="planner-actions">
+          <button id="printPlanner" type="button">Print</button
+          ><button id="exportData" type="button">Export backup</button
+          ><button id="importData" type="button">Import backup</button
+          ><input
+            type="file"
+            id="importFile"
+            accept="application/json,.json"
+            hidden
+          />
+        </div>
+      </div>
+      <nav class="planner-nav" aria-label="Planner sections">
+        <a href="#overview">Overview</a><a href="#training">Training</a
+        ><a href="#nutrition">Meals</a><a href="#daily">Daily log</a
+        ><a href="#references">References</a>
+      </nav>
+      <div class="privacy-bar">
+        <label
+          ><input type="checkbox" id="rememberData" checked /> Save on this
+          device</label
+        ><span id="storageStatus" role="status"
+          >Your entries stay in this browser. They are not uploaded.</span
+        ><button id="clearData" type="button">Clear all data</button>
+      </div>
+      <section id="overview">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 / Overview</p>
+            <h2>A plan that fits your week</h2>
+          </div>
+          <label
+            >Selected date<input id="selectedDate" type="date" required
+          /></label>
+        </div>
+        <details class="card settings">
+          <summary>Plan settings <span>Optional dates and goals</span></summary>
+          <form id="settingsForm" class="field-grid">
+            <label
+              >Start date<input type="date" id="planStart" required /></label
+            ><label>End date<input type="date" id="planEnd" required /></label
+            ><label
+              >Weight goal (kg), optional<input
+                type="number"
+                id="planGoal"
+                min="20"
+                max="400"
+                step="0.1"
+                placeholder="Not set" /></label
+            ><label
+              >Daily calorie reference, optional<input
+                type="number"
+                id="planCalories"
+                min="1"
+                max="15000"
+                step="1"
+                placeholder="Not set" /></label
+            ><button type="submit" class="primary">Save settings</button>
+            <p class="muted">
+              No personal values are prefilled. Targets are your own references,
+              not prescribed outcomes.
+            </p>
+          </form>
+        </details>
+        <div class="stat-grid">
+          <div class="card">
+            <span class="muted">Latest weight</span
+            ><strong id="latestWeight">—</strong
+            ><small id="latestDate">No entries yet</small>
+          </div>
+          <div class="card">
+            <span class="muted">Weight goal</span
+            ><strong id="weightGoal">—</strong
+            ><small>Optional personal reference</small>
+          </div>
+          <div class="card">
+            <span class="muted">Days in plan</span
+            ><strong id="planDays">—</strong><small id="planWindow"></small>
+          </div>
+          <div class="card">
+            <span class="muted">Sessions completed</span
+            ><strong id="sessionsDone">0</strong
+            ><small>Across your saved dates</small>
+          </div>
+        </div>
+        <div class="card chart-card">
+          <div class="section-heading">
+            <h3>Weight trend</h3>
+            <span class="muted">Daily entries &amp; 7-day average</span>
+          </div>
+          <canvas
+            id="weightChart"
+            role="img"
+            aria-label="Weight trend. Exact entries are also shown in the history table."
+          ></canvas>
+          <p id="chartEmpty" class="muted">
+            Add a weight in Daily log to start your chart.
+          </p>
+        </div>
+      </section>
+      <section id="training">
+        <p class="eyebrow">02 / Movement</p>
+        <h2>Your seven-day split</h2>
+        <p class="muted">
+          Sample sessions from the supplied planner. Choose the route and
+          intensity that fit your recovery.
+        </p>
+        <div class="week-strip" id="weekStrip"></div>
+        <div class="card">
+          <div class="section-heading">
+            <div>
+              <h3 id="sessionTitle"></h3>
+              <p class="muted" id="sessionIntro"></p>
+            </div>
+            <span id="sessionDuration" class="pill"></span>
+          </div>
+          <div class="training-options">
+            <div class="segmented" aria-label="Workout location">
+              <button id="gymMode" type="button" aria-pressed="true">Gym</button
+              ><button id="homeMode" type="button" aria-pressed="false">
+                Home / bodyweight
+              </button>
+            </div>
+            <label
+              >Recovery<select id="effortMode">
+                <option value="normal">Normal</option>
+                <option value="low">Low energy · fewer sets</option>
+              </select></label
+            ><span id="exerciseProgress" class="muted"></span>
+          </div>
+          <div id="exerciseList"></div>
+          <div class="planner-actions">
+            <button id="finishWorkout" type="button" class="primary">
+              Mark session complete</button
+            ><button id="clearExercises" type="button">
+              Clear exercise checks
+            </button>
+          </div>
+        </div>
+        <details class="card exercise-library">
+          <summary>All seven days · gym and home alternatives</summary>
+          <div id="exerciseLibrary"></div>
+        </details>
+      </section>
+      <section id="nutrition">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">03 / Meals</p>
+            <h2>Flexible food, simple logging</h2>
+            <p class="muted">
+              Illustrative meals and portions from the supplied menu. Use your
+              food labels for actual nutrition values.
+            </p>
+          </div>
+          <label>Meal rotation<select id="mealDay"></select></label>
+        </div>
+        <div id="mealCards" class="meal-grid"></div>
+        <div class="card meal-total">
+          <span id="mealTotals"></span
+          ><button type="button" id="addAllMeals">
+            Add these meals to selected day
+          </button>
+        </div>
+        <div class="card">
+          <h3>Quick food add</h3>
+          <div class="field-grid">
+            <label
+              >Food group<select id="foodGroup">
+                <option value="protein">Protein foods</option>
+                <option value="grain">Grains &amp; starches</option>
+                <option value="produce">Fruit &amp; vegetables</option>
+                <option value="fat">Fats &amp; extras</option>
+                <option value="snack">Snacks &amp; treats</option>
+              </select></label
+            ><label>Food<select id="quickFood"></select></label
+            ><label
+              >Servings<input
+                id="quickQty"
+                type="number"
+                min="0.25"
+                max="8"
+                step="0.25"
+                value="1" /></label
+            ><button id="quickAdd" type="button" class="primary">
+              Add to food log
+            </button>
+          </div>
+          <p id="quickPreview" class="muted"></p>
+        </div>
+      </section>
+      <section id="daily">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">04 / Daily log</p>
+            <h2>Check in with yourself</h2>
+          </div>
+          <span id="logDate" class="pill"></span>
+        </div>
+        <div class="card">
+          <h3>Body &amp; recovery</h3>
+          <div class="field-grid">
+            <label
+              >Weight (kg)<input
+                id="logWeight"
+                data-log="weight"
+                type="number"
+                min="20"
+                max="400"
+                step="0.1"
+                placeholder="Optional" /></label
+            ><label
+              >Waist (cm)<input
+                id="logWaist"
+                data-log="waist"
+                type="number"
+                min="20"
+                max="300"
+                step="0.1"
+                placeholder="Optional" /></label
+            ><label
+              >Sleep (hours)<input
+                id="logSleep"
+                data-log="sleep"
+                type="number"
+                min="0"
+                max="24"
+                step="0.25"
+                placeholder="Optional" /></label
+            ><label
+              >Steps<input
+                id="logSteps"
+                data-log="steps"
+                type="number"
+                min="0"
+                max="200000"
+                step="1"
+                placeholder="Optional" /></label
+            ><label
+              >Energy<select id="logEnergy" data-log="energy">
+                <option value="">Not recorded</option>
+                <option value="high">High / strong</option>
+                <option value="okay">Okay</option>
+                <option value="low">Low / tired</option>
+              </select></label
+            ><label
+              >Cycle / symptoms, optional<select id="logCycle" data-log="cycle">
+                <option value="">Not recorded</option>
+                <option value="period">Period / cramps</option>
+                <option value="follicular">Follicular / no symptoms</option>
+                <option value="ovulatory">Near ovulation</option>
+                <option value="luteal">Luteal / symptoms</option>
+                <option value="irregular">Irregular / uncertain</option>
+                <option value="contraception">Not tracking phases</option>
+              </select></label
+            ><label
+              >Practice / posing (minutes)<input
+                id="logPosing"
+                data-log="posing"
+                type="number"
+                min="0"
+                max="240"
+                step="1"
+                placeholder="Optional"
+            /></label>
+          </div>
+          <label class="notes-label"
+            >Notes<textarea
+              id="logNotes"
+              data-log="notes"
+              rows="3"
+              maxlength="1000"
+              placeholder="Optional notes about your session or recovery"
+            ></textarea>
+          </label>
+          <p class="muted small">
+            Only enter what you want to keep. Other people using this browser
+            profile may be able to view saved entries.
+          </p>
+        </div>
+        <div class="card">
+          <div class="section-heading">
+            <h3>Your food log</h3>
+            <button id="clearFood" type="button">Clear today’s food</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Food</th>
+                  <th>kcal</th>
+                  <th>Protein</th>
+                  <th>Carbs</th>
+                  <th>Fat</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="foodRows"></tbody>
+            </table>
+          </div>
+          <p id="foodTotals" class="food-totals"></p>
+          <p id="calorieReference" class="muted"></p>
+          <form id="foodForm" class="field-grid">
+            <label
+              >Food name<input
+                id="foodName"
+                type="text"
+                maxlength="100"
+                required
+                placeholder="Food or meal" /></label
+            ><label
+              >Protein (g)<input
+                id="foodProtein"
+                type="number"
+                min="0"
+                max="300"
+                step="0.1"
+                required /></label
+            ><label
+              >Carbs (g)<input
+                id="foodCarbs"
+                type="number"
+                min="0"
+                max="500"
+                step="0.1"
+                required /></label
+            ><label
+              >Fat (g)<input
+                id="foodFat"
+                type="number"
+                min="0"
+                max="200"
+                step="0.1"
+                required /></label
+            ><button type="submit" class="primary">Add food</button>
+          </form>
+          <p class="muted small">
+            Estimated calories = 4 × protein + 4 × carbohydrates + 9 × fat.
+            Labels may differ due to rounding and fiber.
+          </p>
+        </div>
+        <div class="card">
+          <div class="section-heading">
+            <h3>Check-in history</h3>
+            <button id="exportCSV" type="button">Export daily CSV</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Weight</th>
+                  <th>Waist</th>
+                  <th>kcal</th>
+                  <th>Protein</th>
+                  <th>Workout</th>
+                  <th>Sleep</th>
+                </tr>
+              </thead>
+              <tbody id="historyRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="references">
+        <p class="eyebrow">05 / References</p>
+        <h2>Further reading</h2>
+        <p class="muted">
+          References included with the original planner. Sample workouts and
+          meals are planning examples, not individualized medical or dietetic
+          advice.
+        </p>
+        <ul class="reference-list">
+          <li>
+            <a
+              href="https://www.canada.ca/en/health-canada/services/food-guide/explore/healthy-eating-recommendations/eat-variety.html"
+              rel="noopener noreferrer"
+              >Health Canada · Food Guide ↗</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/canadian-nutrient-file-about-us.html"
+              rel="noopener noreferrer"
+              >Health Canada · Canadian Nutrient File ↗</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4033492/"
+              rel="noopener noreferrer"
+              >Bodybuilding preparation · evidence review ↗</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://bjsm.bmj.com/content/57/17/1073"
+              rel="noopener noreferrer"
+              >IOC consensus · energy availability ↗</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://pubmed.ncbi.nlm.nih.gov/33874848/"
+              rel="noopener noreferrer"
+              >Resistance training loads · meta-analysis ↗</a
+            >
+          </li>
+        </ul>
+        <p class="muted small">
+          The planner works offline; external references need an internet
+          connection. Download backups regularly if you want to retain your
+          entries.
+        </p>
+      </section>
+    </main>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <footer class="site-footer">
+      Bhagya Chembakottu · Research, teaching &amp; experiments
+    </footer>
+    <script src="assets/fitness-data.js" defer></script>
+    <script src="fitness.js" defer></script>
+  </body>
+</html>

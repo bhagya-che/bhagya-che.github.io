@@ -1,176 +1,275 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+    />
     <title>Learn CTF - Bhagya Chembakottu</title>
-    <link rel="stylesheet" href="ctf.css">
-</head>
-<body>
+    <script src="assets/theme.js"></script>
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="assets/theme.css" />
+    <link rel="stylesheet" href="ctf.css" />
+  </head>
+  <body>
     <!-- Binary background pattern -->
     <div class="binary-bg" id="binaryBg"></div>
-    
+
     <!-- Security icon -->
     <div class="security-icon">🔓</div>
 
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="nav-link">← Back to Profile</a></li>
-                <li><a href="#auth" class="nav-link">Authentication</a></li>
-                <li><a href="#injection" class="nav-link">Injection</a></li>
-                <li><a href="#xss" class="nav-link">XSS</a></li>
-                <li><a href="#crypto" class="nav-link">Crypto</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="nav-link">← Back to Profile</a></li>
+          <li><a href="#auth" class="nav-link">Authentication</a></li>
+          <li><a href="#injection" class="nav-link">Injection</a></li>
+          <li><a href="#xss" class="nav-link">XSS</a></li>
+          <li><a href="#crypto" class="nav-link">Crypto</a></li>
+          <li>
+            <div class="theme-controls" aria-label="Color theme">
+              <button
+                type="button"
+                data-theme-toggle
+                aria-label="Switch theme"
+                title="Switch theme"
+              >
+                <svg class="theme-sun" viewbox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path
+                    d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+                  ></path></svg
+                ><svg class="theme-moon" viewbox="0 0 24 24" aria-hidden="true">
+                  <path d="M20.8 13A9 9 0 0 1 11 3.2 9 9 0 1 0 20.8 13Z"></path>
+                </svg></button
+              ><button
+                type="button"
+                data-theme-auto
+                aria-pressed="true"
+                title="Use browser theme"
+              >
+                Auto
+              </button>
+            </div>
+          </li>
+        </ul>
+      </nav>
     </header>
 
     <section id="intro" class="ctf-intro-section">
-        <div class="terminal-container">
-            <div class="terminal-header">
-                <div class="terminal-title">ctf_training@bhagya:~$ ./start_hacking</div>
-                <div class="terminal-controls">
-                    <span class="terminal-dot" style="background: var(--terminal-red);"></span>
-                    <span class="terminal-dot" style="background: var(--terminal-yellow);"></span>
-                    <span class="terminal-dot" style="background: var(--terminal-green);"></span>
-                </div>
-            </div>
-            <div class="terminal-body">
-                <div class="terminal-line">
-                    <span class="prompt">$</span>
-                    <span class="command">cat welcome.txt</span>
-                </div>
-                <div class="terminal-line">
-                    <span class="output">Welcome to the OWASP Top 10 CTF Training Ground!</span>
-                </div>
-                <div class="terminal-line">
-                    <span class="output">Complete challenges to earn flags and learn security concepts.</span>
-                </div>
-                <div class="terminal-line">
-                    <span class="output">Progress: [░░░░░░░░░░] 0/10 challenges completed</span>
-                </div>
-                <div class="terminal-line status-line">
-                    <span class="status">Ready to begin? Scroll down for your first challenge!</span>
-                </div>
-            </div>
+      <div class="terminal-container">
+        <div class="terminal-header">
+          <div class="terminal-title">
+            ctf_training@bhagya:~$ ./start_hacking
+          </div>
+          <div class="terminal-controls">
+            <span
+              class="terminal-dot"
+              style="background: var(--terminal-red)"
+            ></span>
+            <span
+              class="terminal-dot"
+              style="background: var(--terminal-yellow)"
+            ></span>
+            <span
+              class="terminal-dot"
+              style="background: var(--terminal-green)"
+            ></span>
+          </div>
         </div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">cat welcome.txt</span>
+          </div>
+          <div class="terminal-line">
+            <span class="output"
+              >Welcome to the OWASP Top 10 CTF Training Ground!</span
+            >
+          </div>
+          <div class="terminal-line">
+            <span class="output"
+              >Complete challenges to earn flags and learn security
+              concepts.</span
+            >
+          </div>
+          <div class="terminal-line">
+            <span class="output" id="ctfProgress"
+              >Progress: [░░░░░░░░░░] 0/10 challenges completed</span
+            >
+          </div>
+          <div class="terminal-line status-line">
+            <span class="status"
+              >Ready to begin? Scroll down for your first challenge!</span
+            >
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- CTF Challenges -->
     <main class="ctf-main">
-        <!-- Authentication Challenge -->
-        <section id="auth" class="ctf-section">
-            <h2 class="section-title">Challenge #1: Authentication Bypass (OWASP A01:2021)</h2>
-            <div class="challenge-card">
-                <div class="challenge-header">
-                    <span class="difficulty easy">Easy</span>
-                    <span class="challenge-status" id="authStatus">🔒 Locked</span>
-                </div>
-                <p class="challenge-description">
-                    A developer left debug code in the login system. Can you find the hidden flag without valid credentials?
-                </p>
+      <!-- Authentication Challenge -->
+      <section id="auth" class="ctf-section">
+        <h2 class="section-title">
+          Challenge #1: Authentication Bypass (OWASP A01:2021)
+        </h2>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="difficulty easy">Easy</span>
+            <span class="challenge-status" id="authStatus">🔒 Locked</span>
+          </div>
+          <p class="challenge-description">
+            A developer left debug code in the login system. Can you find the
+            hidden flag without valid credentials?
+          </p>
 
-                <div class="challenge-form">
-                    <form id="loginForm" class="login-form">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" placeholder="Enter username">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Enter password">
-                        </div>
-                        <button type="submit" class="btn login-btn">Login</button>
-                    </form>
-                    <div class="form-hint">
-                        <small>Hint: Try common debug parameters like <code>?debug=true</code> or check the page source...</small>
-                    </div>
-                </div>
-
-                <div class="hint-section">
-                    <details class="hint-details">
-                        <summary>Need a hint?</summary>
-                        <p>Sometimes developers leave commented-out code in the HTML source. Press <code>Ctrl+U</code> to view source!</p>
-                    </details>
-                </div>
-
-                <div class="challenge-metadata">
-                    <p><strong>Related OWASP:</strong> A01:2021 - Broken Access Control</p>
-                    <p><strong>Skills:</strong> Parameter tampering, Source code analysis</p>
-                </div>
+          <div class="challenge-form">
+            <form id="loginForm" class="login-form">
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Enter username"
+                />
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter password"
+                />
+              </div>
+              <button type="submit" class="btn login-btn">Login</button>
+            </form>
+            <div class="form-hint">
+              <small
+                >Hint: Try common debug parameters like
+                <code>?debug=true</code> or check the page source...</small
+              >
             </div>
-        </section>
+          </div>
 
-        <!-- Future Challenges (Locked) -->
-        <section id="injection" class="ctf-section locked">
-            <h2 class="section-title">Challenge #2: SQL Injection (OWASP A03:2021)</h2>
-            <div class="challenge-card locked">
-                <div class="challenge-header">
-                    <span class="difficulty medium">Medium</span>
-                    <span class="challenge-status">🔒 Locked</span>
-                </div>
-                <p class="challenge-description">
-                    A vulnerable search function allows database queries. Can you extract the hidden flag?
-                </p>
-                <div class="locked-message">
-                    <p>🚧 Coming soon! Complete previous challenges to unlock.</p>
-                </div>
-            </div>
-        </section>
+          <div class="hint-section">
+            <details class="hint-details">
+              <summary>Need a hint?</summary>
+              <p>
+                Inspect ctf.js to find the deliberately insecure demo
+                authentication.<code>Ctrl+U</code> to view source!
+              </p>
+            </details>
+          </div>
 
-        <section id="xss" class="ctf-section locked">
-            <h2 class="section-title">Challenge #3: XSS Attack (OWASP A03:2021)</h2>
-            <div class="challenge-card locked">
-                <div class="challenge-header">
-                    <span class="difficulty medium">Medium</span>
-                    <span class="challenge-status">🔒 Locked</span>
-                </div>
-                <p class="challenge-description">
-                    A comment section doesn't sanitize user input. Can you inject malicious JavaScript?
-                </p>
-                <div class="locked-message">
-                    <p>🚧 Coming soon! Complete previous challenges to unlock.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="crypto" class="ctf-section locked">
-            <h2 class="section-title">Challenge #4: Cryptographic Failures (OWASP A02:2021)</h2>
-            <div class="challenge-card locked">
-                <div class="challenge-header">
-                    <span class="difficulty hard">Hard</span>
-                    <span class="challenge-status">🔒 Locked</span>
-                </div>
-                <p class="challenge-description">
-                    Weak encryption protects a secret. Can you break it and recover the flag?
-                </p>
-                <div class="locked-message">
-                    <p>🚧 Coming soon! Complete previous challenges to unlock.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- More challenges placeholder -->
-        <div class="more-challenges">
-            <h3>More challenges coming soon...</h3>
-            <p>A05:2021 Security Misconfiguration | A06:2021 Vulnerable Components | A07:2021 Auth Failures</p>
+          <div class="challenge-metadata">
+            <p>
+              <strong>Related OWASP:</strong> A01:2021 - Broken Access Control
+            </p>
+            <p>
+              <strong>Skills:</strong> Parameter tampering, Source code analysis
+            </p>
+          </div>
         </div>
+      </section>
+
+      <!-- Future Challenges (Locked) -->
+      <section id="injection" class="ctf-section locked">
+        <h2 class="section-title">
+          Challenge #2: SQL Injection (OWASP A03:2021)
+        </h2>
+        <div class="challenge-card locked">
+          <div class="challenge-header">
+            <span class="difficulty medium">Medium</span>
+            <span class="challenge-status">🔒 Locked</span>
+          </div>
+          <p class="challenge-description">
+            A vulnerable search function allows database queries. Can you
+            extract the hidden flag?
+          </p>
+          <div class="locked-message">
+            <p>🚧 Coming soon — this challenge is not available yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="xss" class="ctf-section locked">
+        <h2 class="section-title">Challenge #3: XSS Attack (OWASP A03:2021)</h2>
+        <div class="challenge-card locked">
+          <div class="challenge-header">
+            <span class="difficulty medium">Medium</span>
+            <span class="challenge-status">🔒 Locked</span>
+          </div>
+          <p class="challenge-description">
+            A comment section doesn't sanitize user input. Can you inject
+            malicious JavaScript?
+          </p>
+          <div class="locked-message">
+            <p>🚧 Coming soon — this challenge is not available yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="crypto" class="ctf-section locked">
+        <h2 class="section-title">
+          Challenge #4: Cryptographic Failures (OWASP A02:2021)
+        </h2>
+        <div class="challenge-card locked">
+          <div class="challenge-header">
+            <span class="difficulty hard">Hard</span>
+            <span class="challenge-status">🔒 Locked</span>
+          </div>
+          <p class="challenge-description">
+            Weak encryption protects a secret. Can you break it and recover the
+            flag?
+          </p>
+          <div class="locked-message">
+            <p>🚧 Coming soon — this challenge is not available yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- More challenges placeholder -->
+      <div class="more-challenges">
+        <h3>More challenges coming soon...</h3>
+        <p>
+          A05:2021 Security Misconfiguration | A06:2021 Vulnerable Components |
+          A07:2021 Auth Failures
+        </p>
+      </div>
     </main>
 
     <!-- Victory Modal -->
-    <div class="victory-modal" id="victoryModal">
-        <div class="victory-content">
-            <div class="victory-icon">🏆</div>
-            <h2>🎉 Challenge Completed!</h2>
-            <p>You successfully bypassed the authentication system!</p>
-            <div class="flag-display">
-                <code>FLAG{DEBUG_MODE_ENABLED}</code>
-            </div>
-            <p class="victory-message">Great work! This is exactly how real security researchers find vulnerabilities.</p>
-            <button class="btn" onclick="closeVictory()">Continue Learning</button>
+    <div
+      class="victory-modal"
+      id="victoryModal"
+      hidden="hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="victoryTitle"
+    >
+      <div class="victory-content">
+        <div class="victory-icon">🏆</div>
+        <h2 id="victoryTitle">🎉 Challenge Completed!</h2>
+        <p>You successfully bypassed the authentication system!</p>
+        <div class="flag-display">
+          <code>FLAG{DEBUG_MODE_ENABLED}</code>
         </div>
+        <p class="victory-message">
+          Great work! This is exactly how real security researchers find
+          vulnerabilities.
+        </p>
+        <button class="btn" id="closeVictory">Continue Learning</button>
+      </div>
     </div>
 
-    <script src="ctf.js"></script>
-</body>
+    <script src="ctf.js" defer></script>
+    <script src="effects.js" defer></script>
+  </body>
 </html>
